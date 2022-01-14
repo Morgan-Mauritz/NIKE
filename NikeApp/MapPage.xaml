@@ -4,6 +4,7 @@
     xmlns:local="using:NikeApp"
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    
     xmlns:maps="clr-namespace:Xamarin.Forms.Maps;assembly=Xamarin.Forms.Maps"
     
     xmlns:Custom="using:Windows.UI.Xaml.Controls.Maps"
@@ -16,8 +17,8 @@
 
     <Grid>
 
-        
-        
+
+
         <Custom:MapControl x:Name="Mapsample" MapServiceToken="(Map Service token from Bing Developer centre)" Margin="0,10,0,10"/>
 
 

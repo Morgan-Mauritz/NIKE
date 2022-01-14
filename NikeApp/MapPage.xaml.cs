@@ -13,7 +13,6 @@ using Windows.UI.Xaml.Input;
 using Windows.UI.Xaml.Media;
 using Windows.UI.Xaml.Navigation;
 
-
 using Windows.Devices.Geolocation;
 using Windows.UI.Xaml.Controls.Maps;
 
@@ -48,7 +47,7 @@ namespace NikeApp
 
         private void Button_Click(object sender, RoutedEventArgs e)
         {
-          
+
         }
     }
 }

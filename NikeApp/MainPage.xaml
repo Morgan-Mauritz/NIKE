@@ -14,37 +14,36 @@
         <StackPanel>
 
             <Grid>
-                
+
 
                 <Image HorizontalAlignment="Center" Margin="0,-173,0,200" Width="1200" Source="/Assets/st.b.png"/>
 
 
                 <Border BorderThickness="1"  BorderBrush="#FFE26919" Margin="500,28,500,395" Background="#FF3648DD">
                     <StackPanel>
-                        
-                <TextBlock Text="NikeMap" HorizontalAlignment="Center" FontFamily="Elephant" FontSize="90" Margin="0,84,0,0" Foreground="#FFD9EC16" TextAlignment="Center" VerticalAlignment="Top" Width="917" Height="116" Grid.Row="1" >
 
-                </TextBlock>
-                      
-                <TextBox x:Name="TBEmail" Margin="20" HorizontalAlignment="Center" FontSize="40"   CornerRadius="30" Background="White"  Text="Email" TextWrapping="Wrap" VerticalAlignment="Top" Width="475" Height="72" Foreground="LightGray" Grid.Row="2"/>
-                
-                        
-                  <TextBox x:Name="TBPassword" Margin="20" HorizontalAlignment="Center" FontSize="40" CornerRadius="30" Background="White"  Text="Lösenord" TextWrapping="Wrap" VerticalAlignment="Top" Width="475" Height="72" Foreground="LightGray" Grid.Row="3"/>
+                        <TextBlock Text="NikeMap" HorizontalAlignment="Center" FontFamily="Elephant" FontSize="90" Margin="0,84,0,0" Foreground="#FFD9EC16" TextAlignment="Center" VerticalAlignment="Top" Width="917" Height="116" Grid.Row="1" >
+
+                        </TextBlock>
+                        <TextBox x:Name="TBEmail" Margin="20" HorizontalAlignment="Center" FontSize="40"   CornerRadius="30" Background="White"  Text="Email" TextWrapping="Wrap" VerticalAlignment="Top" Width="475" Height="72" Foreground="LightGray" Grid.Row="2"/>
+
+
+                        <TextBox x:Name="TBPassword" Margin="20" HorizontalAlignment="Center" FontSize="40" CornerRadius="30" Background="White"  Text="Lösenord" TextWrapping="Wrap" VerticalAlignment="Top" Width="475" Height="72" Foreground="LightGray" Grid.Row="3"/>
                         <StackPanel Orientation="Horizontal" HorizontalAlignment="Center">
-                            
-                 <Button x:Name="BTRegister" Margin="20,40" Content="Registrera" FontSize="25" CornerRadius="20"  Background="Green"  VerticalAlignment="Top" Height="59" Width="193" Foreground="#FFEEF6F5" Grid.Row="4" Click="BTRegister_Click"/>
-                <Button x:Name="BTLoggin" Margin="20,40" Content="Logga in" FontSize="25" CornerRadius="20" Background="White" VerticalAlignment="Top" Height="59" Width="193" Foreground="#FF078B1A" Grid.Row="4" Click="BTLoggin_Click"/>
-                       
-                        </StackPanel>      
-                   
+
+                            <Button x:Name="BTRegister" Margin="20,40" Content="Registrera" FontSize="25" CornerRadius="20"  Background="Green"  VerticalAlignment="Top" Height="59" Width="193" Foreground="#FFEEF6F5" Grid.Row="4" Click="BTRegister_Click"/>
+                            <Button x:Name="BTLoggin" Margin="20,40" Content="Logga in" FontSize="25" CornerRadius="20" Background="White" VerticalAlignment="Top" Height="59" Width="193" Foreground="#FF078B1A" Grid.Row="4" Click="BTLoggin_Click"/>
+
+                        </StackPanel>
+
                     </StackPanel>
-                    
+
                 </Border>
 
             </Grid>
 
 
-            
+
 
 
         </StackPanel>
