@@ -7,12 +7,12 @@ using System.Threading.Tasks;
 using Xamarin.Forms;
 using Xamarin.Forms.Xaml;
 
-namespace NikeClientApp.UWP.Views
+namespace NikeClientApp.Views
 {
     [XamlCompilation(XamlCompilationOptions.Compile)]
-    public partial class RegisterPage : ContentPage
+    public partial class MapPage : ContentPage
     {
-        public RegisterPage()
+        public MapPage()
         {
             InitializeComponent();
         }
