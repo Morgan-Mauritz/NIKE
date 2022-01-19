@@ -1,7 +1,7 @@
 ﻿using System;
 using Xamarin.Forms;
 using Xamarin.Forms.Xaml;
-
+using NikeClientApp.Views;
 namespace NikeClientApp
 {
     public partial class App : Application
@@ -10,7 +10,7 @@ namespace NikeClientApp
         {
             InitializeComponent();
 
-            MainPage = new MainPage();
+            MainPage = new MapPage();
         }
 
         protected override void OnStart()
