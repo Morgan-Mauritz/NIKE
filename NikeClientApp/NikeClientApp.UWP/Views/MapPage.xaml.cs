@@ -10,9 +10,9 @@ using Xamarin.Forms.Xaml;
 namespace NikeClientApp.UWP.Views
 {
     [XamlCompilation(XamlCompilationOptions.Compile)]
-    public partial class Map : ContentPage
+    public partial class MapPage : ContentPage
     {
-        public Map()
+        public MapPage()
         {
             InitializeComponent();
         }
