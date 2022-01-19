@@ -1,24 +1,51 @@
 ﻿<?xml version="1.0" encoding="utf-8" ?>
 <ContentPage xmlns="http://xamarin.com/schemas/2014/forms"
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
-             x:Class="NikeClientApp.MainPage">
+             x:Class="NikeClientApp.MainPage"
+             BackgroundImageSource="Assets/st.b.png">
 
-    <StackLayout>
-        <Frame BackgroundColor="#2196F3" Padding="24" CornerRadius="0">
-            <Label Text="Welcome to Xamarin.Forms!" HorizontalTextAlignment="Center" TextColor="White" FontSize="36"/>
+    <StackLayout VerticalOptions="Center" HorizontalOptions="Center">
+        
+        <Frame HeightRequest="650" WidthRequest="800" BackgroundColor="DarkSlateGray" CornerRadius="20" IsClippedToBounds="True">
+
+            <StackLayout HorizontalOptions="Center" 
+                         Padding="50" 
+                         Spacing="50">
+
+                <Entry Placeholder="Email" 
+                       x:Name="entryEmail"
+                       HeightRequest="50"
+                       HorizontalTextAlignment="Center"></Entry>
+
+                <Entry Placeholder="Lösenord" 
+                       x:Name="entryPassword"
+                       HeightRequest="50"
+                       HorizontalTextAlignment="Center"></Entry>
+
+
+                <StackLayout Orientation="Horizontal" 
+                             Spacing="200"
+                             Margin="10,100">
+
+                    <Button Text="Logga in"
+                            WidthRequest="150"
+                            BackgroundColor="White"
+                            HeightRequest="50"
+                            CornerRadius="10"
+                            Clicked="BtnLogIn_Clicked"></Button>
+
+                    <Button Text="Registrera" 
+                            WidthRequest="150"
+                            BackgroundColor="White"
+                            CornerRadius="10"
+                            Clicked="BtnRegister_Clicked"></Button>
+
+                </StackLayout>
+
+            </StackLayout>
+
         </Frame>
-        <Label Text="Start developing now" FontSize="Title" Padding="30,10,30,10"/>
-        <Label Text="Make changes to your XAML file and save to see your UI update in the running app with XAML Hot Reload. Give it a try!" FontSize="16" Padding="30,0,30,0"/>
-        <Label FontSize="16" Padding="30,24,30,0">
-            <Label.FormattedText>
-                <FormattedString>
-                    <FormattedString.Spans>
-                        <Span Text="Learn more at "/>
-                        <Span Text="https://aka.ms/xamarin-quickstart" FontAttributes="Bold"/>
-                    </FormattedString.Spans>
-                </FormattedString>
-            </Label.FormattedText>
-        </Label>
     </StackLayout>
+
 
 </ContentPage>
