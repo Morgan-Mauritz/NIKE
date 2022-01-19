@@ -22,6 +22,24 @@ namespace Api.Repository
             return thingToLookat; 
         }
 
+        public async Task<List<POI>> GetFiltered(FilterPOI filterPOI)
+        {
+            var query = _context.POI.AsNoTracking().Include(c => c.City).ThenInclude(c => c.Country)
+                .Where(x => (string.IsNullOrEmpty(filterPOI.Country) || x.City.Country.Name.ToLower().Contains(filterPOI.Country.ToLower()))
+                && (string.IsNullOrEmpty(filterPOI.City) || x.City.Name.ToLower().Contains(filterPOI.City.ToLower())) 
+                && (string.IsNullOrEmpty(filterPOI.Name) || x.Name.ToLower().Contains(filterPOI.Name.ToLower())));
+
+            query = filterPOI.Sort switch
+            {
+                Sort.Name => query.OrderBy(x => x.Name),
+                Sort.City => query.OrderBy(x => x.City.Name),
+                Sort.Country => query.OrderBy(x => x.City),
+                _ => query.OrderBy(x => x.Id) 
+            };
+
+            return await query.ToListAsync(); 
+        }
+
         public async Task<POI> Set(POIDto pOIDto)
         {
             var city = await _context.Cities.FirstOrDefaultAsync(c => c.Name == pOIDto.City);

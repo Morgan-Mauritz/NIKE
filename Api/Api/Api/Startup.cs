@@ -40,6 +40,7 @@ namespace Api
             {
                 c.SwaggerDoc("v1", new OpenApiInfo { Title = "Api", Version = "v1" });
             });
+            services.AddSwaggerGenNewtonsoftSupport();
 
             var mapperConfig = new MapperConfiguration(mc => { 
                 mc.AddProfile(new UserMapping());

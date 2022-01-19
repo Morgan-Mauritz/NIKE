@@ -24,11 +24,25 @@ namespace Api.Controllers
             return Ok(await _service.GetPOI(longitude, latitude));
         }
 
+        [HttpGet("list")]
+        public async Task<IActionResult> GetPOIList([FromQuery] FilterPOI filterPOI)
+        {
+            return Ok(await _service.GetPOIList(filterPOI));
+        }
+
         [HttpPost]
         public async Task<IActionResult> SetPOI([FromBody] POIDto poiDto)
         {
             return Ok(await _service.SetPOI(poiDto)); 
         }
 
+
+
+
+
     }
+
+
+
+
 }

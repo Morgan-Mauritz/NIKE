@@ -21,6 +21,10 @@ namespace Api.Services.POIServices
         {
             return _mapper.Map<POIDto>(await _POIRepository.Get(Longitude, Latitude));
         }
+        public async Task<List<POIDto>> GetPOIList(FilterPOI filterPOI)
+        {
+            return _mapper.Map<List<POIDto>>(await _POIRepository.GetFiltered(filterPOI)); 
+        }
 
         public async Task<POIDto> SetPOI(POIDto pOIDto)
         {
