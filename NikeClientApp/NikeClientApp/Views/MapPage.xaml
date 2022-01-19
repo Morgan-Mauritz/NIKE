@@ -1,28 +1,37 @@
 ﻿<?xml version="1.0" encoding="utf-8" ?>
 <ContentPage xmlns="http://xamarin.com/schemas/2014/forms"
-             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml" xmlns:maps="clr-namespace:Xamarin.Forms.Maps;assembly=Xamarin.Forms.Maps"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml" xmlns:maps="clr-namespace:Xamarin.Forms.Maps;assembly=Xamarin.Forms.Maps" 
+             xmlns:Map ="Windows.UI.Xaml.Controls.Maps; assembly=Windows.UI.Xaml.Controls.Maps"
              x:Class="NikeClientApp.Views.MapPage">
     <ContentPage.Content>
         <StackLayout>
             <Label Text="Welcome to Xamarin.Forms!"
                 VerticalOptions="CenterAndExpand" 
                 HorizontalOptions="CenterAndExpand" />
-            <maps:Map  x:Name="Mapsample"  Margin="0,10,0,10">
+
+            <maps:Map  x:Name="Mapsample">
                 
             </maps:Map>
+
+
+            <!--<Map:MapControl x:Name="MapControl1" MapServiceToken="abcdef-abcdefghijklmno"/>-->
+
+
+
+
             <Frame>
                 <StackLayout>
-                <Entry x:Name="TBSearchbar"  />
+                    <Entry x:Name="TBSearchbar"  />
 
                     <Button x:Name="SearchButt">
-                        
+
                     </Button>
                     <Button x:Name="PinButt">
-                        
+
                     </Button>
                 </StackLayout>
-                
-                
+
+
             </Frame>
         </StackLayout>
     </ContentPage.Content>
