@@ -23,5 +23,19 @@ namespace NikeClientApp
         {
             await Navigation.PushAsync(new MapPage());
         }
+
+        private async void BtnLogIn_Clicked(object sender, EventArgs e)
+        {
+            //Vertification that the user exist, if true than send to next page, if no write error message.
+
+
+
+            await Navigation.PushAsync(new MapPage());
+        }
+
+        private async void BtnRegister_Clicked(object sender, EventArgs e)
+        {
+            await Navigation.PushAsync(new RegisterPage());
+        }
     }
 }
