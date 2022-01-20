@@ -2,6 +2,7 @@ using Api.Model;
 using Api.Model.MappingProfiles;
 using Api.Repository;
 using Api.Services.AuthorizationServices;
+using Api.Services.ForecastServices;
 using Api.Services.POIServices;
 using Api.Services.UserServices;
 using AutoMapper;
@@ -58,6 +59,7 @@ namespace Api
             services.AddScoped<IUserService, UserService>();
             services.AddScoped<IAuthorizationService, AuthorizationService>(); 
             services.AddScoped<IPOIService, POIService>();
+            services.AddScoped<IForceastService, ForecastService>();
         }
 
         public void RegisterRepositorys(IServiceCollection services)
