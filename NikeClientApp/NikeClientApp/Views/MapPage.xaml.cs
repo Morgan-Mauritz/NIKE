@@ -12,6 +12,7 @@ namespace NikeClientApp.Views
     [XamlCompilation(XamlCompilationOptions.Compile)]
     public partial class MapPage : ContentPage
     {
+        List<Pin> Location = new List<Pin>();
         public MapPage()
         {
             InitializeComponent();
@@ -38,6 +39,18 @@ namespace NikeClientApp.Views
         private void ImageButton_Clicked_1(object sender, EventArgs e)
         {
 
+        }
+
+        private void Mapsample_MapClicked(object sender, MapClickedEventArgs e)
+        {
+            Pin pinner = new Pin()
+            {
+                Position = e.Position,
+                Label = "Boardwalk",
+                Address = "Santa Cruz",
+                Type = PinType.Place
+            };
+            Location.Add(pinner);
         }
     }
 }

@@ -8,8 +8,17 @@
 
         <Grid >
             
-            <maps:Map  x:Name="Mapsample" Margin="0,0,0,0">
+            <maps:Map  x:Name="Mapsample" Margin="0,0,0,0" MapClicked="Mapsample_MapClicked" ItemsSource="{Binding Locations}">
                 
+                <maps:Map.ItemTemplate>
+                    
+                    <DataTemplate>
+                        
+                    <maps:Pin Position="{Binding Position}" Address="{Binding Address}" Label="{Binding Description}">
+                        
+                    </maps:Pin>
+                    </DataTemplate>
+                </maps:Map.ItemTemplate>
             </maps:Map>
 
             <Frame Margin="530,0,0,0" HorizontalOptions="End">
