@@ -22,7 +22,7 @@ namespace Api.Controllers
         [HttpPost]
         public async Task<IActionResult> AddUser([FromBody] UserDto userDto)
         {
-            return Ok(await _userService.AddUser(userDto));
+            return Ok(new Response<UserDto>(await _userService.AddUser(userDto)));
         }
     }
 }
