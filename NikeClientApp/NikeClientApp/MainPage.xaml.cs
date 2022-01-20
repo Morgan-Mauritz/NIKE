@@ -17,12 +17,7 @@ namespace NikeClientApp
             InitializeComponent();
             
         }
-       
-
-        private async void Button_Clicked(object sender, EventArgs e)
-        {
-            await Navigation.PushAsync(new MapPage());
-        }
+      
 
         private async void BtnLogIn_Clicked(object sender, EventArgs e)
         {
