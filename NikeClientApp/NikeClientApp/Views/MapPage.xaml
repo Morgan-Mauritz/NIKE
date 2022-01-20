@@ -4,23 +4,16 @@
              xmlns:Map ="Windows.UI.Xaml.Controls.Maps; assembly=Windows.UI.Xaml.Controls.Maps"
              x:Class="NikeClientApp.Views.MapPage">
     <ContentPage.Content>
-        <StackLayout>
-            <Label Text="Welcome to Xamarin.Forms!"
-                VerticalOptions="CenterAndExpand" 
-                HorizontalOptions="CenterAndExpand" />
+            
 
-            <maps:Map  x:Name="Mapsample">
+        <StackLayout>
+            <maps:Map  x:Name="Mapsample" Margin="120,0,120,0">
                 
             </maps:Map>
+            <Frame Margin="500,0,0,0" BackgroundColor="Red">
 
 
-            <!--<Map:MapControl x:Name="MapControl1" MapServiceToken="abcdef-abcdefghijklmno"/>-->
-
-
-
-
-            <Frame>
-                <StackLayout>
+                <StackLayout Margin="0,0,0,0">
                     <Entry x:Name="TBSearchbar"  />
 
                     <Button x:Name="SearchButt">
