@@ -1,4 +1,5 @@
 ﻿using System;
+using NikeClientApp.Views;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -15,6 +16,11 @@ namespace NikeClientApp.Views
         public RegisterPage()
         {
             InitializeComponent();
+        }
+
+        private void BTRegister_Clicked(object sender, EventArgs e)
+        {
+            
         }
     }
 }
