@@ -1,6 +1,7 @@
 ﻿using Newtonsoft.Json.Converters;
 using System.ComponentModel.DataAnnotations;
-using Newtonsoft.Json; 
+using Newtonsoft.Json;
+using System.Collections.Generic;
 
 #nullable disable
 
@@ -20,6 +21,13 @@ namespace Api.Model
         public long CityID { get; set; }
 
         public virtual City City {  get; set; }
+
+        public virtual ICollection<Entry> Entries { get; set; }
+       
+        public POI()
+        {
+            Entries = new HashSet<Entry>();
+        }
     }
 
     public class POIDto

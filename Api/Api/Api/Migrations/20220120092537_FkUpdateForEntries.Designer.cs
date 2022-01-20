@@ -3,14 +3,16 @@ using System;
 using Api;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 namespace Api.Migrations
 {
     [DbContext(typeof(NIKEContext))]
-    partial class NIKEContextModelSnapshot : ModelSnapshot
+    [Migration("20220120092537_FkUpdateForEntries")]
+    partial class FkUpdateForEntries
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -97,9 +99,9 @@ namespace Api.Migrations
                         .IsRequired()
                         .HasColumnType("INTEGER");
 
-                    b.Property<long>("POIID")
+                    b.Property<long>("LocationId")
                         .HasColumnType("INTEGER")
-                        .HasColumnName("POIID");
+                        .HasColumnName("LocationID");
 
                     b.Property<long?>("Rating")
                         .IsRequired()
@@ -110,8 +112,6 @@ namespace Api.Migrations
                         .HasColumnName("UserID");
 
                     b.HasKey("Id");
-
-                    b.HasIndex("POIID");
 
                     b.HasIndex("UserId");
 
@@ -257,21 +257,12 @@ namespace Api.Migrations
 
             modelBuilder.Entity("Api.Model.Entry", b =>
                 {
-                    b.HasOne("Api.Model.POI", "POI")
-                        .WithMany("Entries")
-                        .HasForeignKey("POIID")
-                        .HasConstraintName("POIID")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
                     b.HasOne("Api.Model.User", "User")
                         .WithMany("Entries")
                         .HasForeignKey("UserId")
                         .HasConstraintName("UserID")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
-
-                    b.Navigation("POI");
 
                     b.Navigation("User");
                 });
@@ -296,11 +287,6 @@ namespace Api.Migrations
             modelBuilder.Entity("Api.Model.Country", b =>
                 {
                     b.Navigation("Cities");
-                });
-
-            modelBuilder.Entity("Api.Model.POI", b =>
-                {
-                    b.Navigation("Entries");
                 });
 
             modelBuilder.Entity("Api.Model.User", b =>
