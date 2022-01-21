@@ -2,16 +2,16 @@
 <ContentPage xmlns="http://xamarin.com/schemas/2014/forms"
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
              x:Class="NikeClientApp.MainPage"
-             BackgroundImageSource="Assets/st.b.png">
+             BackgroundImageSource="Assets/halvkarta.png">
 
     <StackLayout VerticalOptions="Center" HorizontalOptions="Center">
         
-        <Frame HeightRequest="650" WidthRequest="800" BackgroundColor="DarkSlateGray" CornerRadius="20" IsClippedToBounds="True">
+        <Frame HeightRequest="650" WidthRequest="400" BackgroundColor="DarkSlateGray" CornerRadius="20" IsClippedToBounds="True">
 
             <StackLayout HorizontalOptions="Center" 
                          Padding="50" 
                          Spacing="50">
-
+                <Label Text="NikeMap" HorizontalOptions="Center" Margin="35,-50,0,0" FontFamily="Elephant" FontSize="50" TextColor="#FFD9EC16" WidthRequest="917" HeightRequest="75" Grid.Row="1" />
                 <Entry Placeholder="Email" 
                        x:Name="entryEmail"
                        HeightRequest="50"
@@ -28,15 +28,19 @@
                              Margin="10,100">
 
                     <Button Text="Logga in"
-                            WidthRequest="150"
+                           Margin="-10,0,0,0"
+                            WidthRequest="130"
                             BackgroundColor="White"
+                            TextColor="Green"
                             HeightRequest="50"
                             CornerRadius="10"
                             Clicked="BtnLogIn_Clicked"></Button>
 
                     <Button Text="Registrera" 
-                            WidthRequest="150"
-                            BackgroundColor="White"
+                            Margin="-160,0,0,0"
+                            WidthRequest="130"
+                            BackgroundColor="Green"
+                            TextColor="White"
                             CornerRadius="10"
                             Clicked="BtnRegister_Clicked"></Button>
 
