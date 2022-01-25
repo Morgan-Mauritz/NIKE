@@ -21,6 +21,8 @@ namespace Api.Services.EntryServices
             _mapper = mapper;
         }
 
+     
+
         public async Task<EntryDto> SetEntry(AddEntry entryDto)
         {
             var user = await _userRepository.Get(entryDto.UserName);
@@ -37,6 +39,11 @@ namespace Api.Services.EntryServices
                 POI = await _poiRepository.Set(entryDto.POI);
             }
 
+            var userEntryCheck = await _entryRepository.Get(POI.Id, user.Id);
+            if (userEntryCheck != null)
+            {
+                throw new Exception("Du har redan gjort ett inlägg för den här platsen");
+            }
 
             var entry = _mapper.Map<Entry>(entryDto);
 
@@ -44,8 +51,59 @@ namespace Api.Services.EntryServices
 
             entry.UserId = user.Id;
 
+           await _entryRepository.Set(entry);
 
-            return _mapper.Map<EntryDto>(await _entryRepository.Set(entry));
+           return new EntryDto() { POI = POI.Name, UserName = user.Username, Description = entryDto.Description, Rating = entryDto.Rating };
         }
+
+
+        public async Task<EntryDto> UpdateEntry(UpdateEntry updateEntry, long id)
+        {
+
+            var entry = await _entryRepository.GetWithTracking(id);
+            if (entry == null)
+            {
+                throw new Exception("Kunde inte hitta inlägget");
+            }
+            //TODO: API nyckel fix!!
+            //if(entry.UserId != 1)
+            //{
+            //    throw new UnauthorizedAccessException();
+            //}
+
+            var updatedEntry = _mapper.Map(updateEntry, entry);
+
+            await _entryRepository.UpdateEntry();
+
+            return _mapper.Map<EntryDto>(updatedEntry);
+        }
+
+        public async Task<EntryDto> DeleteEntry(long id)
+        {
+
+            var entryDelete = await _entryRepository.GetWithTracking(id);
+
+            if (entryDelete == null)
+            {
+                throw new Exception("Kunde inte hitta inlägget");
+            }
+
+
+            //TODO: API nyckel fix!!
+            //if(entry.UserId != 1)
+            //{
+            //    throw new UnauthorizedAccessException();
+            //}
+
+            await _entryRepository.DeleteEntry(entryDelete);
+
+            return _mapper.Map<EntryDto>(entryDelete);
+
+
+
+        }
+
+
+
     }
 }

@@ -7,6 +7,10 @@ namespace Api.Repository
     {
 
         Task<Entry> Set(Entry entry);
+        Task<Entry> Get(long poiID, long userID);
+        Task<Entry> GetWithTracking(long entryID);
+        Task UpdateEntry();
+        Task DeleteEntry(Entry entry);
 
 
     }

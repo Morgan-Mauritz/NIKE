@@ -20,8 +20,8 @@ namespace Api.Repository
         {
             var thingToLookat = await _context.POI
                 .AsNoTracking().Include(x => x.City).ThenInclude(c => c.Country)
-                .FirstOrDefaultAsync(POI => (POI.Longitude <= longitude - 0.03 && POI.Longitude >= longitude + 0.03) 
-                && (POI.Latitude <= latitude - 0.03 && POI.Latitude >= latitude + 0.03) && POI.Name == name);
+                .FirstOrDefaultAsync(POI => (POI.Longitude >= longitude - 0.03 && POI.Longitude <= longitude + 0.03) 
+                && (POI.Latitude >= latitude - 0.03 && POI.Latitude <= latitude + 0.03) && POI.Name == name);
             return thingToLookat; 
         }
 

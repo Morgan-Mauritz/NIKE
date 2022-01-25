@@ -7,10 +7,23 @@ namespace Api.Repository
     public class EntryRepository : IEntryRepository
     {
         private readonly NIKEContext _context;
-        private readonly IPOIRepository _poiRepository;
+        
         public EntryRepository(NIKEContext context)
         {
             _context = context;
+        }
+
+     
+
+        public async Task<Entry> Get(long poiID, long userID)
+        {
+            return await _context.Entries.AsNoTracking().FirstOrDefaultAsync(x => x.POIID == poiID && x.UserId == userID);
+
+        }
+
+        public async Task<Entry> GetWithTracking(long entryID)
+        {
+            return await _context.Entries.FirstOrDefaultAsync(x => x.Id == entryID);
         }
 
         public async Task<Entry> Set(Entry entry)
@@ -21,8 +34,17 @@ namespace Api.Repository
             await _context.SaveChangesAsync();
 
             return entry;   
+        }
 
+        public async Task UpdateEntry()
+        {
+            await _context.SaveChangesAsync();
+        }
 
+        public async Task DeleteEntry(Entry entryRemove)
+        {
+            _context.Remove(entryRemove);
+            await _context.SaveChangesAsync();
         }
     }
 }

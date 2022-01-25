@@ -39,8 +39,16 @@ namespace Api.Model
 
     }
 
+
+    public class UpdateEntry
+    {
+        public string Description { get; set; }
+        public long? Rating { get; set; }
+    }
+
     public class EntryDto
     {
+        public long Id { get; set; }
         public string Description { get; set; }
 
         public string UserName { get; set; }
