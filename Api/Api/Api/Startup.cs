@@ -2,7 +2,11 @@ using Api.Model;
 using Api.Model.MappingProfiles;
 using Api.Repository;
 using Api.Services.AuthorizationServices;
+
 using Api.Services.EntryServices;
+
+using Api.Services.ForecastServices;
+
 using Api.Services.POIServices;
 using Api.Services.UserServices;
 using AutoMapper;
@@ -16,10 +20,7 @@ using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
 using Microsoft.OpenApi.Models;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
+using Newtonsoft.Json; 
 
 namespace Api
 {
@@ -36,7 +37,12 @@ namespace Api
         public void ConfigureServices(IServiceCollection services)
         {
             services.AddDbContext<NIKEContext>(options => options.UseSqlite(Configuration.GetConnectionString("DefaultConnection")));
-            services.AddControllers();
+            services.AddControllers()
+                .AddNewtonsoftJson(x =>
+                {
+                    x.SerializerSettings.ReferenceLoopHandling = ReferenceLoopHandling.Ignore;
+                    x.SerializerSettings.NullValueHandling = NullValueHandling.Ignore; 
+                });
             services.AddSwaggerGen(c =>
             {
                 c.SwaggerDoc("v1", new OpenApiInfo { Title = "Api", Version = "v1" });
@@ -46,7 +52,12 @@ namespace Api
             var mapperConfig = new MapperConfiguration(mc => { 
                 mc.AddProfile(new UserMapping());
                 mc.AddProfile(new POIMapping());
+ 
                 mc.AddProfile(new EntryMapping());
+
+                mc.AddProfile(new ForecastMapping());
+                mc.AddProfile(new WeatherResultMapping());
+
             });
 
             IMapper _mapper = mapperConfig.CreateMapper();
@@ -60,7 +71,11 @@ namespace Api
             services.AddScoped<IUserService, UserService>();
             services.AddScoped<IAuthorizationService, AuthorizationService>(); 
             services.AddScoped<IPOIService, POIService>();
+
             services.AddScoped<IEntryService, EntryService>();
+
+            services.AddScoped<IForceastService, ForecastService>();
+
         }
 
         public void RegisterRepositorys(IServiceCollection services)

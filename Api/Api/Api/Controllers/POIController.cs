@@ -21,19 +21,21 @@ namespace Api.Controllers
         [HttpGet]
         public async Task<IActionResult> GetPOI([FromQuery] double longitude, [FromQuery] double latitude, [FromQuery] string name)
         {
-            return Ok(await _service.GetPOI(longitude, latitude, name));
+
+            return Ok(new Response<POIDto>(await _service.GetPOI(longitude, latitude)));
+
         }
 
         [HttpGet("list")]
         public async Task<IActionResult> GetPOIList([FromQuery] FilterPOI filterPOI)
         {
-            return Ok(await _service.GetPOIList(filterPOI));
+            return Ok(new Response<List<POIDto>>(await _service.GetPOIList(filterPOI)));
         }
 
         [HttpPost]
         public async Task<IActionResult> SetPOI([FromBody] POIDto poiDto)
         {
-            return Ok(await _service.SetPOI(poiDto)); 
+            return Ok(new Response<POIDto>(await _service.SetPOI(poiDto)));
         }
 
 
