@@ -1,13 +1,10 @@
 ﻿using Newtonsoft.Json;
 using Newtonsoft.Json.Converters;
-using System;
-using System.Collections.Generic;
-using System.ComponentModel.DataAnnotations;
 
 #nullable enable
 
 namespace Api.Model
-{   
+{
     public class Response<T> where T : new()
     {
         public Status Status { get; set; }
@@ -37,5 +34,4 @@ namespace Api.Model
         Error,
         Success
     }
-
 }

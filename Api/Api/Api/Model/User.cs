@@ -1,8 +1,6 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.Configuration;
-using System.Text.RegularExpressions;
 
 #nullable disable
 
@@ -49,7 +47,6 @@ namespace Api.Model
         public string Username { get; set; }
 
     }
-
     public class LogInModel
     {
         [Required]
@@ -59,5 +56,4 @@ namespace Api.Model
         //[RegularExpression(@"^(?=.[a-z])(?=.[A-Z])(?=.\d)[A-Za-z\d@$!%#?&]{8,255}$")]
         public string Password { get; set; }
     }
-
 }

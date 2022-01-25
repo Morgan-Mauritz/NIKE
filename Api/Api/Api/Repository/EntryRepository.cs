@@ -13,8 +13,6 @@ namespace Api.Repository
             _context = context;
         }
 
-     
-
         public async Task<Entry> Get(long poiID, long userID)
         {
             return await _context.Entries.AsNoTracking().FirstOrDefaultAsync(x => x.POIID == poiID && x.UserId == userID);

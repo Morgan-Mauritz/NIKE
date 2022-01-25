@@ -3,8 +3,6 @@ using Api.Model;
 using Api.Repository;
 using AutoMapper;
 using System;
-using System.Collections.Generic;
-using System.Linq;
 using System.Threading.Tasks;
 
 namespace Api.Services.AuthorizationServices
@@ -28,8 +26,7 @@ namespace Api.Services.AuthorizationServices
                 throw new UnauthorizedAccessException("There is no user for this login!"); 
             }
 
-            return _mapper.Map<UserDto>(user);   
-
+            return _mapper.Map<UserDto>(user);  
         }
     }
 }

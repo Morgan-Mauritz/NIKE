@@ -27,8 +27,7 @@ namespace Api.Controllers
             catch (Exception)
             {
                 return StatusCode((int)HttpStatusCode.BadRequest);
-            }
-            
+            }       
         }
 
         [HttpPut(":id")]
@@ -56,9 +55,5 @@ namespace Api.Controllers
                 return StatusCode((int)HttpStatusCode.BadRequest);
             }
         }
-
-
-
-
     }
 }

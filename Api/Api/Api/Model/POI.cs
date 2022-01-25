@@ -58,6 +58,4 @@ namespace Api.Model
         City, 
         Country, 
     }
-
-
 }
