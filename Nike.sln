@@ -1,7 +1,7 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
-# Visual Studio Version 17
-VisualStudioVersion = 17.0.32112.339
+# Visual Studio Version 16
+VisualStudioVersion = 16.0.31729.503
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Api", "Api\Api\Api\Api.csproj", "{E61D7011-B1C8-401E-BFCB-52EAA1470B96}"
 EndProject
@@ -88,7 +88,6 @@ Global
 		{E4C0BCAD-2902-4650-A1A1-5C16484C7AB8}.Debug|x86.Deploy.0 = Debug|x86
 		{E4C0BCAD-2902-4650-A1A1-5C16484C7AB8}.Release|Any CPU.ActiveCfg = Release|x64
 		{E4C0BCAD-2902-4650-A1A1-5C16484C7AB8}.Release|Any CPU.Build.0 = Release|x64
-		{E4C0BCAD-2902-4650-A1A1-5C16484C7AB8}.Release|Any CPU.Deploy.0 = Release|x64
 		{E4C0BCAD-2902-4650-A1A1-5C16484C7AB8}.Release|ARM.ActiveCfg = Release|ARM
 		{E4C0BCAD-2902-4650-A1A1-5C16484C7AB8}.Release|ARM.Build.0 = Release|ARM
 		{E4C0BCAD-2902-4650-A1A1-5C16484C7AB8}.Release|ARM.Deploy.0 = Release|ARM
