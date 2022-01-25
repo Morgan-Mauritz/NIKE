@@ -18,17 +18,6 @@ namespace NikeClientApp.Views
             InitializeComponent();
 
             
-            //var map = new Map(MapSpan.FromCenterAndRadius(new Position(37, -122), Distance.FromMiles(10)));
-            //Pin pinner = new Pin()
-            //{
-            //    Position = new Position(37, -122),
-            //    Label = "Boardwalk",
-            //    Address = "Santa Cruz",
-            //    //Type = PinType.Place
-            //};
-            ////Location.Add(pinner);
-            //map.Pins.Add(pinner);
-
         }
        
        
@@ -68,8 +57,12 @@ namespace NikeClientApp.Views
             };
            
             Mapsample.Pins.Add(pinner);
-            
 
+            //Remove_Click(pinner);
+        }
+        private void Remove_Click(Pin pinn)
+        {
+            Mapsample.Pins.Remove(pinn);
         }
     }
 }
