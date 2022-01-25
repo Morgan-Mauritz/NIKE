@@ -19,6 +19,7 @@
 
                 <Entry Placeholder="Lösenord" 
                        x:Name="entryPassword"
+                       IsPassword="True"
                        HeightRequest="50"
                        HorizontalTextAlignment="Center"></Entry>
 
@@ -44,7 +45,10 @@
                             CornerRadius="10"
                             Clicked="BtnRegister_Clicked"></Button>
 
+                   
+
                 </StackLayout>
+                <Button x:Name="ToMaps" Text="Till Kartan" WidthRequest="100" HeightRequest="30" BackgroundColor="#1A4541" TextColor="Black" CornerRadius="10" Opacity="20" Clicked="ToMaps_Clicked" ></Button>
 
             </StackLayout>
 
