@@ -19,9 +19,11 @@ namespace Api.Controllers
         }
 
         [HttpGet]
-        public async Task<IActionResult> GetPOI([FromQuery] double longitude, [FromQuery] double latitude)
+        public async Task<IActionResult> GetPOI([FromQuery] double longitude, [FromQuery] double latitude, [FromQuery] string name)
         {
+
             return Ok(new Response<POIDto>(await _service.GetPOI(longitude, latitude)));
+
         }
 
         [HttpGet("list")]

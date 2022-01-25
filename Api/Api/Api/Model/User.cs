@@ -22,6 +22,13 @@ namespace Api.Model
         public byte[] Password { get; set; }
         [Required]
         public string Username { get; set; }
+
+        public virtual ICollection<Entry> Entries { get; set; }
+       
+        public User()
+        {
+            Entries = new HashSet<Entry>();
+        }
     }
 
     public class UserDto

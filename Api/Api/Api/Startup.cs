@@ -2,7 +2,11 @@ using Api.Model;
 using Api.Model.MappingProfiles;
 using Api.Repository;
 using Api.Services.AuthorizationServices;
+
+using Api.Services.EntryServices;
+
 using Api.Services.ForecastServices;
+
 using Api.Services.POIServices;
 using Api.Services.UserServices;
 using AutoMapper;
@@ -48,8 +52,12 @@ namespace Api
             var mapperConfig = new MapperConfiguration(mc => { 
                 mc.AddProfile(new UserMapping());
                 mc.AddProfile(new POIMapping());
+ 
+                mc.AddProfile(new EntryMapping());
+
                 mc.AddProfile(new ForecastMapping());
                 mc.AddProfile(new WeatherResultMapping());
+
             });
 
             IMapper _mapper = mapperConfig.CreateMapper();
@@ -63,13 +71,18 @@ namespace Api
             services.AddScoped<IUserService, UserService>();
             services.AddScoped<IAuthorizationService, AuthorizationService>(); 
             services.AddScoped<IPOIService, POIService>();
+
+            services.AddScoped<IEntryService, EntryService>();
+
             services.AddScoped<IForceastService, ForecastService>();
+
         }
 
         public void RegisterRepositorys(IServiceCollection services)
         {
             services.AddScoped<IRepository<User>, UserRepository>();
             services.AddScoped<IPOIRepository, POIRepository>();
+            services.AddScoped<IEntryRepository, EntryRepository>();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.

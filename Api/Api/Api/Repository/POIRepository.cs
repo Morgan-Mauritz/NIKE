@@ -16,9 +16,12 @@ namespace Api.Repository
             _context = context;
         }
 
-        public async Task<POI> Get(double Longitude, double Latitude)
+        public async Task<POI> Get(double longitude, double latitude, string name)
         {
-            var thingToLookat = await _context.POI.AsNoTracking().Include(x => x.City).ThenInclude(c => c.Country).FirstOrDefaultAsync(POI => POI.Longitude == Longitude && POI.Latitude == Latitude);
+            var thingToLookat = await _context.POI
+                .AsNoTracking().Include(x => x.City).ThenInclude(c => c.Country)
+                .FirstOrDefaultAsync(POI => (POI.Longitude >= longitude - 0.03 && POI.Longitude <= longitude + 0.03) 
+                && (POI.Latitude >= latitude - 0.03 && POI.Latitude <= latitude + 0.03) && POI.Name == name);
             return thingToLookat; 
         }
 

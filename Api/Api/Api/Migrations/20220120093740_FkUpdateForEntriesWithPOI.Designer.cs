@@ -3,14 +3,16 @@ using System;
 using Api;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 namespace Api.Migrations
 {
     [DbContext(typeof(NIKEContext))]
-    partial class NIKEContextModelSnapshot : ModelSnapshot
+    [Migration("20220120093740_FkUpdateForEntriesWithPOI")]
+    partial class FkUpdateForEntriesWithPOI
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder

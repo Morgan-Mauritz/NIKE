@@ -35,9 +35,9 @@ namespace Api.Repository
             throw new NotImplementedException();
         }
 
-        public User Get(int id)
+        public async Task<User> Get(string username)
         {
-            throw new NotImplementedException();
+            return await _context.Users.FirstOrDefaultAsync( x => x.Username == username);
         }
         public async Task<User> GetByLogin(string email, byte[] password)
         {

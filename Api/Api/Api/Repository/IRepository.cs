@@ -13,7 +13,7 @@ namespace Api.Repository
         void AddRange(IEnumerable<TEntity> entities);
         void Remove(TEntity entity);
         void RemoveRange(IEnumerable<TEntity> entities);
-        TEntity Get(int id);
+        Task<TEntity> Get(string username);
         public Task<User> GetByLogin(string email, byte[] password);
         IEnumerable<TEntity> GetAll();
         IEnumerable<TEntity> Find(Expression<Func<TEntity, bool>> predicate);

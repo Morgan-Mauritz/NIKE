@@ -67,9 +67,13 @@ namespace Api
 
                 entity.Property(e => e.Id).HasColumnName("ID");
 
-                entity.Property(e => e.LocationId).HasColumnName("LocationID");
+                entity.Property(e => e.POIID).HasColumnName("POIID");
 
                 entity.Property(e => e.UserId).HasColumnName("UserID");
+
+                entity.HasOne(x => x.User).WithMany(e => e.Entries).HasForeignKey(o => o.UserId).HasConstraintName("UserID");
+                entity.HasOne(x => x.POI).WithMany(e => e.Entries).HasForeignKey(o => o.POIID).HasConstraintName("POIID");
+
             });
 
             modelBuilder.Entity<POI>(entity =>

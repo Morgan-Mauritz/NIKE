@@ -8,7 +8,7 @@ namespace Api.Repository
 {
     public interface IPOIRepository
     {
-        Task<POI> Get(double Longitude, double Latitude);
+        Task<POI> Get(double Longitude, double Latitude, string name);
         Task<List<POI>> GetFiltered(FilterPOI filterPOI); 
         Task<POI> Set(POIDto pOIDto);
     }
