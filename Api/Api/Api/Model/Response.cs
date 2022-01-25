@@ -8,7 +8,7 @@ using System.ComponentModel.DataAnnotations;
 
 namespace Api.Model
 {   
-    public class Response<T> where T : new()
+    public class Response<T>     
     {
         public Status Status { get; set; }
         public int? StatusCode  { get; set; }

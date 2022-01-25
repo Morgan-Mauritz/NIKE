@@ -22,6 +22,7 @@ namespace Api.Model
         public byte[] Password { get; set; }
         [Required]
         public string Username { get; set; }
+        public string ApiKey { get; set; }
 
         public virtual ICollection<Entry> Entries { get; set; }
        
@@ -29,6 +30,11 @@ namespace Api.Model
         {
             Entries = new HashSet<Entry>();
         }
+    }
+
+    public class UserApiDto
+    {
+        public string ApiKey { get; set; }
     }
 
     public class UserDto
@@ -47,6 +53,8 @@ namespace Api.Model
         public string Password { get; set; }
         [Required]
         public string Username { get; set; }
+        [Required]
+        public string ApiKey { get; set; }
 
     }
 

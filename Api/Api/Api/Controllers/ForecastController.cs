@@ -19,33 +19,11 @@ namespace Api.Controllers
             _service = service;
         }
 
-        //private static readonly string[] Summaries = new[]
-        //{
-        //    "Freezing", "Bracing", "Chilly", "Cool", "Mild", "Warm", "Balmy", "Hot", "Sweltering", "Scorching"
-        //};
-
-        //private readonly ILogger<ForecastController> _logger;
-
-        //public ForecastController(ILogger<ForecastController> logger)
-        //{
-        //    _logger = logger;
-        //}
-
         [HttpGet]
         public async Task<IActionResult> GetForecast([FromQuery] double longitude, [FromQuery] double latitude)
         {
             return Ok(await _service.GetForecast(longitude, latitude));
         }
-        //public IEnumerable<WeatherForecast> Get()
-        //{
-        //    var rng = new Random();
-        //    return Enumerable.Range(1, 5).Select(index => new WeatherForecast
-        //    {
-        //        Date = DateTime.Now.AddDays(index),
-        //        TemperatureC = rng.Next(-20, 55),
-        //        Summary = Summaries[rng.Next(Summaries.Length)]
-        //    })
-        //    .ToArray();
-        //}
+        
     }
 }

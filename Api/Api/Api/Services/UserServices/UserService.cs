@@ -2,9 +2,6 @@
 using Api.Repository;
 using AutoMapper;
 using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
 using System.Threading.Tasks;
 
 namespace Api.Services.UserServices
@@ -21,7 +18,8 @@ namespace Api.Services.UserServices
         public async Task<UserDto> AddUser(UserDto userDto)
         {
             var user = _mapper.Map<User>(userDto);
-           
+            
+            user.ApiKey = Guid.NewGuid().ToString();
             await _repository.Add(user);
 
             return userDto;

@@ -3,8 +3,6 @@ using Api.Model;
 using Api.Repository;
 using AutoMapper;
 using System;
-using System.Collections.Generic;
-using System.Linq;
 using System.Threading.Tasks;
 
 namespace Api.Services.AuthorizationServices
@@ -18,7 +16,7 @@ namespace Api.Services.AuthorizationServices
             _repository = repository;
             _mapper = mapper; 
         }
-        public async Task<UserDto> SignIn(LogInModel loginModel)
+        public async Task<UserApiDto> SignIn(LogInModel loginModel)
         {
             var passwordHash = loginModel.Password.GenerateEncryption();
             var user = await _repository.GetByLogin(loginModel.Email, passwordHash); 
@@ -28,8 +26,7 @@ namespace Api.Services.AuthorizationServices
                 throw new UnauthorizedAccessException("There is no user for this login!"); 
             }
 
-            return _mapper.Map<UserDto>(user);   
-
+            return _mapper.Map<UserApiDto>(user); 
         }
     }
 }

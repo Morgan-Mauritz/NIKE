@@ -1,4 +1,5 @@
 ﻿using Api.Model;
+using Api.Exceptions;
 using Api.Repository;
 using AutoMapper;
 using System.Threading.Tasks;
@@ -20,9 +21,6 @@ namespace Api.Services.EntryServices
             _userRepository = userRepository;
             _mapper = mapper;
         }
-
-     
-
         public async Task<EntryDto> SetEntry(AddEntry entryDto)
         {
             var user = await _userRepository.Get(entryDto.UserName);
@@ -57,19 +55,24 @@ namespace Api.Services.EntryServices
         }
 
 
-        public async Task<EntryDto> UpdateEntry(UpdateEntry updateEntry, long id)
+        public async Task<EntryDto> UpdateEntry(UpdateEntry updateEntry, string apiKey, long id)
         {
 
             var entry = await _entryRepository.GetWithTracking(id);
             if (entry == null)
             {
-                throw new Exception("Kunde inte hitta inlägget");
+                throw new NotFoundException("Kunde inte hitta inlägget");
             }
-            //TODO: API nyckel fix!!
-            //if(entry.UserId != 1)
-            //{
-            //    throw new UnauthorizedAccessException();
-            //}
+
+            var userToCheck = await _userRepository.GetByApiKey(apiKey); 
+            if(userToCheck == null)
+            {
+                throw new UnauthorizedAccessException("Du måste vara inloggad för att göra detta"); 
+            }
+            if(entry.UserId != userToCheck.Id)
+            {
+                throw new UnauthorizedAccessException("Du får inte redigera det här inlägget");
+            }
 
             var updatedEntry = _mapper.Map(updateEntry, entry);
 
@@ -85,7 +88,7 @@ namespace Api.Services.EntryServices
 
             if (entryDelete == null)
             {
-                throw new Exception("Kunde inte hitta inlägget");
+                throw new NotFoundException("Kunde inte hitta inlägget");
             }
 
 

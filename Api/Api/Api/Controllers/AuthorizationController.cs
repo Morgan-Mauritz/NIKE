@@ -23,7 +23,7 @@ namespace Api.Controllers
         {
             try
             {
-                return Ok(new Response<UserDto>(await _authorizationservice.SignIn(loginModel)));
+                return Ok(new Response<UserApiDto>(await _authorizationservice.SignIn(loginModel)));
             }
             catch (UnauthorizedAccessException ex)
             {
