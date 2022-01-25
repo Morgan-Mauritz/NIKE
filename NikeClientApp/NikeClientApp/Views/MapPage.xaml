@@ -19,6 +19,7 @@
                     </maps:Pin>
                     </DataTemplate>
                 </maps:Map.ItemTemplate>
+            
             </maps:Map>
 
             <Frame Margin="530,0,0,0" HorizontalOptions="End">
@@ -31,12 +32,12 @@
                             
                         
                         </Frame>
-                        <ImageButton Source="Assets/gg.png" HeightRequest="40" VerticalOptions="EndAndExpand" Clicked="ImageButton_Clicked" />
+                        <ImageButton Source="Assets/gg.png" HeightRequest="40" VerticalOptions="EndAndExpand" Clicked="SearchButt_Clicked" />
 
 
                     </StackLayout>
                     <StackLayout>
-                    <ImageButton Source="Assets/knapp.png" Clicked="ImageButton_Clicked_1" HeightRequest="50" HorizontalOptions="End" Margin="0,0,0,0" />
+                    <ImageButton Source="Assets/knapp.png" Clicked="PinButt_Clicked" HeightRequest="50" HorizontalOptions="End" Margin="0,0,0,0" />
                         
                     </StackLayout>
                     

@@ -16,12 +16,24 @@ namespace NikeClientApp.Views
         public MapPage()
         {
             InitializeComponent();
+
             
+            //var map = new Map(MapSpan.FromCenterAndRadius(new Position(37, -122), Distance.FromMiles(10)));
+            //Pin pinner = new Pin()
+            //{
+            //    Position = new Position(37, -122),
+            //    Label = "Boardwalk",
+            //    Address = "Santa Cruz",
+            //    //Type = PinType.Place
+            //};
+            ////Location.Add(pinner);
+            //map.Pins.Add(pinner);
+
         }
        
        
 
-        private async void ImageButton_Clicked(object sender, EventArgs e)
+        private async void SearchButt_Clicked(object sender, EventArgs e)
         {
             Geocoder geoCoder = new Geocoder();
 
@@ -36,10 +48,14 @@ namespace NikeClientApp.Views
 
         }
 
-        private void ImageButton_Clicked_1(object sender, EventArgs e)
+        private void PinButt_Clicked(object sender, EventArgs e)
         {
-
+            Position pos = new Position();
+            MapClickedEventArgs clicli = new MapClickedEventArgs(pos);
+            Mapsample_MapClicked(sender, clicli);
         }
+
+        
 
         private void Mapsample_MapClicked(object sender, MapClickedEventArgs e)
         {
@@ -50,7 +66,10 @@ namespace NikeClientApp.Views
                 Address = "Santa Cruz",
                 Type = PinType.Place
             };
-            Location.Add(pinner);
+           
+            Mapsample.Pins.Add(pinner);
+            
+
         }
     }
 }
