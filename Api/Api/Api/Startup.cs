@@ -46,6 +46,8 @@ namespace Api
             var mapperConfig = new MapperConfiguration(mc => { 
                 mc.AddProfile(new UserMapping());
                 mc.AddProfile(new POIMapping());
+                mc.AddProfile(new ForecastMapping());
+                mc.AddProfile(new WeatherResultMapping());
             });
 
             IMapper _mapper = mapperConfig.CreateMapper();

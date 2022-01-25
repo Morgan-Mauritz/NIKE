@@ -24,7 +24,6 @@ namespace Api.Model
         public class TemperatureModel
         {
             public float Temp { get; set; }
-            public int Humidity { get; set; }
         }
         public class WindModel
         {
@@ -40,7 +39,16 @@ namespace Api.Model
         {
             public string City { get; set; }
             public string Country { get; set; }
-            public List<WeatherResult> WeatherList { get; set; }
+            public List<WeatherResultDto> WeatherList { get; set; }
+        }
+
+        public class WeatherResultDto
+        {
+            public float Temperature { get; set; }
+            public float WindSpeed { get; set; }
+            public string Description { get; set; }
+            public string Icon { get; set; }
+            public DateTime DateTime { get; set; }
         }
     }
 }
