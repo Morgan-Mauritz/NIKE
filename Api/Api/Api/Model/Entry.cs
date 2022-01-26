@@ -19,19 +19,19 @@ namespace Api.Model
         [Required]
         public string Description { get; set; }
         [Required]
-        public long Likes { get; set; } 
+        public long Likes { get; set; }
 
         public virtual User User { get; set; }
 
-        public virtual POI POI { get; set; }    
-       
+        public virtual POI POI { get; set; }
+
     }
 
     public class AddEntry
     {
-        public string Description { get; set; } 
+        public string Description { get; set; }
 
-        public string UserName { get; set; }     
+        public string Username { get; set; }
 
         public long? Rating { get; set; }
 
