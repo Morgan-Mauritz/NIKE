@@ -78,9 +78,57 @@
                 </StackLayout>
                 
             </Frame>
-           
+
+
+
+            <Frame x:Name="Julia" Margin="800,400,0,50" BackgroundColor="Pink" Opacity="0.7" HorizontalOptions="Center" WidthRequest="350" IsVisible="false"  >
+                <StackLayout x:Name="Jonsson">
+                    <Label x:Name="LabelLoc"  Text="Lägg till sevärdhet" HorizontalOptions="Center" FontSize="20" TextColor="Black" IsVisible="false"></Label>
+                    <Entry x:Name="EntryLoc" Placeholder="Namn på sevärdheten" IsVisible="false"></Entry>
+                    <Entry x:Name="EntryComment" Placeholder="Kommententar" HeightRequest="70" IsVisible="false"></Entry>
+                    <StackLayout Orientation="Horizontal" x:Name="rattingBar" HorizontalOptions="Center">
+                        <Label Text="★" FontSize="Large" x:Name="star1" StyleId="star1">
+                            <Label.GestureRecognizers>
+                                <TapGestureRecognizer
+                 Tapped="TapGestureRecognizer_Tapped"/>
+                            </Label.GestureRecognizers>
+                        </Label>
+                        <Label Text="★" FontSize="Large" x:Name="star2" StyleId="star2">
+                            <Label.GestureRecognizers>
+                                <TapGestureRecognizer
+                 Tapped="TapGestureRecognizer_Tapped"/>
+                            </Label.GestureRecognizers>
+                        </Label>
+                        <Label Text="★" FontSize="Large" x:Name="star3" StyleId="star3">
+                            <Label.GestureRecognizers>
+                                <TapGestureRecognizer
+                 Tapped="TapGestureRecognizer_Tapped"/>
+                            </Label.GestureRecognizers>
+                        </Label>
+                        <Label Text="★" FontSize="Large" x:Name="star4" StyleId="star4">
+                            <Label.GestureRecognizers>
+                                <TapGestureRecognizer
+                 Tapped="TapGestureRecognizer_Tapped"/>
+                            </Label.GestureRecognizers>
+                        </Label>
+                        <Label Text="★" FontSize="Large" x:Name="star5" StyleId="star5">
+                            <Label.GestureRecognizers>
+                                <TapGestureRecognizer
+                 Tapped="TapGestureRecognizer_Tapped"/>
+                            </Label.GestureRecognizers>
+                        </Label>
+                    </StackLayout>
+
+                    <Button x:Name="AddLoc"  Text="Lägg till" BackgroundColor="Gray" Clicked="AddLoc_Clicked"> </Button>
+                </StackLayout>
                 
-           
+                
+            </Frame>
+
+
+
+
+
         </Grid>
                 
         

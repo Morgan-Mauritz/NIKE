@@ -16,11 +16,33 @@ namespace NikeClientApp.Views
         public MapPage()
         {
             InitializeComponent();
+            BackgroundColor = Color.Black;
 
-            
+            Reset();
+
         }
-       
-       
+        void Reset()
+        {
+            ChangeTextColor(5, Color.Gray);
+        }
+
+        void ChangeTextColor(int starcount, Color color)
+        {
+            for (int i = 1; i <= starcount; i++)
+            {
+                (FindByName($"star{i}") as Label).TextColor = color;
+            }
+        }
+
+        private void TapGestureRecognizer_Tapped(object sender, EventArgs e)
+        {
+            Reset();
+            Label clicked = sender as Label;
+            ChangeTextColor(Convert.ToInt32(clicked.StyleId.Substring(4, 1)), Color.Yellow);
+        }
+
+
+
 
         private async void SearchButt_Clicked(object sender, EventArgs e)
         {
@@ -72,8 +94,17 @@ namespace NikeClientApp.Views
                 }
                 else
                 {
+                    Julia.IsVisible = true;
+                    Jonsson.IsVisible = true;
+                    LabelLoc.IsVisible = true;
+                    EntryLoc.IsVisible = true;
+                    EntryComment.IsVisible = true;
+                    //AddLoc.IsVisible = true;
+                  
+
                     Mapsample.Pins.Add(pinner);
                     pinner = null;
+
                 }
 
             }
@@ -91,6 +122,10 @@ namespace NikeClientApp.Views
 
             //DisplayAlert("heeeloo", "j", "h");
         }
-        
+
+        private void AddLoc_Clicked(object sender, EventArgs e)
+        {
+
+        }
     }
 }
