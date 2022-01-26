@@ -8,7 +8,7 @@ namespace Api.Services.EntryServices
 
         Task<EntryDto> SetEntry(AddEntry entryDto);
         Task<EntryDto> UpdateEntry(UpdateEntry updateEntry, string apiKey, long id);
-        Task<EntryDto> DeleteEntry(long id);
+        Task<EntryDto> DeleteEntry(long id, string apiKey);
 
 
 

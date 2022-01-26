@@ -4,6 +4,7 @@ using Api.Repository;
 using AutoMapper;
 using System.Threading.Tasks;
 using System;
+using Api.Helpers;
 
 
 namespace Api.Services.EntryServices
@@ -64,11 +65,7 @@ namespace Api.Services.EntryServices
                 throw new NotFoundException("Kunde inte hitta inlägget");
             }
 
-            var userToCheck = await _userRepository.GetByApiKey(apiKey); 
-            if(userToCheck == null)
-            {
-                throw new UnauthorizedAccessException("Du måste vara inloggad för att göra detta"); 
-            }
+            var userToCheck = await ApiCheck.ApiKeyCheck(apiKey); 
             if(entry.UserId != userToCheck.Id)
             {
                 throw new UnauthorizedAccessException("Du får inte redigera det här inlägget");

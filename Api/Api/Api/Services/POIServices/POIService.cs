@@ -12,10 +12,12 @@ namespace Api.Services.POIServices
     {
         private readonly IMapper _mapper;
         private readonly IPOIRepository _POIRepository;
-        public POIService(IPOIRepository POIRepository, IMapper mapper)
+        private readonly IRepository<User> _userRepository; 
+        public POIService(IPOIRepository POIRepository, IMapper mapper, IRepository<User> userRepository)
         {
             _POIRepository = POIRepository;
             _mapper = mapper;
+            _userRepository = userRepository;   
         }
         public async Task<POIDto> GetPOI(double Longitude, double Latitude, string name)
         {
@@ -26,8 +28,15 @@ namespace Api.Services.POIServices
             return _mapper.Map<List<POIDto>>(await _POIRepository.GetFiltered(filterPOI)); 
         }
 
-        public async Task<POIDto> SetPOI(POIDto pOIDto)
+        public async Task<POIDto> SetPOI(POIDto pOIDto, string apiKey)
         {
+
+            var userToCheck = await _userRepository.GetByApiKey(apiKey);
+            if (userToCheck == null)
+            {
+                throw new UnauthorizedAccessException("Du behöver logga in för att lägga till en sevärdhet");
+            }
+
             return _mapper.Map<POIDto>(await _POIRepository.Set(pOIDto));  
         }
     }

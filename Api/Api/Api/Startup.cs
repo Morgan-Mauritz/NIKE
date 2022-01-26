@@ -52,9 +52,7 @@ namespace Api
             var mapperConfig = new MapperConfiguration(mc => { 
                 mc.AddProfile(new UserMapping());
                 mc.AddProfile(new POIMapping());
- 
                 mc.AddProfile(new EntryMapping());
-
                 mc.AddProfile(new ForecastMapping());
                 mc.AddProfile(new WeatherResultMapping());
 

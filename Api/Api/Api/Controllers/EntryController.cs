@@ -24,7 +24,7 @@ namespace Api.Controllers
             try
             {
 
-                return Ok(await _service.SetEntry(entryDto));
+                return Ok(await _service.SetEntry(entryDto, apiKey));
             }
             catch (Exception)
             {
@@ -56,7 +56,7 @@ namespace Api.Controllers
         }
 
         [HttpDelete(":id")]
-        public async Task<IActionResult> RemoveEntry(long id)
+        public async Task<IActionResult> RemoveEntry(long id, [FromHeader] string apiKey)
         {
             try
             {
