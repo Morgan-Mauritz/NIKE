@@ -22,10 +22,9 @@ namespace Api.Services.EntryServices
             _userRepository = userRepository;
             _mapper = mapper;
         }
+
         public async Task<EntryDto> SetEntry(AddEntry entryDto, string apiKey)
         {
-            
-
             var userToCheck = await _userRepository.GetByApiKey(apiKey);
             if (userToCheck == null)
             {
@@ -55,7 +54,6 @@ namespace Api.Services.EntryServices
 
            return new EntryDto() { POI = POI.Name, UserName = userToCheck.Username, Description = entryDto.Description, Rating = entryDto.Rating };
         }
-
 
         public async Task<EntryDto> UpdateEntry(UpdateEntry updateEntry, string apiKey, long id)
         {

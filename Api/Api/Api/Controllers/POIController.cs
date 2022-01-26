@@ -1,9 +1,7 @@
 ﻿using Api.Model;
 using Api.Services.POIServices;
 using Microsoft.AspNetCore.Mvc;
-using System;
 using System.Collections.Generic;
-using System.Linq;
 using System.Threading.Tasks;
 
 namespace Api.Controllers
@@ -21,9 +19,7 @@ namespace Api.Controllers
         [HttpGet]
         public async Task<IActionResult> GetPOI([FromQuery] double longitude, [FromQuery] double latitude, [FromQuery] string name)
         {
-
             return Ok(new Response<POIDto>(await _service.GetPOI(longitude, latitude, name)));
-
         }
 
         [HttpGet("list")]
@@ -37,14 +33,5 @@ namespace Api.Controllers
         {
             return Ok(new Response<POIDto>(await _service.SetPOI(poiDto)));
         }
-
-
-
-
-
     }
-
-
-
-
 }

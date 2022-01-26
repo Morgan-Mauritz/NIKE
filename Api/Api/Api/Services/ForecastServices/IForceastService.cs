@@ -1,8 +1,4 @@
-﻿using Api.Model;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
+﻿using System.Threading.Tasks;
 using static Api.Model.Forecast;
 
 namespace Api.Services.ForecastServices

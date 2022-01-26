@@ -10,7 +10,6 @@ namespace Api.Repository
 {
     public class UserRepository : IRepository<User>
     {
-
         private readonly NIKEContext _context;
         public UserRepository(NIKEContext context)
         {

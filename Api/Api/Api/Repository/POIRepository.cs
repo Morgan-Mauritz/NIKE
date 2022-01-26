@@ -15,7 +15,6 @@ namespace Api.Repository
         {
             _context = context;
         }
-
         public async Task<POI> Get(double longitude, double latitude, string name)
         {
             var thingToLookat = await _context.POI

@@ -25,7 +25,6 @@ namespace Api.Services.AuthorizationServices
             {
                 throw new UnauthorizedAccessException("There is no user for this login!"); 
             }
-
             return _mapper.Map<UserApiDto>(user); 
         }
     }

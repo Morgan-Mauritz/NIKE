@@ -1,11 +1,6 @@
 ﻿using Api.Services.ForecastServices;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.Extensions.Logging;
-using System;
-using System.Collections.Generic;
-using System.Linq;
 using System.Threading.Tasks;
-using static Api.Model.Forecast;
 
 namespace Api.Controllers
 {
@@ -24,6 +19,6 @@ namespace Api.Controllers
         {
             return Ok(await _service.GetForecast(longitude, latitude));
         }
-        
+
     }
 }
