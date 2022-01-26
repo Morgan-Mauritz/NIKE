@@ -59,5 +59,16 @@ namespace Api.Repository
         {
             throw new NotImplementedException();
         }
+
+        public async Task UpdateUser()
+        {
+            await _context.SaveChangesAsync();
+        }
+
+        public async Task DeleteUser(User user)
+        {
+            _context.Remove(user);
+            await _context.SaveChangesAsync();
+        }
     }
 }

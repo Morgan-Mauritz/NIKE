@@ -15,14 +15,46 @@ namespace Api.Services.UserServices
             _repository = repository;
             _mapper = mapper;
         }
-        public async Task<UserDto> AddUser(UserDto userDto)
+        public async Task<UserDto> AddUser(AddUserDto addUserDto)
         {
-            var user = _mapper.Map<User>(userDto);
+            var user = _mapper.Map<User>(addUserDto);
             
             user.ApiKey = Guid.NewGuid().ToString();
+
             await _repository.Add(user);
 
+            var userDto = _mapper.Map<UserDto>(user);
+
             return userDto;
+        }
+        public async Task<UserDto> UpdateUser(UpdateUserDto updateUserDto, string apiKey)
+        {
+            var user = await _repository.GetByApiKey(apiKey);
+
+            if(user == null)
+            {
+                throw new UnauthorizedAccessException("Finns ingen användare");
+            }
+            
+            var updatedUser = _mapper.Map(updateUserDto, user);
+
+            await _repository.UpdateUser();
+
+            return _mapper.Map<UserDto>(updatedUser);
+        }
+
+        public async Task<UserDto> RemoveUser(string apiKey)
+        {
+            var user = await _repository.GetByApiKey(apiKey);
+
+            if(user == null)
+            {
+                throw new UnauthorizedAccessException("Du kan inte ta bort ditt konto");
+            }
+
+            await _repository.DeleteUser(user);
+
+            return _mapper.Map<UserDto>(user);
         }
     }
 }

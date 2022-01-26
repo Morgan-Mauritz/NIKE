@@ -26,9 +26,6 @@ namespace Api.Controllers
         public async Task<IActionResult> GetPOIList([FromQuery] FilterPOI filterPOI)
         {
 
-            //offset = 5 , amount = 10 => prevoffset = 5  
-
-
             var nextOffset = filterPOI.Offset + filterPOI.Amount;
             var prevOffset = filterPOI.Offset - filterPOI.Amount;
             var httpString = HttpContext.Request.Scheme + "://" + HttpContext.Request.Host;
