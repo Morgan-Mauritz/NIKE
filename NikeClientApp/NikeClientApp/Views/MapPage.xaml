@@ -7,14 +7,20 @@
 
 
         <Grid >
-            
-            <maps:Map  x:Name="Mapsample" Margin="0,0,0,0" MapClicked="Mapsample_MapClicked" ItemsSource="{Binding Locations}">
+
+            <maps:Map  x:Name="Mapsample" 
+                       Margin="0,0,0,0" 
+                       MapClicked="Mapsample_MapClicked" 
+                       ItemsSource="{Binding Locations}">
                 
                 <maps:Map.ItemTemplate>
                     
                     <DataTemplate>
                         
-                    <maps:Pin Position="{Binding Position}" Address="{Binding Address}" Label="{Binding Description}" MarkerClicked="Pin_MarkerClicked" >
+                    <maps:Pin Position="{Binding Position}" 
+                              Address="{Binding Address}" 
+                              Label="{Binding Description}" 
+                              MarkerClicked="Pin_MarkerClicked" >
                         
                     </maps:Pin>
                     </DataTemplate>
@@ -119,7 +125,7 @@
                         </Label>
                     </StackLayout>
 
-                    <Button x:Name="AddLoc"  Text="Lägg till" BackgroundColor="Gray" Clicked="AddLoc_Clicked"> </Button>
+                    <!--<Button x:Name="AddLoc"  Text="Lägg till" BackgroundColor="Gray" Clicked="AddLoc_Clicked"> </Button>-->
                 </StackLayout>
                 
                 
