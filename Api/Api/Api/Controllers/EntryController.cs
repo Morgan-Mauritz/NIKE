@@ -60,7 +60,7 @@ namespace Api.Controllers
         {
             try
             {
-                return Ok(new Response<EntryDto>(await _service.DeleteEntry(id)));
+                return Ok(new Response<EntryDto>(await _service.DeleteEntry(id, apiKey)));
             }
             catch (NotFoundException ex)
             {
