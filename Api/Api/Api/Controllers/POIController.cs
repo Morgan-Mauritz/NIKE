@@ -25,7 +25,18 @@ namespace Api.Controllers
         [HttpGet("list")]
         public async Task<IActionResult> GetPOIList([FromQuery] FilterPOI filterPOI)
         {
-            return Ok(new Response<List<POIDto>>(await _service.GetPOIList(filterPOI)));
+            var nextOffset = filterPOI.Offset + filterPOI.Amount;
+            var prevOffset = filterPOI.Offset - filterPOI.Amount;
+            var httpString = HttpContext.Request.Scheme + "://" + HttpContext.Request.Host ;
+            
+
+            var result = await _service.GetPOIList(filterPOI); 
+            var nextPage = httpString += $"POI/list?offset={nextOffset}&amount={filterPOI.Amount}&sort={filterPOI.Sort}";
+            if(nextOffset >= result.total)
+            {
+                nextPage = null; 
+            }
+            return Ok(new PaginationResponse<List<POIDto>>(result.poiList, filterPOI.Offset, filterPOI.Amount, nextPage, nextPage, result.total));
         }
 
         [HttpPost]

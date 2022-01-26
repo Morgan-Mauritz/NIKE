@@ -34,4 +34,27 @@ namespace Api.Model
         Error,
         Success
     }
+
+    public class PaginationResponse<T> : Response<T> where T : new()
+    {
+        public int Offset { get; set; }
+        public int Amount { get; set; }
+        public string NextPage { get; set; }
+        public string PrevPage { get; set; }
+        public int Total { get; set; }
+
+
+        public PaginationResponse(T? data, int offset, int amount, string nextPage, string prevPage, int total) : base(data)
+        {
+            Offset = offset;
+            Amount = amount;
+            NextPage = nextPage;
+            PrevPage = prevPage;
+            Total = total;
+        }
+
+
+    }
+
+
 }
