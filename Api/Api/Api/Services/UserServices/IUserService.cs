@@ -5,6 +5,9 @@ namespace Api.Services.UserServices
 {
     public interface IUserService
     {
-        Task<UserDto> AddUser(UserDto user);
+        Task<UserDto> AddUser(AddUserDto addUserDto);
+        Task<UserDto> UpdateUser(UpdateUserDto user, string apiKey);
+
+        Task<UserDto> RemoveUser(string apiKey);
     }
 }
