@@ -71,7 +71,7 @@ namespace NikeClientApp.Views
                 Type = PinType.Place
             };
             pinss.Add(pinner);
-            //pinner.MarkerClicked += changeee;
+            pinner.MarkerClicked += Pin_MarkerClicked;
             
         }
 
@@ -101,8 +101,6 @@ namespace NikeClientApp.Views
                     EntryComment.IsVisible = true;
                     //AddLoc.IsVisible = true;
                   
-
-                    Mapsample.Pins.Add(pinner);
                     pinner = null;
 
                 }
@@ -116,11 +114,16 @@ namespace NikeClientApp.Views
             Mapsample.Pins.Remove(pinn);
         }
 
-        private void Pin_MarkerClicked(object sender, PinClickedEventArgs e)
-        {
-           
+        
 
-            //DisplayAlert("heeeloo", "j", "h");
+        private async void Pin_MarkerClicked(object sender, PinClickedEventArgs e)
+        {
+            var ans = await DisplayAlert("Ta bort", "Här kan du radera pinnen", "Ta bort Pin", "Cancel"); //alternativ ta bort pin/ lägg till sevärdhet
+            if (ans == true)
+            {
+                Mapsample.Pins.Remove(pinner);
+                pinner = null;
+            }
         }
 
         private void AddLoc_Clicked(object sender, EventArgs e)
