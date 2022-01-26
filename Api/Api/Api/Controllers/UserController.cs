@@ -41,7 +41,7 @@ namespace Api.Controllers
         }
 
         [HttpDelete]
-        public async Task<IActionResult> DeleteUser([FromHeader] string apiKey)
+        public async Task<IActionResult> RemoveUser([FromHeader] string apiKey)
         {
             try
             {

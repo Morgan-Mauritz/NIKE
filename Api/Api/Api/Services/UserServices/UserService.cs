@@ -52,7 +52,7 @@ namespace Api.Services.UserServices
                 throw new UnauthorizedAccessException("Du kan inte ta bort ditt konto");
             }
 
-            await _repository.DeleteUser(user);
+            await _repository.RemoveUser(user);
 
             return _mapper.Map<UserDto>(user);
         }

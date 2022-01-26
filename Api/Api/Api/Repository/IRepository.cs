@@ -17,7 +17,7 @@ namespace Api.Repository
         Task<User> GetByApiKey(string apiKey);
         Task<User> GetByLogin(string email, byte[] password);
         Task UpdateUser();
-        Task DeleteUser(User user);
+        Task RemoveUser(User user);
         IEnumerable<TEntity> GetAll();
         IEnumerable<TEntity> Find(Expression<Func<TEntity, bool>> predicate);
     }

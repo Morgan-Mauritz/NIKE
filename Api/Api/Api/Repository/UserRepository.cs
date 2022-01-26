@@ -65,7 +65,7 @@ namespace Api.Repository
             await _context.SaveChangesAsync();
         }
 
-        public async Task DeleteUser(User user)
+        public async Task RemoveUser(User user)
         {
             _context.Remove(user);
             await _context.SaveChangesAsync();

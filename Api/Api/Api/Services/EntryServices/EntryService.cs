@@ -77,7 +77,7 @@ namespace Api.Services.EntryServices
             return _mapper.Map<EntryDto>(updatedEntry);
         }
 
-        public async Task<EntryDto> DeleteEntry(long id, string apiKey)
+        public async Task<EntryDto> RemoveEntry(long id, string apiKey)
         {
 
             var entryDelete = await _entryRepository.GetWithTracking(id);
@@ -92,7 +92,7 @@ namespace Api.Services.EntryServices
                 throw new UnauthorizedAccessException("Du får inte ta bort det här inlägget");
             }
 
-            await _entryRepository.DeleteEntry(entryDelete);
+            await _entryRepository.RemoveEntry(entryDelete);
 
             return _mapper.Map<EntryDto>(entryDelete);
         }
