@@ -31,7 +31,7 @@ namespace Api.Controllers
         [HttpPost]
         public async Task<IActionResult> SetPOI([FromBody] POIDto poiDto, [FromHeader] string apiKey)
         {
-            return Ok(new Response<POIDto>(await _service.SetPOI(poiDto)));
+            return Ok(new Response<POIDto>(await _service.SetPOI(poiDto, apiKey)));
         }
     }
 }

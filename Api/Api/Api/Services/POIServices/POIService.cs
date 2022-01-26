@@ -3,6 +3,7 @@ using Api.Repository;
 using AutoMapper;
 using System.Collections.Generic;
 using System.Threading.Tasks;
+using System;
 
 namespace Api.Services.POIServices
 {
