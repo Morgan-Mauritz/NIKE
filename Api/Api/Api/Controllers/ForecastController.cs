@@ -19,5 +19,6 @@ namespace Api.Controllers
         {
             return Ok(await _service.GetForecast(longitude, latitude));
         }
+
     }
 }

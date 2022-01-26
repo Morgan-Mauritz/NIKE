@@ -64,9 +64,7 @@ namespace Api
             {
                 mc.AddProfile(new UserMapping());
                 mc.AddProfile(new POIMapping());
-
                 mc.AddProfile(new EntryMapping());
-
                 mc.AddProfile(new ForecastMapping());
                 mc.AddProfile(new WeatherResultMapping());
 

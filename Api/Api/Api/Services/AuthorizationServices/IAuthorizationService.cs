@@ -5,6 +5,6 @@ namespace Api.Services.AuthorizationServices
 {
     public interface IAuthorizationService
     {
-        public Task<UserDto> SignIn(LogInModel loginModel); 
+        public Task<UserApiDto> SignIn(LogInModel loginModel); 
     }
 }
