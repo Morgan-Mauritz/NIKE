@@ -12,7 +12,6 @@ namespace NikeClientApp.Views
     [XamlCompilation(XamlCompilationOptions.Compile)]
     public partial class MapPage : ContentPage
     {
-        List<Pin> Location = new List<Pin>();
         public MapPage()
         {
             InitializeComponent();
@@ -21,6 +20,10 @@ namespace NikeClientApp.Views
             Reset();
 
         }
+
+        List<Pin> ListOfPins = new List<Pin>();
+        public Pin pinner { get; set; }
+
         void Reset()
         {
             ChangeTextColor(5, Color.Gray);
@@ -41,9 +44,6 @@ namespace NikeClientApp.Views
             ChangeTextColor(Convert.ToInt32(clicked.StyleId.Substring(4, 1)), Color.Yellow);
         }
 
-
-
-
         private async void SearchButt_Clicked(object sender, EventArgs e)
         {
             Geocoder geoCoder = new Geocoder();
@@ -58,9 +58,7 @@ namespace NikeClientApp.Views
 
 
         }
-        public List<Pin> pinss = new List<Pin>();
-        public Pin pinner { get; set; }
-        //public event EventHandler<PinClickedEventArgs> changeee;
+
         private void PinButt_Clicked(object sender, EventArgs e)
         {
 
@@ -70,7 +68,7 @@ namespace NikeClientApp.Views
                 Address = "BlaStreet",
                 Type = PinType.Place
             };
-            pinss.Add(pinner);
+
             pinner.MarkerClicked += Pin_MarkerClicked;
             
         }
@@ -82,11 +80,11 @@ namespace NikeClientApp.Views
         {
             if (pinner != null)
             {
-            pinner.Position = e.Position;
-            Mapsample.Pins.Add(pinner);
+                pinner.Position = e.Position;
+                Mapsample.Pins.Add(pinner);
 
-                var ans = await DisplayAlert("Hej", "Hopp", "Ta bort Pin", "Lägg till"); //alternativ ta bort pin/ lägg till sevärdhet
-                if (ans == true)
+                var ans = await DisplayAlert("Hej", "Vill du lägga till en pin?", "Ja", "Nej"); //alternativ ta bort pin/ lägg till sevärdhet
+                if (ans != true)
                 {
 
                     Mapsample.Pins.Remove(pinner);
@@ -100,14 +98,11 @@ namespace NikeClientApp.Views
                     EntryLoc.IsVisible = true;
                     EntryComment.IsVisible = true;
                     //AddLoc.IsVisible = true;
-                  
+
+                    ListOfPins.Add(pinner);
                     pinner = null;
-
                 }
-
             }
-
-
         }
         private void Remove_Click(Pin pinn)
         {
@@ -118,11 +113,13 @@ namespace NikeClientApp.Views
 
         private async void Pin_MarkerClicked(object sender, PinClickedEventArgs e)
         {
-            var ans = await DisplayAlert("Ta bort", "Här kan du radera pinnen", "Ta bort Pin", "Cancel"); //alternativ ta bort pin/ lägg till sevärdhet
+            var ans = await DisplayAlert("Ta bort pin", "Vill du ta bort den valda pin?", "Ja", "Nej"); //alternativ ta bort pin/ lägg till sevärdhet
             if (ans == true)
             {
-                Mapsample.Pins.Remove(pinner);
-                pinner = null;
+                var pin = sender as Pin;
+                Mapsample.Pins.Remove(ListOfPins.Where(x => x.Position == pin.Position).FirstOrDefault());
+                ListOfPins.Remove(pin);
+
             }
         }
 
