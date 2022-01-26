@@ -30,6 +30,7 @@ namespace Api.Model
         }
     }
 
+
     public class POIDto
     {
         [Required]
@@ -41,7 +42,6 @@ namespace Api.Model
         public long? AvgRating { get; set; }
         public string City { get; set; }
         public string Country { get; set; }
-
         public List<EntryDto> Entries { get; set; }
     }
 

@@ -1,9 +1,9 @@
-﻿using Api.Model;
+﻿using System;
+using System.Net;
+using System.Threading.Tasks;
+using Api.Model;
 using Api.Services.AuthorizationServices;
 using Microsoft.AspNetCore.Mvc;
-using System;
-using System.Threading.Tasks;
-using System.Net;
 
 namespace Api.Controllers
 {
@@ -15,10 +15,26 @@ namespace Api.Controllers
 
         public AuthorizationController(IAuthorizationService authorizationservice)
         {
-            _authorizationservice = authorizationservice; 
+            _authorizationservice = authorizationservice;
         }
 
+        /// <summary>
+        /// Log in to application using username and password
+        /// </summary>
+        /// <param name="loginModel"></param>
+        /// <returns></returns>
+        /// <remarks>
+        /// Sample request:
+        ///
+        ///     POST /login
+        ///     {
+        ///        "email": "admin@nike.com",
+        ///        "password": "admin123",
+        ///     }
+        ///
+        /// </remarks>
         [HttpPost("login")]
+        [ProducesResponseType(typeof(Response<UserApiDto>), 200)]
         public async Task<IActionResult> Login([FromBody] LogInModel loginModel)
         {
             try
@@ -27,7 +43,7 @@ namespace Api.Controllers
             }
             catch (UnauthorizedAccessException ex)
             {
-                return StatusCode((int)HttpStatusCode.Unauthorized, new Response<UnauthorizedAccessException>(Status.Fail, (int)HttpStatusCode.Unauthorized, ex.Message));
+                return StatusCode((int)HttpStatusCode.Unauthorized, new Response<UnauthorizedAccessException>(Status.Fail, ex.Message));
             }
         }
     }

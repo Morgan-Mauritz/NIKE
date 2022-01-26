@@ -25,6 +25,7 @@ namespace Api.Controllers
         /// <param name="name" example="jannes+massage"> Enter space as "+"</param>
         /// <returns></returns>
         [HttpGet]
+        [ProducesResponseType(typeof(Response<POIDto>), 200)]
         public async Task<IActionResult> GetPOI([FromQuery] double longitude, [FromQuery] double latitude, [FromQuery] string name)
         {
             name = name.Replace("+", " ");
@@ -37,6 +38,7 @@ namespace Api.Controllers
         /// <param name="filterPOI"></param>
         /// <returns></returns>
         [HttpGet("list")]
+        [ProducesResponseType(typeof(PaginationResponse<List<POIDto>>), 200)]
         public async Task<IActionResult> GetPOIList([FromQuery] FilterPOI filterPOI)
         {
 
@@ -75,6 +77,7 @@ namespace Api.Controllers
         /// <param name="apiKey"></param>
         /// <returns></returns>
         [HttpPost]
+        [ProducesResponseType(typeof(Response<POIDto>), 200)]
         public async Task<IActionResult> SetPOI([FromBody] POIDto poiDto, [FromHeader] string apiKey)
         {
             return Ok(new Response<POIDto>(await _service.SetPOI(poiDto, apiKey)));
