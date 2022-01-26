@@ -25,18 +25,36 @@ namespace Api.Controllers
         [HttpGet("list")]
         public async Task<IActionResult> GetPOIList([FromQuery] FilterPOI filterPOI)
         {
+
+            //offset = 5 , amount = 10 => prevoffset = 5  
+
+
             var nextOffset = filterPOI.Offset + filterPOI.Amount;
             var prevOffset = filterPOI.Offset - filterPOI.Amount;
             var httpString = HttpContext.Request.Scheme + "://" + HttpContext.Request.Host ;
-            
+
+            if (prevOffset < 0)
+            {
+                prevOffset = 0;
+            }
 
             var result = await _service.GetPOIList(filterPOI); 
-            var nextPage = httpString += $"POI/list?offset={nextOffset}&amount={filterPOI.Amount}&sort={filterPOI.Sort}";
-            if(nextOffset >= result.total)
+            var nextPage = httpString + $"poi/list?offset={nextOffset}&amount={filterPOI.Amount}&sort={filterPOI.Sort}&city={filterPOI.City}&country={filterPOI.Country}&name={filterPOI.Name}";
+            var prevPage = httpString + $"poi/list?offset={prevOffset}&amount={filterPOI.Amount}&sort={filterPOI.Sort}&city={filterPOI.City}&country={filterPOI.Country}&name={filterPOI.Name}";
+            
+           
+
+            if (filterPOI.Offset == 0)
+            {
+                
+                prevPage = null;
+            }
+
+            if (nextOffset >= result.total)
             {
                 nextPage = null; 
             }
-            return Ok(new PaginationResponse<List<POIDto>>(result.poiList, filterPOI.Offset, filterPOI.Amount, nextPage, nextPage, result.total));
+            return Ok(new PaginationResponse<List<POIDto>>(result.poiList, filterPOI.Offset, filterPOI.Amount, nextPage, prevPage, result.total));
         }
 
         [HttpPost]
