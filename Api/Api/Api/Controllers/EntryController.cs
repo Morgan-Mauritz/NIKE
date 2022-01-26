@@ -117,7 +117,7 @@ namespace Api.Controllers
         {
             try
             {
-                return Ok(new Response<EntryDto>(await _service.DeleteEntry(id, apiKey)));
+                return Ok(new Response<EntryDto>(await _service.RemoveEntry(id, apiKey)));
             }
             catch (NotFoundException ex)
             {
