@@ -18,17 +18,6 @@ namespace NikeClientApp.Views
             InitializeComponent();
 
             
-            //var map = new Map(MapSpan.FromCenterAndRadius(new Position(37, -122), Distance.FromMiles(10)));
-            //Pin pinner = new Pin()
-            //{
-            //    Position = new Position(37, -122),
-            //    Label = "Boardwalk",
-            //    Address = "Santa Cruz",
-            //    //Type = PinType.Place
-            //};
-            ////Location.Add(pinner);
-            //map.Pins.Add(pinner);
-
         }
        
        
@@ -47,29 +36,65 @@ namespace NikeClientApp.Views
 
 
         }
-
+        public Pin pinner { get; set; }
+        public event EventHandler<PinClickedEventArgs> changeee;
         private void PinButt_Clicked(object sender, EventArgs e)
         {
-            Position pos = new Position();
-            MapClickedEventArgs clicli = new MapClickedEventArgs(pos);
-            Mapsample_MapClicked(sender, clicli);
-        }
 
-        
-
-        private void Mapsample_MapClicked(object sender, MapClickedEventArgs e)
-        {
-            Pin pinner = new Pin()
+            pinner = new Pin()
             {
-                Position = e.Position,
-                Label = "Boardwalk",
-                Address = "Santa Cruz",
+                Label = "BlaBla",
+                Address = "BlaStreet",
                 Type = PinType.Place
             };
            
-            Mapsample.Pins.Add(pinner);
-            
-
+            pinner.MarkerClicked += changeee;
         }
+
+        protected virtual void onp()
+        {
+            
+            DisplayAlert("heeeloo", "j", "h");
+        }
+             
+        
+        private void Mapsample_MapClicked(object sender, MapClickedEventArgs e)
+        {
+            if (pinner != null)
+            {
+            pinner.Position = e.Position;
+            Mapsample.Pins.Add(pinner);
+
+            
+            }
+            
+        }
+        private void Remove_Click(Pin pinn)
+        {
+            Mapsample.Pins.Remove(pinn);
+        }
+
+        private void Pin_MarkerClicked(object sender, PinClickedEventArgs e)
+        {
+            DisplayAlert("heeeloo", "j", "h");
+        }
+        //private async void ClickedPin()
+        //{
+        //    //if (pinner.MarkerClicked += )
+        //    //{
+
+        //    //}
+        //    var ans = await DisplayAlert("Varning", "För att kunna lägga till sevärdheter, kommentera och betygsätta, \nmåste du först registrera dig.", "OK", "Avbryt");
+        //    if (ans == true)
+        //    {
+        //            Remove_Click(pinner);
+        //    }
+        //    else
+        //    {
+
+        //    }
+
+
+        //}
     }
 }

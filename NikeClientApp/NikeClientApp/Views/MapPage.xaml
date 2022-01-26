@@ -14,7 +14,7 @@
                     
                     <DataTemplate>
                         
-                    <maps:Pin Position="{Binding Position}" Address="{Binding Address}" Label="{Binding Description}">
+                    <maps:Pin Position="{Binding Position}" Address="{Binding Address}" Label="{Binding Description}" MarkerClicked="Pin_MarkerClicked" >
                         
                     </maps:Pin>
                     </DataTemplate>
