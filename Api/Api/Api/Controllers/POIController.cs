@@ -16,18 +16,29 @@ namespace Api.Controllers
             _service = service;
         }
 
+        /// <summary>
+        /// Gets a poi based of the longitude and latitude
+        /// 
+        /// </summary>
+        /// <param name="longitude" example="66.78988">Longitude of the POI</param>
+        /// <param name="latitude" example="10.55774">Latitude of the POI</param>
+        /// <param name="name" example="jannes+massage"> Enter space as "+"</param>
+        /// <returns></returns>
         [HttpGet]
         public async Task<IActionResult> GetPOI([FromQuery] double longitude, [FromQuery] double latitude, [FromQuery] string name)
         {
+            name = name.Replace("+", " ");
             return Ok(new Response<POIDto>(await _service.GetPOI(longitude, latitude, name)));
         }
 
+        /// <summary>
+        /// Gets a list of POI based on filter params
+        /// </summary>
+        /// <param name="filterPOI"></param>
+        /// <returns></returns>
         [HttpGet("list")]
         public async Task<IActionResult> GetPOIList([FromQuery] FilterPOI filterPOI)
         {
-
-            //offset = 5 , amount = 10 => prevoffset = 5  
-
 
             var nextOffset = filterPOI.Offset + filterPOI.Amount;
             var prevOffset = filterPOI.Offset - filterPOI.Amount;
@@ -57,6 +68,12 @@ namespace Api.Controllers
             return Ok(new PaginationResponse<List<POIDto>>(result.poiList, filterPOI.Offset, filterPOI.Amount, nextPage, prevPage, result.total));
         }
 
+        /// <summary>
+        /// Posts a new POI based on POI properties
+        /// </summary>
+        /// <param name="poiDto"></param>
+        /// <param name="apiKey"></param>
+        /// <returns></returns>
         [HttpPost]
         public async Task<IActionResult> SetPOI([FromBody] POIDto poiDto, [FromHeader] string apiKey)
         {
