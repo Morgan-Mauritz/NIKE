@@ -16,8 +16,7 @@ namespace Api.Repository
             _context = context;
         }
         public async Task Add(User entity)
-        {
-
+        { 
            await _context.AddAsync(entity);
 
            await _context.SaveChangesAsync();
@@ -42,7 +41,10 @@ namespace Api.Repository
         {
             return await _context.Users.AsNoTracking().Where(user => user.Email == email && user.Password == password).FirstOrDefaultAsync();
         }
-
+        public async Task<User> GetByApiKey(string apiKey)
+        {
+            return await _context.Users.FirstOrDefaultAsync(x => x.ApiKey == apiKey);
+        }
         public IEnumerable<User> GetAll()
         {
             throw new NotImplementedException();

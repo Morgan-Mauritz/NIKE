@@ -1,8 +1,10 @@
 ﻿using Api.Model;
+using Api.Exceptions;
 using Api.Repository;
 using AutoMapper;
 using System.Threading.Tasks;
 using System;
+using Api.Helpers;
 
 
 namespace Api.Services.EntryServices
@@ -21,13 +23,12 @@ namespace Api.Services.EntryServices
             _mapper = mapper;
         }
 
-        public async Task<EntryDto> SetEntry(AddEntry entryDto)
+        public async Task<EntryDto> SetEntry(AddEntry entryDto, string apiKey)
         {
-            var user = await _userRepository.Get(entryDto.UserName);
-
-            if (user == null)
+            var userToCheck = await _userRepository.GetByApiKey(apiKey);
+            if (userToCheck == null)
             {
-                throw new UnauthorizedAccessException();    
+                throw new UnauthorizedAccessException("Du får inte redigera det här inlägget");
             }
 
             var POI = await _poiRepository.Get(entryDto.POI.Longitude, entryDto.POI.Latitude, entryDto.POI.Name);
@@ -37,7 +38,7 @@ namespace Api.Services.EntryServices
                 POI = await _poiRepository.Set(entryDto.POI);
             }
 
-            var userEntryCheck = await _entryRepository.Get(POI.Id, user.Id);
+            var userEntryCheck = await _entryRepository.Get(POI.Id, userToCheck.Id);
             if (userEntryCheck != null)
             {
                 throw new Exception("Du har redan gjort ett inlägg för den här platsen");
@@ -47,26 +48,27 @@ namespace Api.Services.EntryServices
 
             entry.POIID = POI.Id;
 
-            entry.UserId = user.Id;
+            entry.UserId = userToCheck.Id;
 
            await _entryRepository.Set(entry);
 
-           return new EntryDto() { POI = POI.Name, UserName = user.Username, Description = entryDto.Description, Rating = entryDto.Rating };
+           return new EntryDto() { POI = POI.Name, UserName = userToCheck.Username, Description = entryDto.Description, Rating = entryDto.Rating };
         }
 
-        public async Task<EntryDto> UpdateEntry(UpdateEntry updateEntry, long id)
+        public async Task<EntryDto> UpdateEntry(UpdateEntry updateEntry, string apiKey, long id)
         {
 
             var entry = await _entryRepository.GetWithTracking(id);
             if (entry == null)
             {
-                throw new Exception("Kunde inte hitta inlägget");
+                throw new NotFoundException("Kunde inte hitta inlägget");
             }
-            //TODO: API nyckel fix!!
-            //if(entry.UserId != 1)
-            //{
-            //    throw new UnauthorizedAccessException();
-            //}
+
+            var userToCheck = await _userRepository.GetByApiKey(apiKey); 
+            if(entry.UserId != userToCheck.Id)
+            {
+                throw new UnauthorizedAccessException("Du får inte redigera det här inlägget");
+            }
 
             var updatedEntry = _mapper.Map(updateEntry, entry);
 
@@ -75,22 +77,20 @@ namespace Api.Services.EntryServices
             return _mapper.Map<EntryDto>(updatedEntry);
         }
 
-        public async Task<EntryDto> DeleteEntry(long id)
+        public async Task<EntryDto> DeleteEntry(long id, string apiKey)
         {
 
             var entryDelete = await _entryRepository.GetWithTracking(id);
 
             if (entryDelete == null)
             {
-                throw new Exception("Kunde inte hitta inlägget");
+                throw new NotFoundException("Kunde inte hitta inlägget");
             }
-
-
-            //TODO: API nyckel fix!!
-            //if(entry.UserId != 1)
-            //{
-            //    throw new UnauthorizedAccessException();
-            //}
+            var userToCheck = await _userRepository.GetByApiKey(apiKey);
+            if (entryDelete.UserId != userToCheck.Id)
+            {
+                throw new UnauthorizedAccessException("Du får inte ta bort det här inlägget");
+            }
 
             await _entryRepository.DeleteEntry(entryDelete);
 

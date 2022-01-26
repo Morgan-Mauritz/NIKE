@@ -1,4 +1,5 @@
-﻿using Api.Model;
+﻿using Api.Exceptions;
+using Api.Model;
 using Api.Services.EntryServices;
 using Microsoft.AspNetCore.Mvc;
 using System;
@@ -18,41 +19,56 @@ namespace Api.Controllers
         }
 
         [HttpPost]
-        public async Task<IActionResult> SetEntry([FromBody] AddEntry entryDto)
+        public async Task<IActionResult> SetEntry([FromBody] AddEntry entryDto, [FromHeader] string apiKey)
         {
             try
             {
-                return Ok(await _service.SetEntry(entryDto));
+
+                return Ok(await _service.SetEntry(entryDto, apiKey));
             }
             catch (Exception)
             {
                 return StatusCode((int)HttpStatusCode.BadRequest);
-            }       
+            }
+
         }
 
         [HttpPut(":id")]
-        public async Task<IActionResult> UpdateEntry([FromBody] UpdateEntry updateDto, long id)
+        public async Task<IActionResult> UpdateEntry([FromBody] UpdateEntry updateDto, [FromHeader] string apiKey, long id)
         {
             try
             {
-                return Ok(await _service.UpdateEntry(updateDto, id));
+                return Ok(new Response<EntryDto>(await _service.UpdateEntry(updateDto, apiKey, id)));
             }
-            catch (Exception)
+            catch (UnauthorizedAccessException ex)
             {
-                return StatusCode((int)HttpStatusCode.BadRequest);
+                #if RELEASE
+                return StatusCode((int)HttpStatusCode.Unauthorized,new Response<UnauthorizedAccessException>(Status.Fail, (int)HttpStatusCode.Unauthorized, ex.Message));
+                #endif
+                return StatusCode((int)HttpStatusCode.Unauthorized, new Response<UnauthorizedAccessException>(Status.Fail, (int)HttpStatusCode.Unauthorized, ex.Message, ex));
+            }
+            catch (NotFoundException ex)
+            {
+#if RELEASE
+                return StatusCode((int)HttpStatusCode.NotFound,new Response<NotFoundException>(Status.Fail, (int)HttpStatusCode.NotFound, ex.Message));
+#endif
+                return StatusCode((int)HttpStatusCode.NotFound, new Response<NotFoundException>(Status.Fail, (int)HttpStatusCode.NotFound, ex.Message, ex));
             }
         }
 
         [HttpDelete(":id")]
-        public async Task<IActionResult> RemoveEntry(long id)
+        public async Task<IActionResult> RemoveEntry(long id, [FromHeader] string apiKey)
         {
             try
             {
-                return Ok(await _service.DeleteEntry(id));
+                return Ok(new Response<EntryDto>(await _service.DeleteEntry(id, apiKey)));
             }
-            catch (Exception)
+            catch (NotFoundException ex)
             {
-                return StatusCode((int)HttpStatusCode.BadRequest);
+#if RELEASE
+                return StatusCode((int)HttpStatusCode.NotFound,new Response<NotFoundException>(Status.Fail, (int)HttpStatusCode.NotFound, ex.Message));
+#endif
+                return StatusCode((int)HttpStatusCode.NotFound, new Response<NotFoundException>(Status.Fail, (int)HttpStatusCode.NotFound, ex.Message, ex));
             }
         }
     }

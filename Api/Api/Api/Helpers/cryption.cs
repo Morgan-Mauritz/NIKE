@@ -6,7 +6,7 @@ using System.Security.Cryptography;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace WPFBriljantSQLdb_.NET_5
+namespace Api.Helpers
 {
     public class cryption
     {
