@@ -20,7 +20,7 @@ using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
 using Microsoft.OpenApi.Models;
-using Newtonsoft.Json; 
+using Newtonsoft.Json;
 
 namespace Api
 {
@@ -36,12 +36,23 @@ namespace Api
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
+            services.AddCors(options =>
+             {
+                 options.AddPolicy("AllowAllHeaders",
+                builder =>
+                {
+                    builder.AllowAnyOrigin()
+                    .AllowAnyHeader()
+                    .AllowAnyMethod()
+                    .WithHeaders("Authorization", "Accept", "Content-Type", "Origin");
+                });
+             });
             services.AddDbContext<NIKEContext>(options => options.UseSqlite(Configuration.GetConnectionString("DefaultConnection")));
             services.AddControllers()
                 .AddNewtonsoftJson(x =>
                 {
                     x.SerializerSettings.ReferenceLoopHandling = ReferenceLoopHandling.Ignore;
-                    x.SerializerSettings.NullValueHandling = NullValueHandling.Ignore; 
+                    x.SerializerSettings.NullValueHandling = NullValueHandling.Ignore;
                 });
             services.AddSwaggerGen(c =>
             {
@@ -49,7 +60,8 @@ namespace Api
             });
             services.AddSwaggerGenNewtonsoftSupport();
 
-            var mapperConfig = new MapperConfiguration(mc => { 
+            var mapperConfig = new MapperConfiguration(mc =>
+            {
                 mc.AddProfile(new UserMapping());
                 mc.AddProfile(new POIMapping());
                 mc.AddProfile(new EntryMapping());
@@ -67,7 +79,7 @@ namespace Api
         public void RegisterServices(IServiceCollection services)
         {
             services.AddScoped<IUserService, UserService>();
-            services.AddScoped<IAuthorizationService, AuthorizationService>(); 
+            services.AddScoped<IAuthorizationService, AuthorizationService>();
             services.AddScoped<IPOIService, POIService>();
 
             services.AddScoped<IEntryService, EntryService>();
@@ -86,6 +98,7 @@ namespace Api
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
         public void Configure(IApplicationBuilder app, IWebHostEnvironment env)
         {
+            app.UseCors("AllowAllHeaders");
             if (env.IsDevelopment())
             {
                 app.UseDeveloperExceptionPage();
