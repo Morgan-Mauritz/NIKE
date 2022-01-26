@@ -7,7 +7,7 @@ namespace Api.Exceptions
     {
         public NotFoundException()
         {
-            
+
 
         }
 

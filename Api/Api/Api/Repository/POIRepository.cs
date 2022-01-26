@@ -1,10 +1,10 @@
-﻿using Api.Model;
-using Microsoft.EntityFrameworkCore;
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Linq.Expressions;
 using System.Threading.Tasks;
+using Api.Model;
+using Microsoft.EntityFrameworkCore;
 
 namespace Api.Repository
 {
@@ -18,30 +18,30 @@ namespace Api.Repository
         public async Task<POI> Get(double longitude, double latitude, string name)
         {
             var thingToLookat = await _context.POI
-                .AsNoTracking().Include(x => x.City).ThenInclude(c => c.Country)
-                .FirstOrDefaultAsync(POI => (POI.Longitude >= longitude - 0.03 && POI.Longitude <= longitude + 0.03) 
-                && (POI.Latitude >= latitude - 0.03 && POI.Latitude <= latitude + 0.03) && POI.Name == name);
-            return thingToLookat; 
+                .AsNoTracking().Include(x => x.Entries).Include(x => x.City).ThenInclude(c => c.Country)
+                .FirstOrDefaultAsync(POI => (POI.Longitude >= longitude - 0.03 && POI.Longitude <= longitude + 0.03)
+                && (POI.Latitude >= latitude - 0.03 && POI.Latitude <= latitude + 0.03) && POI.Name.ToLower() == name.ToLower());
+            return thingToLookat;
         }
 
         public async Task<(List<POI> poiList, int total)> GetFiltered(FilterPOI filterPOI)
         {
             var query = _context.POI.AsNoTracking().Include(c => c.City).ThenInclude(c => c.Country)
                 .Where(x => (string.IsNullOrEmpty(filterPOI.Country) || x.City.Country.Name.ToLower().Contains(filterPOI.Country.ToLower()))
-                && (string.IsNullOrEmpty(filterPOI.City) || x.City.Name.ToLower().Contains(filterPOI.City.ToLower())) 
+                && (string.IsNullOrEmpty(filterPOI.City) || x.City.Name.ToLower().Contains(filterPOI.City.ToLower()))
                 && (string.IsNullOrEmpty(filterPOI.Name) || x.Name.ToLower().Contains(filterPOI.Name.ToLower())));
 
-            var total = query.Count(); 
+            var total = query.Count();
 
             query = filterPOI.Sort switch
             {
                 Sort.Name => query.OrderBy(x => x.Name),
                 Sort.City => query.OrderBy(x => x.City.Name),
                 Sort.Country => query.OrderBy(x => x.City),
-                _ => query.OrderBy(x => x.Id) 
+                _ => query.OrderBy(x => x.Id)
             };
 
-            return (await query.Skip(filterPOI.Offset).Take(filterPOI.Amount).ToListAsync(), total); 
+            return (await query.Skip(filterPOI.Offset).Take(filterPOI.Amount).ToListAsync(), total);
         }
 
         public async Task<POI> Set(POIDto pOIDto)
@@ -67,7 +67,7 @@ namespace Api.Repository
 
             await _context.SaveChangesAsync();
 
-            return poi; 
+            return poi;
         }
     }
 }
