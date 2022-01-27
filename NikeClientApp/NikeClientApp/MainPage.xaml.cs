@@ -1,4 +1,6 @@
-﻿using NikeClientApp.Views;
+﻿using NikeClientApp.Models;
+using NikeClientApp.Services;
+using NikeClientApp.Views;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
@@ -8,18 +10,19 @@ using System.Text.RegularExpressions;
 using System.Threading.Tasks;
 using Xamarin.Forms;
 using Xamarin.Forms.Maps;
+using RestSharp; 
 
 namespace NikeClientApp
 {
     public partial class MainPage : ContentPage
     {
+        HttpService<User, Response<User>> httpClient = new HttpService<User, Response<User>>();
+
         public MainPage()
         {
             InitializeComponent();
             
         }
-      
-
         private async void BtnLogIn_Clicked(object sender, EventArgs e)
         {
             //Vertification that the user exist, if true than send to next page, if no write error message.
@@ -35,6 +38,10 @@ namespace NikeClientApp
                 return;
 
             }
+
+            var responseData = await httpClient.Post( new User { Email = entryEmail.Text, Password = entryPassword.Text }, "Authorization/login" );
+
+            UserApi.ApiKey = responseData.Data.ApiKey;
 
             await Navigation.PushAsync(new MapPage());
         }
