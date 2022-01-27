@@ -3,14 +3,16 @@ using System;
 using Api;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 namespace Api.Migrations
 {
     [DbContext(typeof(NIKEContext))]
-    partial class NIKEContextModelSnapshot : ModelSnapshot
+    [Migration("20220126133157_20220126_LikeDislikeEntries4")]
+    partial class _20220126_LikeDislikeEntries4
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -308,14 +310,14 @@ namespace Api.Migrations
                     b.HasOne("Api.Model.Entry", "Entry")
                         .WithMany("LikeDislikeEntries")
                         .HasForeignKey("EntryId")
-                        .HasConstraintName("EID")
+                        .HasConstraintName("EntryId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
                     b.HasOne("Api.Model.User", "User")
                         .WithMany("LikeDislikeEntries")
                         .HasForeignKey("UserId")
-                        .HasConstraintName("UID")
+                        .HasConstraintName("UserId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 

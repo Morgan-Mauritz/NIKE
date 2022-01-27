@@ -23,10 +23,12 @@ namespace Api.Model
         public string ApiKey { get; set; }
 
         public virtual ICollection<Entry> Entries { get; set; }
+        public virtual ICollection<LikeDislikeEntry> LikeDislikeEntries { get; set; }
        
         public User()
         {
             Entries = new HashSet<Entry>();
+            LikeDislikeEntries = new HashSet<LikeDislikeEntry>();
         }
     }
 

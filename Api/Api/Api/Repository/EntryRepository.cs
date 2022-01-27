@@ -44,5 +44,22 @@ namespace Api.Repository
             _context.Remove(entryRemove);
             await _context.SaveChangesAsync();
         }
+
+        public async Task AddLike(LikeDislikeEntry entryLike)
+        {
+            _context.LikeDislikeEntry.Add(entryLike);
+            await _context.SaveChangesAsync();
+        }
+
+        public async Task RemoveLike(LikeDislikeEntry entryLike)
+        {
+            _context.LikeDislikeEntry.Remove(entryLike);
+            await _context.SaveChangesAsync();
+        }
+
+        public async Task<LikeDislikeEntry> GetLike(long userId, long entryId)
+        {
+            return await _context.LikeDislikeEntry.FirstOrDefaultAsync(x => x.EntryId == entryId && x.UserId == userId);
+        }
     }
 }
