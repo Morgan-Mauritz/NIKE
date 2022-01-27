@@ -39,7 +39,7 @@ namespace Api.Repository
             await _context.SaveChangesAsync();
         }
 
-        public async Task DeleteEntry(Entry entryRemove)
+        public async Task RemoveEntry(Entry entryRemove)
         {
             _context.Remove(entryRemove);
             await _context.SaveChangesAsync();

@@ -1,7 +1,7 @@
-﻿using Newtonsoft.Json.Converters;
+﻿using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using Newtonsoft.Json;
-using System.Collections.Generic;
+using Newtonsoft.Json.Converters;
 
 #nullable disable
 
@@ -20,15 +20,16 @@ namespace Api.Model
         [Required]
         public long CityID { get; set; }
 
-        public virtual City City {  get; set; }
+        public virtual City City { get; set; }
 
         public virtual ICollection<Entry> Entries { get; set; }
-       
+
         public POI()
         {
             Entries = new HashSet<Entry>();
         }
     }
+
 
     public class POIDto
     {
@@ -38,15 +39,17 @@ namespace Api.Model
         public double Longitude { get; set; }
         [Required]
         public double Latitude { get; set; }
+        public long? AvgRating { get; set; }
         public string City { get; set; }
         public string Country { get; set; }
+        public List<EntryDto> Entries { get; set; }
     }
 
     public class FilterPOI
     {
         public string Name { get; set; }
         public int Offset { get; set; }
-        public int Amount { get; set; } = 10; 
+        public int Amount { get; set; } = 10;
         public string Country { get; set; }
         public string City { get; set; }
         [EnumDataType(typeof(Sort))]
@@ -56,8 +59,8 @@ namespace Api.Model
     [JsonConverter(typeof(StringEnumConverter))]
     public enum Sort
     {
-        Name, 
-        City, 
-        Country, 
+        Name,
+        City,
+        Country,
     }
 }

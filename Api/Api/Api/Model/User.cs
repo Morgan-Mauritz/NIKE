@@ -57,6 +57,23 @@ namespace Api.Model
         public string ApiKey { get; set; }
 
     }
+
+   public class AddUserDto
+    {
+        public string Firstname { get; set; }
+        [Required]
+        [StringValidator(InvalidCharacters = " ~!@#$%^&*()[]{}/;'\"|\\", MinLength = 2, MaxLength = 255)]
+        public string Lastname { get; set; }
+        [Required]
+        [RegularExpression(@"^[\w-.]+@([\w-]+.)+[\w-]{2,4}$")]
+        public string Email { get; set; }
+        [Required]
+        //[RegularExpression(@"^(?=.[a-z])(?=.[A-Z])(?=.\d)[A-Za-z\d@$!%#?&]{8,255}$")]
+        public string Password { get; set; }
+        [Required]
+        public string Username { get; set; }
+    }
+
     public class LogInModel
     {
         [Required]
@@ -66,4 +83,23 @@ namespace Api.Model
         //[RegularExpression(@"^(?=.[a-z])(?=.[A-Z])(?=.\d)[A-Za-z\d@$!%#?&]{8,255}$")]
         public string Password { get; set; }
     }
+
+    public class UpdateUserDto
+    {
+
+        public string Firstname { get; set; }
+       
+        public string Lastname { get; set; }
+     
+        public string Email { get; set; }
+      
+        public string Password { get; set; }
+        
+        public string Username { get; set; }
+
+
+
+    }
+
+
 }

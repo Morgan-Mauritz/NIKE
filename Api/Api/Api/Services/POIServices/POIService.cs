@@ -1,9 +1,9 @@
-﻿using Api.Model;
-using Api.Repository;
-using AutoMapper;
+﻿using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
-using System;
+using Api.Model;
+using Api.Repository;
+using AutoMapper;
 
 namespace Api.Services.POIServices
 {
@@ -11,12 +11,12 @@ namespace Api.Services.POIServices
     {
         private readonly IMapper _mapper;
         private readonly IPOIRepository _POIRepository;
-        private readonly IRepository<User> _userRepository; 
+        private readonly IRepository<User> _userRepository;
         public POIService(IPOIRepository POIRepository, IMapper mapper, IRepository<User> userRepository)
         {
             _POIRepository = POIRepository;
             _mapper = mapper;
-            _userRepository = userRepository;   
+            _userRepository = userRepository;
         }
         public async Task<POIDto> GetPOI(double Longitude, double Latitude, string name)
         {
@@ -24,8 +24,8 @@ namespace Api.Services.POIServices
         }
         public async Task<(List<POIDto> poiList, int total)> GetPOIList(FilterPOI filterPOI)
         {
-            var (poiList, total) = await _POIRepository.GetFiltered(filterPOI); 
-            return (_mapper.Map<List<POIDto>>(poiList), total); 
+            var (poiList, total) = await _POIRepository.GetFiltered(filterPOI);
+            return (_mapper.Map<List<POIDto>>(poiList), total);
         }
 
         public async Task<POIDto> SetPOI(POIDto pOIDto, string apiKey)
@@ -37,7 +37,7 @@ namespace Api.Services.POIServices
                 throw new UnauthorizedAccessException("Du behöver logga in för att lägga till en sevärdhet");
             }
 
-            return _mapper.Map<POIDto>(await _POIRepository.Set(pOIDto));  
+            return _mapper.Map<POIDto>(await _POIRepository.Set(pOIDto));
         }
     }
 }
