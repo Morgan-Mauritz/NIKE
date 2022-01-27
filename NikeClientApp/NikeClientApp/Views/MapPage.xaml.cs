@@ -24,7 +24,7 @@ namespace NikeClientApp.Views
         List<Pin> ListOfPins = new List<Pin>();
         public Pin pinner { get; set; }
 
-        void Reset()
+        void Reset() // reset rating
         {
             ChangeTextColor(5, Color.Gray);
         }
@@ -37,14 +37,14 @@ namespace NikeClientApp.Views
             }
         }
 
-        private void TapGestureRecognizer_Tapped(object sender, EventArgs e)
+        private void TapGestureRecognizer_Tapped(object sender, EventArgs e) //rating
         {
             Reset();
             Label clicked = sender as Label;
             ChangeTextColor(Convert.ToInt32(clicked.StyleId.Substring(4, 1)), Color.Yellow);
         }
 
-        private async void SearchButt_Clicked(object sender, EventArgs e)
+        private async void SearchButt_Clicked(object sender, EventArgs e) //sök på plats
         {
             Geocoder geoCoder = new Geocoder();
 
@@ -73,17 +73,14 @@ namespace NikeClientApp.Views
             
         }
 
-       
-             
-        
-        private async void Mapsample_MapClicked(object sender, MapClickedEventArgs e)
+        private async void Mapsample_MapClicked(object sender, MapClickedEventArgs e) //Lägga till pin samt ta bort
         {
             if (pinner != null)
             {
                 pinner.Position = e.Position;
                 Mapsample.Pins.Add(pinner);
 
-                var ans = await DisplayAlert("Hej", "Vill du lägga till en pin?", "Ja", "Nej"); //alternativ ta bort pin/ lägg till sevärdhet
+                var ans = await DisplayAlert("Hej", "Vill du lägga till en pin?", "Ja", "Nej"); 
                 if (ans != true)
                 {
 
@@ -106,9 +103,9 @@ namespace NikeClientApp.Views
 
         
 
-        private async void Pin_MarkerClicked(object sender, PinClickedEventArgs e)
+        private async void Pin_MarkerClicked(object sender, PinClickedEventArgs e) //när man klickar på pinnen
         {
-            var ans = await DisplayAlert("Ta bort pin", "Vill du ta bort den valda pin?", "Ja", "Nej"); //alternativ ta bort pin/ lägg till sevärdhet
+            var ans = await DisplayAlert("Ta bort pin", "Vill du ta bort den valda pin?", "Ja", "Nej"); 
             if (ans == true)
             {
                 var pin = sender as Pin;
@@ -118,14 +115,25 @@ namespace NikeClientApp.Views
             }
         }
 
-        private async void AddLoc_Clicked(object sender, EventArgs e)
+        private async void AddLoc_Clicked(object sender, EventArgs e) //lägg till sevärdhet
         {
-            if (EntryPoi.Text == null || EntryCommentPoi.Text == null)
+            if (EntryPoi.Text == null || EntryCommentPoi.Text == null || star1.TextColor == Color.Gray)
             {
-                await DisplayAlert("Fel", "Du måste fylla alla fält ", "OK");
+                await DisplayAlert("Fel", "Du måste fylla alla fält och betygsätta. ", "OK");
                 return;
             }
+
+
+            //if (star1.TextColor == Color.Gray)
+            //{
+            //    await DisplayAlert("Fel", "Du måste betygsätta.", "OK");
+            //    return;
+            //}
+
+            Reset();
+
             Jonsson.IsVisible = false;
+            await DisplayAlert("Grattis", "Du har nu lagt till en sevärdhet", "OK");
         }
     }
 }
