@@ -17,7 +17,6 @@ namespace Api.Model
 
         public virtual ICollection<POI> POI { get; set; }
         public virtual Country Country { get; set; }
-
         public City()
         {
             POI = new HashSet<POI>();

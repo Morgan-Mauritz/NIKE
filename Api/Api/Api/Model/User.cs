@@ -86,7 +86,6 @@ namespace Api.Model
 
     public class UpdateUserDto
     {
-
         public string Firstname { get; set; }
        
         public string Lastname { get; set; }
@@ -96,10 +95,5 @@ namespace Api.Model
         public string Password { get; set; }
         
         public string Username { get; set; }
-
-
-
     }
-
-
 }

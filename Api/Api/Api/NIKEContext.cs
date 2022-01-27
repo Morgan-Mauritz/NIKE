@@ -25,7 +25,6 @@ namespace Api
         public virtual DbSet<Entry> Entries { get; set; }
         public virtual DbSet<POI> POI { get; set; }
         public virtual DbSet<Reaction> Reactions { get; set; }
-        public virtual DbSet<RefreshToken> RefreshTokens { get; set; }
         public virtual DbSet<User> Users { get; set; }
         public virtual DbSet<LikeDislikeEntry> LikeDislikeEntry { get; set; }
 
@@ -103,17 +102,6 @@ namespace Api
                 entity.Property(e => e.UserId).HasColumnName("UserID");
             });
 
-            modelBuilder.Entity<RefreshToken>(entity =>
-            {
-                entity.ToTable("RefreshToken");
-
-                entity.Property(e => e.Id).HasColumnName("ID");
-
-                entity.Property(e => e.JwtId).HasColumnName("JwtID");
-
-                entity.Property(e => e.UserId).HasColumnName("UserID");
-            });
-
             modelBuilder.Entity<User>(entity =>
             {
                 entity.ToTable("User");
@@ -159,7 +147,6 @@ namespace Api
 
             OnModelCreatingPartial(modelBuilder);
         }
-
         partial void OnModelCreatingPartial(ModelBuilder modelBuilder);
     }
 }

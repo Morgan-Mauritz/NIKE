@@ -30,7 +30,6 @@ namespace Api.Model
         }
     }
 
-
     public class POIDto
     {
         [Required]

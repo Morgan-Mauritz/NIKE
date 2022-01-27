@@ -18,7 +18,6 @@ namespace NikeClientApp.Views
             BackgroundColor = Color.Black;
 
             Reset();
-
         }
 
         List<Pin> ListOfPins = new List<Pin>();
@@ -55,13 +54,10 @@ namespace NikeClientApp.Views
             
             MapSpan maps = new MapSpan(position, 1.10, 0.10);
             Mapsample.MoveToRegion(maps);
-
-
         }
 
         private void PinButt_Clicked(object sender, EventArgs e)
         {
-
             pinner = new Pin()
             {
                 Label = "BlaBla",
@@ -69,13 +65,9 @@ namespace NikeClientApp.Views
                 Type = PinType.Place
             };
 
-            pinner.MarkerClicked += Pin_MarkerClicked;
-            
+            pinner.MarkerClicked += Pin_MarkerClicked;      
         }
 
-       
-             
-        
         private async void Mapsample_MapClicked(object sender, MapClickedEventArgs e)
         {
             if (pinner != null)
@@ -86,14 +78,12 @@ namespace NikeClientApp.Views
                 var ans = await DisplayAlert("Hej", "Vill du lägga till en pin?", "Ja", "Nej"); //alternativ ta bort pin/ lägg till sevärdhet
                 if (ans != true)
                 {
-
                     Mapsample.Pins.Remove(pinner);
                     pinner = null;
                 }
                 else
                 {
                     Jonsson.IsVisible = true;
-
                     ListOfPins.Add(pinner);
                     pinner = null;
                 }
@@ -103,8 +93,6 @@ namespace NikeClientApp.Views
         {
             Mapsample.Pins.Remove(pinn);
         }
-
-        
 
         private async void Pin_MarkerClicked(object sender, PinClickedEventArgs e)
         {
