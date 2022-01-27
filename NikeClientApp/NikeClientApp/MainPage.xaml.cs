@@ -51,10 +51,7 @@ namespace NikeClientApp
             {
                 await Navigation.PushAsync(new MapPage());
             }
-            else
-            {
-                await Navigation.PushAsync(new MainPage());
-            }
+           
 
             
         }

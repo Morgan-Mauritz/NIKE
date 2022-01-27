@@ -118,9 +118,14 @@ namespace NikeClientApp.Views
             }
         }
 
-        private void AddLoc_Clicked(object sender, EventArgs e)
+        private async void AddLoc_Clicked(object sender, EventArgs e)
         {
-
+            if (EntryPoi.Text == null || EntryCommentPoi.Text == null)
+            {
+                await DisplayAlert("Fel", "Du måste fylla alla fält ", "OK");
+                return;
+            }
+            Jonsson.IsVisible = false;
         }
     }
 }

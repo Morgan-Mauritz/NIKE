@@ -88,9 +88,9 @@
 
 
             <StackLayout x:Name="Jonsson" Margin="800,400,0,50" BackgroundColor="Pink" Opacity="0.7" IsVisible="false">
-                <Label x:Name="LabelLoc"  Text="Lägg till sevärdhet" HorizontalOptions="Center" FontSize="20" TextColor="Black"></Label>
-                <Entry x:Name="EntryLoc" Placeholder="Namn på sevärdheten"></Entry>
-                <Entry x:Name="EntryComment" Placeholder="Kommententar" HeightRequest="70"></Entry>
+                <Label x:Name="LabelPoi"  Text="Lägg till sevärdhet" HorizontalOptions="Center" FontSize="20" TextColor="Black"></Label>
+                <Entry x:Name="EntryPoi" Placeholder="Namn på sevärdheten"></Entry>
+                <Entry x:Name="EntryCommentPoi" Placeholder="Kommententar" HeightRequest="70"></Entry>
                 <StackLayout Orientation="Horizontal" x:Name="rattingBar" HorizontalOptions="Center">
                     <Label Text="★" FontSize="Large" x:Name="star1" StyleId="star1">
                         <Label.GestureRecognizers>
