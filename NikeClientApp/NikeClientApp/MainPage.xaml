@@ -1,24 +1,60 @@
 ﻿<?xml version="1.0" encoding="utf-8" ?>
 <ContentPage xmlns="http://xamarin.com/schemas/2014/forms"
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
-             x:Class="NikeClientApp.MainPage">
+             x:Class="NikeClientApp.MainPage"
+             BackgroundImageSource="Assets/halvkarta.png">
 
-    <StackLayout>
-        <Frame BackgroundColor="#2196F3" Padding="24" CornerRadius="0">
-            <Label Text="Welcome to Xamarin.Forms!" HorizontalTextAlignment="Center" TextColor="White" FontSize="36"/>
+    <StackLayout VerticalOptions="Center" HorizontalOptions="Center">
+        
+        <Frame HeightRequest="650" WidthRequest="400" BackgroundColor="DarkSlateGray" CornerRadius="20" IsClippedToBounds="True">
+
+            <StackLayout HorizontalOptions="Center" 
+                         Padding="50" 
+                         Spacing="50">
+                <Label Text="NikeMap" HorizontalOptions="Center" Margin="35,-50,0,0" FontFamily="Elephant" FontSize="50" TextColor="#FFD9EC16" WidthRequest="917" HeightRequest="75" Grid.Row="1" />
+                <Entry Placeholder="Email" 
+                       x:Name="entryEmail"
+                       HeightRequest="50"
+                       HorizontalTextAlignment="Center"></Entry>
+
+                <Entry Placeholder="Lösenord" 
+                       x:Name="entryPassword"
+                       IsPassword="True"
+                       HeightRequest="50"
+                       HorizontalTextAlignment="Center"></Entry>
+
+
+                <StackLayout Orientation="Horizontal" 
+                             Spacing="200"
+                             Margin="10,100">
+
+                    <Button Text="Logga in"
+                           Margin="-10,0,0,0"
+                            WidthRequest="130"
+                            BackgroundColor="White"
+                            TextColor="Green"
+                            HeightRequest="50"
+                            CornerRadius="10"
+                            Clicked="BtnLogIn_Clicked"></Button>
+
+                    <Button Text="Registrera" 
+                            Margin="-160,0,0,0"
+                            WidthRequest="130"
+                            BackgroundColor="Green"
+                            TextColor="White"
+                            CornerRadius="10"
+                            Clicked="BtnRegister_Clicked"></Button>
+
+                   
+
+                </StackLayout>
+                <Button x:Name="ToMaps" Text="Till Kartan" WidthRequest="100" HeightRequest="30" BackgroundColor="#1A4541" TextColor="Black" CornerRadius="10" Opacity="20" Clicked="ToMaps_Clicked" ></Button>
+
+            </StackLayout>
+
         </Frame>
-        <Label Text="Start developing now" FontSize="Title" Padding="30,10,30,10"/>
-        <Label Text="Make changes to your XAML file and save to see your UI update in the running app with XAML Hot Reload. Give it a try!" FontSize="16" Padding="30,0,30,0"/>
-        <Label FontSize="16" Padding="30,24,30,0">
-            <Label.FormattedText>
-                <FormattedString>
-                    <FormattedString.Spans>
-                        <Span Text="Learn more at "/>
-                        <Span Text="https://aka.ms/xamarin-quickstart" FontAttributes="Bold"/>
-                    </FormattedString.Spans>
-                </FormattedString>
-            </Label.FormattedText>
-        </Label>
+      
     </StackLayout>
+
 
 </ContentPage>

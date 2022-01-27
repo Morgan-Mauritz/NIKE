@@ -1,0 +1,142 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://xamarin.com/schemas/2014/forms"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml" xmlns:maps="clr-namespace:Xamarin.Forms.Maps;assembly=Xamarin.Forms.Maps" 
+             xmlns:Map ="Windows.UI.Xaml.Controls.Maps; assembly=Windows.UI.Xaml.Controls.Maps"
+             x:Class="NikeClientApp.Views.MapPage">
+    <ContentPage.Content>
+
+
+        <Grid >
+
+            <maps:Map  x:Name="Mapsample" 
+                       Margin="0,0,0,0" 
+                       MapClicked="Mapsample_MapClicked" 
+                       ItemsSource="{Binding Locations}">
+                
+                <maps:Map.ItemTemplate>
+                    
+                    <DataTemplate>
+                        
+                    <maps:Pin Position="{Binding Position}" 
+                              Address="{Binding Address}" 
+                              Label="{Binding Description}" 
+                              MarkerClicked="Pin_MarkerClicked" >
+                        
+                    </maps:Pin>
+                    </DataTemplate>
+                </maps:Map.ItemTemplate>
+            
+            </maps:Map>
+
+            <Frame Margin="530,0,0,0" HorizontalOptions="End">
+
+
+                <StackLayout Spacing="50" Margin="0,0,0,0">
+                    <StackLayout Orientation="Horizontal">
+                        <Frame Padding="0.1" CornerRadius="15" BorderColor="Black"  IsClippedToBounds="True">
+                    <Editor x:Name="TBSearchbar"   BackgroundColor="White" Opacity="0.4"  Margin="0,0,0,0"  WidthRequest="160" />
+                            
+                        
+                        </Frame>
+                        <ImageButton Source="Assets/gg.png" HeightRequest="40" VerticalOptions="EndAndExpand" Clicked="SearchButt_Clicked" />
+
+
+                    </StackLayout>
+                    <StackLayout>
+                    <ImageButton Source="Assets/knapp.png" Clicked="PinButt_Clicked" HeightRequest="50" HorizontalOptions="End" Margin="0,0,0,0" />
+                        
+                    </StackLayout>
+                    
+
+
+                </StackLayout>
+
+
+            </Frame>
+            
+            <Frame Margin="0,0,600,0" BackgroundColor="White" Opacity="0.7" HorizontalOptions="Start" WidthRequest="270" >
+                
+                    
+                <StackLayout>
+                    <Frame BorderColor="Black" CornerRadius="15" HeightRequest="20">
+
+                        <Label x:Name="CityName" HorizontalOptions="CenterAndExpand" HeightRequest="30" BackgroundColor="Transparent" Text="Location" Margin="0,0,0,0">
+
+                        </Label>
+                        
+                    </Frame>
+                    <ListView x:Name="ListDrop">
+                        <ListView.ItemsSource>
+                            <x:Array Type="{x:Type x:String}">
+                                <x:String>mono</x:String>
+                                <x:String>monodroid</x:String>
+                                <x:String>monotouch</x:String>
+                                <x:String>monorail</x:String>
+                                <x:String>monodevelop</x:String>
+                                <x:String>monotone</x:String>
+                                <x:String>monopoly</x:String>
+                                <x:String>monomodal</x:String>
+                                <x:String>mononucleosis</x:String>
+                            </x:Array>
+                        </ListView.ItemsSource>
+                    </ListView>
+
+                </StackLayout>
+                
+            </Frame>
+
+
+
+            <Frame x:Name="Julia" Margin="800,400,0,50" BackgroundColor="Pink" Opacity="0.7" HorizontalOptions="Center" WidthRequest="350" IsVisible="false"  >
+                <StackLayout x:Name="Jonsson">
+                    <Label x:Name="LabelLoc"  Text="Lägg till sevärdhet" HorizontalOptions="Center" FontSize="20" TextColor="Black" IsVisible="false"></Label>
+                    <Entry x:Name="EntryLoc" Placeholder="Namn på sevärdheten" IsVisible="false"></Entry>
+                    <Entry x:Name="EntryComment" Placeholder="Kommententar" HeightRequest="70" IsVisible="false"></Entry>
+                    <StackLayout Orientation="Horizontal" x:Name="rattingBar" HorizontalOptions="Center">
+                        <Label Text="★" FontSize="Large" x:Name="star1" StyleId="star1">
+                            <Label.GestureRecognizers>
+                                <TapGestureRecognizer
+                 Tapped="TapGestureRecognizer_Tapped"/>
+                            </Label.GestureRecognizers>
+                        </Label>
+                        <Label Text="★" FontSize="Large" x:Name="star2" StyleId="star2">
+                            <Label.GestureRecognizers>
+                                <TapGestureRecognizer
+                 Tapped="TapGestureRecognizer_Tapped"/>
+                            </Label.GestureRecognizers>
+                        </Label>
+                        <Label Text="★" FontSize="Large" x:Name="star3" StyleId="star3">
+                            <Label.GestureRecognizers>
+                                <TapGestureRecognizer
+                 Tapped="TapGestureRecognizer_Tapped"/>
+                            </Label.GestureRecognizers>
+                        </Label>
+                        <Label Text="★" FontSize="Large" x:Name="star4" StyleId="star4">
+                            <Label.GestureRecognizers>
+                                <TapGestureRecognizer
+                 Tapped="TapGestureRecognizer_Tapped"/>
+                            </Label.GestureRecognizers>
+                        </Label>
+                        <Label Text="★" FontSize="Large" x:Name="star5" StyleId="star5">
+                            <Label.GestureRecognizers>
+                                <TapGestureRecognizer
+                 Tapped="TapGestureRecognizer_Tapped"/>
+                            </Label.GestureRecognizers>
+                        </Label>
+                    </StackLayout>
+
+                    <!--<Button x:Name="AddLoc"  Text="Lägg till" BackgroundColor="Gray" Clicked="AddLoc_Clicked"> </Button>-->
+                </StackLayout>
+                
+                
+            </Frame>
+
+
+
+
+
+        </Grid>
+                
+        
+    </ContentPage.Content>
+</ContentPage>

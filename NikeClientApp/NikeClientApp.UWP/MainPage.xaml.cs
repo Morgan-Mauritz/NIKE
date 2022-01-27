@@ -20,6 +20,7 @@ namespace NikeClientApp.UWP
         public MainPage()
         {
             this.InitializeComponent();
+            Xamarin.FormsMaps.Init("mp9cLB5Z0jbyVLeJBLeQ~SMN9mdi8V7uaRDipVAXKqQ~Arj7gT48yZRpTGyMrrW2ZmJpdBnc6BseHRr-Rwy-9aB4s9pnO0XeglEdNErPe4h5");
 
             LoadApplication(new NikeClientApp.App());
         }
