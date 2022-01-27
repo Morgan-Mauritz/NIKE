@@ -10,5 +10,8 @@ namespace Api.Repository
         Task<Entry> GetWithTracking(long entryID);
         Task UpdateEntry();
         Task DeleteEntry(Entry entry);
+        Task AddLike(LikeDislikeEntry entryLike);
+        Task RemoveLike(LikeDislikeEntry entryLike);
+        Task<LikeDislikeEntry> GetLike(long userId, long entryId);
     }
 }
