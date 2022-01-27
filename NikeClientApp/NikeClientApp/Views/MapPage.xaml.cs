@@ -92,12 +92,7 @@ namespace NikeClientApp.Views
                 }
                 else
                 {
-                    Julia.IsVisible = true;
                     Jonsson.IsVisible = true;
-                    LabelLoc.IsVisible = true;
-                    EntryLoc.IsVisible = true;
-                    EntryComment.IsVisible = true;
-                    //AddLoc.IsVisible = true;
 
                     ListOfPins.Add(pinner);
                     pinner = null;
@@ -119,7 +114,7 @@ namespace NikeClientApp.Views
                 var pin = sender as Pin;
                 Mapsample.Pins.Remove(ListOfPins.Where(x => x.Position == pin.Position).FirstOrDefault());
                 ListOfPins.Remove(pin);
-
+                Jonsson.IsVisible = false;
             }
         }
 
