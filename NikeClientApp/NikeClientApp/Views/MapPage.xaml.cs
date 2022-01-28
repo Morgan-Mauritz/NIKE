@@ -48,6 +48,7 @@ namespace NikeClientApp.Views
             Geocoder geoCoder = new Geocoder();
 
             IEnumerable<Position> approximateLocations = await geoCoder.GetPositionsForAddressAsync(TBSearchbar.Text);
+           
             Position position = approximateLocations.FirstOrDefault();
             string coordinates = $"{position.Latitude}, {position.Longitude}";
             CityName.Text = TBSearchbar.Text;
@@ -70,6 +71,8 @@ namespace NikeClientApp.Views
 
         private async void Mapsample_MapClicked(object sender, MapClickedEventArgs e)
         {
+            var geoCoder = new Geocoder(); 
+
             if (pinner != null)
             {
                 pinner.Position = e.Position;
@@ -84,6 +87,7 @@ namespace NikeClientApp.Views
                 else
                 {
                     Jonsson.IsVisible = true;
+                    //var Address = await geoCoder.GetAddressesForPositionAsync(e.Position); // TODO: Separate adress/City/Country in method, post to db
                     ListOfPins.Add(pinner);
                     pinner = null;
                 }
