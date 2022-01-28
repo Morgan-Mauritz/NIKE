@@ -73,7 +73,7 @@ namespace NikeClientApp.Views
 
         }
 
-        private async void Mapsample_MapClicked(object sender, MapClickedEventArgs e) //Lägga till pin samt ta bort
+       
 
 
 
