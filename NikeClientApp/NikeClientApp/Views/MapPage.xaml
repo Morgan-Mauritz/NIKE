@@ -45,27 +45,29 @@
                     <StackLayout>
                         <ImageButton Source="Assets/knapp.png" Clicked="PinButt_Clicked" HeightRequest="50" HorizontalOptions="End" Margin="0,0,0,0" />
 
-                        <Button
-            x:Name="btn1"
-            Grid.Row="1"
-            Command="{Binding StandartMapCommand}"
-            Text="Street" Clicked="btn1_Clicked" />
-                        <Button
-            x:Name="btn2"
-            Grid.Row="1"
-            Grid.Column="1"
-            Command="{Binding SatelliteMapCommand}"
-            Text="Satellite" Clicked="btn2_Clicked" />
-                        <Button
-            x:Name="btn3"
-            Grid.Row="1"
-            Grid.Column="2"
-            Command="{Binding HybridMapCommand}"
-            Text="Hybrid" Clicked="btn3_Clicked" />
 
                     </StackLayout>
 
+                    <StackLayout VerticalOptions="EndAndExpand">
 
+                        <Button
+                            x:Name="btn1"
+                            Grid.Row="1"
+                            Command="{Binding StandartMapCommand}"
+                            Text="Street" Clicked="btn1_Clicked" BackgroundColor="White" BorderColor="Black" CornerRadius="15" />
+                        <Button
+                            x:Name="btn2"
+                            Grid.Row="1"
+                            Grid.Column="1"
+                            Command="{Binding SatelliteMapCommand}"
+                            Text="Satellite" Clicked="btn2_Clicked" BackgroundColor="White" BorderColor="Black" CornerRadius="15" />
+                        <Button
+                            x:Name="btn3"
+                            Grid.Row="1"
+                            Grid.Column="2"
+                            Command="{Binding HybridMapCommand}"
+                            Text="Hybrid" Clicked="btn3_Clicked" BackgroundColor="White" BorderColor="Black" CornerRadius="15" />
+                    </StackLayout>
 
                 </StackLayout>
 
@@ -144,10 +146,6 @@
 
                 <Button x:Name="AddLoc"  Text="Lägg till" BackgroundColor="Gray" Clicked="AddLoc_Clicked"></Button>
             </StackLayout>
-
-
-
-
 
         </Grid>
 
