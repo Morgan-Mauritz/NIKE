@@ -3,14 +3,16 @@ using System;
 using Api;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 namespace Api.Migrations
 {
     [DbContext(typeof(NIKEContext))]
-    partial class NIKEContextModelSnapshot : ModelSnapshot
+    [Migration("20220126133756_20220126_LikeDislikeEntries5")]
+    partial class _20220126_LikeDislikeEntries5
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -195,6 +197,44 @@ namespace Api.Migrations
                     b.HasKey("Id");
 
                     b.ToTable("Reaction");
+                });
+
+            modelBuilder.Entity("Api.Model.RefreshToken", b =>
+                {
+                    b.Property<long>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("INTEGER")
+                        .HasColumnName("ID");
+
+                    b.Property<string>("CreationDate")
+                        .IsRequired()
+                        .HasColumnType("TEXT");
+
+                    b.Property<string>("ExpiryDate")
+                        .IsRequired()
+                        .HasColumnType("TEXT");
+
+                    b.Property<string>("JwtId")
+                        .IsRequired()
+                        .HasColumnType("TEXT")
+                        .HasColumnName("JwtID");
+
+                    b.Property<string>("Token")
+                        .IsRequired()
+                        .HasColumnType("TEXT");
+
+                    b.Property<long?>("Used")
+                        .IsRequired()
+                        .HasColumnType("INTEGER");
+
+                    b.Property<long?>("UserId")
+                        .IsRequired()
+                        .HasColumnType("INTEGER")
+                        .HasColumnName("UserID");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("RefreshToken");
                 });
 
             modelBuilder.Entity("Api.Model.User", b =>

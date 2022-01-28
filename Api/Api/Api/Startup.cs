@@ -73,6 +73,7 @@ namespace Api
                 mc.AddProfile(new EntryMapping());
                 mc.AddProfile(new ForecastMapping());
                 mc.AddProfile(new WeatherResultMapping());
+                mc.AddProfile(new LikeDislikeMapping());
 
             });
 

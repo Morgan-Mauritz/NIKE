@@ -3,14 +3,16 @@ using System;
 using Api;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 namespace Api.Migrations
 {
     [DbContext(typeof(NIKEContext))]
-    partial class NIKEContextModelSnapshot : ModelSnapshot
+    [Migration("20220126131646_20220126_LikeDislikeEntries")]
+    partial class _20220126_LikeDislikeEntries
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -197,6 +199,44 @@ namespace Api.Migrations
                     b.ToTable("Reaction");
                 });
 
+            modelBuilder.Entity("Api.Model.RefreshToken", b =>
+                {
+                    b.Property<long>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("INTEGER")
+                        .HasColumnName("ID");
+
+                    b.Property<string>("CreationDate")
+                        .IsRequired()
+                        .HasColumnType("TEXT");
+
+                    b.Property<string>("ExpiryDate")
+                        .IsRequired()
+                        .HasColumnType("TEXT");
+
+                    b.Property<string>("JwtId")
+                        .IsRequired()
+                        .HasColumnType("TEXT")
+                        .HasColumnName("JwtID");
+
+                    b.Property<string>("Token")
+                        .IsRequired()
+                        .HasColumnType("TEXT");
+
+                    b.Property<long?>("Used")
+                        .IsRequired()
+                        .HasColumnType("INTEGER");
+
+                    b.Property<long?>("UserId")
+                        .IsRequired()
+                        .HasColumnType("INTEGER")
+                        .HasColumnName("UserID");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("RefreshToken");
+                });
+
             modelBuilder.Entity("Api.Model.User", b =>
                 {
                     b.Property<long>("Id")
@@ -270,14 +310,14 @@ namespace Api.Migrations
                     b.HasOne("Api.Model.Entry", "Entry")
                         .WithMany("LikeDislikeEntries")
                         .HasForeignKey("EntryId")
-                        .HasConstraintName("EID")
+                        .HasConstraintName("FK_LikeDislikeEntry")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
                     b.HasOne("Api.Model.User", "User")
                         .WithMany("LikeDislikeEntries")
                         .HasForeignKey("UserId")
-                        .HasConstraintName("UID")
+                        .HasConstraintName("FK_LikeDislikeUser")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 

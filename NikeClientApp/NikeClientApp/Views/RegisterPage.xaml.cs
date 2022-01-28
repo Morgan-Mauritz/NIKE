@@ -8,15 +8,19 @@ using System.Threading.Tasks;
 using Xamarin.Forms;
 using Xamarin.Forms.Xaml;
 using System.Text.RegularExpressions;
+using NikeClientApp.Services;
+using NikeClientApp.Models; 
 
 namespace NikeClientApp.Views
 {
     [XamlCompilation(XamlCompilationOptions.Compile)]
     public partial class RegisterPage : ContentPage
     {
+        HttpService<User> httpClient = new HttpService<User>(); 
         public RegisterPage()
         {
             InitializeComponent();
+            
         }
 
         private async void BTRegister_Clicked(object sender, EventArgs e)
@@ -61,11 +65,17 @@ namespace NikeClientApp.Views
 
             }
 
+            await httpClient.Post("user", new User
+            {
+                Firstname = TBFirstname.Text,
+                Lastname = TBLastname.Text,
+                Email = TBEmail.Text,
+                Username = TBUsername.Text,
+                Password = TBPassword.Text
+            });
 
             await DisplayAlert("Grattis", "Du har nu registrerat dig hos NikeApp.\nLogga in för att fortsätta", "OK"  );
             await Navigation.PushAsync(new MainPage());
-            
-
         }
     }
 }

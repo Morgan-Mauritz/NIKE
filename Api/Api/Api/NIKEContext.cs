@@ -11,6 +11,7 @@ namespace Api
     {
         public NIKEContext()
         {
+            this.ChangeTracker.LazyLoadingEnabled = false;
         }
 
         public NIKEContext(DbContextOptions<NIKEContext> options)
@@ -24,8 +25,8 @@ namespace Api
         public virtual DbSet<Entry> Entries { get; set; }
         public virtual DbSet<POI> POI { get; set; }
         public virtual DbSet<Reaction> Reactions { get; set; }
-        public virtual DbSet<RefreshToken> RefreshTokens { get; set; }
         public virtual DbSet<User> Users { get; set; }
+        public virtual DbSet<LikeDislikeEntry> LikeDislikeEntry { get; set; }
 
         
 
@@ -101,17 +102,6 @@ namespace Api
                 entity.Property(e => e.UserId).HasColumnName("UserID");
             });
 
-            modelBuilder.Entity<RefreshToken>(entity =>
-            {
-                entity.ToTable("RefreshToken");
-
-                entity.Property(e => e.Id).HasColumnName("ID");
-
-                entity.Property(e => e.JwtId).HasColumnName("JwtID");
-
-                entity.Property(e => e.UserId).HasColumnName("UserID");
-            });
-
             modelBuilder.Entity<User>(entity =>
             {
                 entity.ToTable("User");
@@ -135,9 +125,28 @@ namespace Api
                 entity.Property(e => e.Username).IsRequired();
             });
 
+            modelBuilder.Entity<LikeDislikeEntry>(entity =>
+            {
+                entity.ToTable("LikeDislikeEntry");
+
+                entity.Property(e => e.Id).HasColumnName("ID");
+
+                entity.Property(e => e.EntryId)
+                    .HasColumnName("EntryId");
+
+                entity.Property(e => e.Likes)
+                    .IsRequired()
+                    .HasColumnName("Likes");
+
+                entity.Property(e => e.UserId)
+                    .HasColumnName("UserId");
+
+                entity.HasOne(e => e.User).WithMany(e => e.LikeDislikeEntries).HasForeignKey(o => o.UserId).HasConstraintName("UID");
+                entity.HasOne(e => e.Entry).WithMany(e => e.LikeDislikeEntries).HasForeignKey(o => o.EntryId).HasConstraintName("EID");
+            });
+
             OnModelCreatingPartial(modelBuilder);
         }
-
         partial void OnModelCreatingPartial(ModelBuilder modelBuilder);
     }
 }

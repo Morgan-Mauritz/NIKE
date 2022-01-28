@@ -122,7 +122,23 @@ namespace Api.Controllers
             catch (NotFoundException ex)
             {
 #if RELEASE
-                return StatusCode((int)HttpStatusCode.NotFound,new Response<NotFoundException>(Status.Fail, (int)HttpStatusCode.NotFound, ex.Message));
+                return StatusCode((int)HttpStatusCode.NotFound,new Response<NotFoundException>(Status.Fail, ex.Message));
+#endif
+                return StatusCode((int)HttpStatusCode.NotFound, new Response<NotFoundException>(Status.Fail, ex.Message, ex));
+            }
+        }
+
+        [HttpPost("like/:entryId")]
+        public async Task<IActionResult> AddLike(long entryId, [FromHeader] string ApiKey)
+        {
+            try
+            {
+                return Ok(new Response<LikeDislikeEntryDto>(await _service.AddLike(entryId, ApiKey)));
+            }
+            catch (NotFoundException ex)
+            {
+#if RELEASE
+                return StatusCode((int)HttpStatusCode.NotFound,new Response<NotFoundException>(Status.Fail, ex.Message));
 #endif
                 return StatusCode((int)HttpStatusCode.NotFound, new Response<NotFoundException>(Status.Fail, ex.Message, ex));
             }

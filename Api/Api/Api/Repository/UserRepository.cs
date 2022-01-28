@@ -45,6 +45,10 @@ namespace Api.Repository
         {
             return await _context.Users.FirstOrDefaultAsync(x => x.ApiKey == apiKey);
         }
+        public async Task<User> GetByUserId(long userId)
+        {
+            return await _context.Users.FirstOrDefaultAsync(x => x.Id == userId);
+        }
         public IEnumerable<User> GetAll()
         {
             throw new NotImplementedException();

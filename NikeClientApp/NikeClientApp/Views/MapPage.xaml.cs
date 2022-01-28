@@ -18,7 +18,6 @@ namespace NikeClientApp.Views
             BackgroundColor = Color.Black;
 
             Reset();
-
         }
 
         List<Pin> ListOfPins = new List<Pin>();
@@ -49,25 +48,24 @@ namespace NikeClientApp.Views
             Geocoder geoCoder = new Geocoder();
 
             IEnumerable<Position> approximateLocations = await geoCoder.GetPositionsForAddressAsync(TBSearchbar.Text);
+           
             Position position = approximateLocations.FirstOrDefault();
             string coordinates = $"{position.Latitude}, {position.Longitude}";
             CityName.Text = TBSearchbar.Text;
 
             MapSpan maps = new MapSpan(position, 1.10, 0.10);
             Mapsample.MoveToRegion(maps);
-
-
         }
 
         private void PinButt_Clicked(object sender, EventArgs e)
         {
-
             pinner = new Pin()
             {
                 Label = "BlaBla",
                 Address = "BlaStreet",
                 Type = PinType.Place
             };
+
 
             pinner.MarkerClicked += Pin_MarkerClicked;
 
@@ -77,8 +75,11 @@ namespace NikeClientApp.Views
 
 
 
+
         private async void Mapsample_MapClicked(object sender, MapClickedEventArgs e)
         {
+            var geoCoder = new Geocoder(); 
+
             if (pinner != null)
             {
                 pinner.Position = e.Position;
@@ -87,14 +88,13 @@ namespace NikeClientApp.Views
                 var ans = await DisplayAlert("Hej", "Vill du lägga till en pin?", "Ja", "Nej"); 
                 if (ans != true)
                 {
-
                     Mapsample.Pins.Remove(pinner);
                     pinner = null;
                 }
                 else
                 {
                     Jonsson.IsVisible = true;
-
+                    //var Address = await geoCoder.GetAddressesForPositionAsync(e.Position); // TODO: Separate adress/City/Country in method, post to db
                     ListOfPins.Add(pinner);
                     pinner = null;
                 }
@@ -104,8 +104,6 @@ namespace NikeClientApp.Views
         {
             Mapsample.Pins.Remove(pinn);
         }
-
-
 
         private async void Pin_MarkerClicked(object sender, PinClickedEventArgs e) //när man klickar på pinnen
         {

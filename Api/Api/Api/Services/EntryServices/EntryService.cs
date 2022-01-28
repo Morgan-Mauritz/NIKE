@@ -96,5 +96,36 @@ namespace Api.Services.EntryServices
 
             return _mapper.Map<EntryDto>(entryDelete);
         }
+
+        public async Task<LikeDislikeEntryDto> AddLike(long entryId, string ApiKey)
+        {
+            var entry = await _entryRepository.GetWithTracking(entryId);
+            var user = await _userRepository.GetByApiKey(ApiKey);
+
+            if (entry == null)
+            {
+                throw new NotFoundException("Kunde inte hitta inlägget");
+            }
+            if (user == null)
+            {
+                throw new UnauthorizedAccessException("Kunde inte hitta användaren");
+            }
+
+            var like = await _entryRepository.GetLike(user.Id, entryId);
+
+
+
+            if (like == null)
+            {
+                var addLike = new LikeDislikeEntry() { EntryId = entryId, UserId = user.Id, Likes = 1};
+                await _entryRepository.AddLike(addLike);
+                return _mapper.Map<LikeDislikeEntryDto>(addLike);
+            }
+            else
+            {
+                await _entryRepository.RemoveLike(like);
+                return _mapper.Map<LikeDislikeEntryDto>(like);
+            }
+        }
     }
 }
