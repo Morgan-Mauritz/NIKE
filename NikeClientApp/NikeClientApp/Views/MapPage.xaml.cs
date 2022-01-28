@@ -52,7 +52,7 @@ namespace NikeClientApp.Views
             Position position = approximateLocations.FirstOrDefault();
             string coordinates = $"{position.Latitude}, {position.Longitude}";
             CityName.Text = TBSearchbar.Text;
-            
+
             MapSpan maps = new MapSpan(position, 1.10, 0.10);
             Mapsample.MoveToRegion(maps);
 
@@ -70,10 +70,14 @@ namespace NikeClientApp.Views
             };
 
             pinner.MarkerClicked += Pin_MarkerClicked;
-            
+
         }
 
         private async void Mapsample_MapClicked(object sender, MapClickedEventArgs e) //Lägga till pin samt ta bort
+
+
+
+        private async void Mapsample_MapClicked(object sender, MapClickedEventArgs e)
         {
             if (pinner != null)
             {
@@ -101,7 +105,7 @@ namespace NikeClientApp.Views
             Mapsample.Pins.Remove(pinn);
         }
 
-        
+
 
         private async void Pin_MarkerClicked(object sender, PinClickedEventArgs e) //när man klickar på pinnen
         {
@@ -134,6 +138,36 @@ namespace NikeClientApp.Views
 
             Jonsson.IsVisible = false;
             await DisplayAlert("Grattis", "Du har nu lagt till en sevärdhet", "OK");
+        }
+
+
+
+        private void streetcommand()
+        {
+            Mapsample.MapType = MapType.Street;
+        }
+        private void Satellitecommand()
+        {
+            Mapsample.MapType = MapType.Satellite;
+        }
+        private void Hybridcommand()
+        {
+            Mapsample.MapType = MapType.Hybrid;
+        }
+
+        private void btn1_Clicked(object sender, EventArgs e)
+        {
+            streetcommand();
+        }
+
+        private void btn2_Clicked(object sender, EventArgs e)
+        {
+            Satellitecommand();
+        }
+
+        private void btn3_Clicked(object sender, EventArgs e)
+        {
+            Hybridcommand();
         }
     }
 }
