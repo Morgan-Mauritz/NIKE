@@ -16,7 +16,8 @@ namespace NikeClientApp
 {
     public partial class MainPage : ContentPage
     {
-        HttpService<User, Response<User>> httpClient = new HttpService<User, Response<User>>();
+        HttpService<User> userClient = new HttpService<User>();
+        HttpService<POI> poiClient = new HttpService<POI>();
 
         public MainPage()
         {
@@ -38,8 +39,8 @@ namespace NikeClientApp
                 return;
 
             }
-
-            var responseData = await httpClient.Post( new User { Email = entryEmail.Text, Password = entryPassword.Text }, "Authorization/login" );
+            //Felhantering här
+            var responseData = await userClient.Post("Authorization/login", new User { Email = entryEmail.Text, Password = entryPassword.Text });
 
             UserApi.ApiKey = responseData.Data.ApiKey;
 

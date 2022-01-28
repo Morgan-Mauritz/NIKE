@@ -16,7 +16,7 @@ namespace NikeClientApp.Views
     [XamlCompilation(XamlCompilationOptions.Compile)]
     public partial class RegisterPage : ContentPage
     {
-        HttpService<User, Response<User>> httpClient = new HttpService<User, Response<User>>(); 
+        HttpService<User> httpClient = new HttpService<User>(); 
         public RegisterPage()
         {
             InitializeComponent();
@@ -65,14 +65,14 @@ namespace NikeClientApp.Views
 
             }
 
-            await httpClient.Post(new User
+            await httpClient.Post("user", new User
             {
                 Firstname = TBFirstname.Text,
                 Lastname = TBLastname.Text,
                 Email = TBEmail.Text,
                 Username = TBUsername.Text,
                 Password = TBPassword.Text
-            }, "user");
+            });
 
             await DisplayAlert("Grattis", "Du har nu registrerat dig hos NikeApp.\nLogga in för att fortsätta", "OK"  );
             await Navigation.PushAsync(new MainPage());
