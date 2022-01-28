@@ -23,7 +23,7 @@ namespace NikeClientApp.Views
         List<Pin> ListOfPins = new List<Pin>();
         public Pin pinner { get; set; }
 
-        void Reset()
+        void Reset() // reset rating
         {
             ChangeTextColor(5, Color.Gray);
         }
@@ -36,14 +36,14 @@ namespace NikeClientApp.Views
             }
         }
 
-        private void TapGestureRecognizer_Tapped(object sender, EventArgs e)
+        private void TapGestureRecognizer_Tapped(object sender, EventArgs e) //rating
         {
             Reset();
             Label clicked = sender as Label;
             ChangeTextColor(Convert.ToInt32(clicked.StyleId.Substring(4, 1)), Color.Yellow);
         }
 
-        private async void SearchButt_Clicked(object sender, EventArgs e)
+        private async void SearchButt_Clicked(object sender, EventArgs e) //sök på plats
         {
             Geocoder geoCoder = new Geocoder();
 
@@ -52,7 +52,7 @@ namespace NikeClientApp.Views
             Position position = approximateLocations.FirstOrDefault();
             string coordinates = $"{position.Latitude}, {position.Longitude}";
             CityName.Text = TBSearchbar.Text;
-            
+
             MapSpan maps = new MapSpan(position, 1.10, 0.10);
             Mapsample.MoveToRegion(maps);
         }
@@ -66,8 +66,15 @@ namespace NikeClientApp.Views
                 Type = PinType.Place
             };
 
-            pinner.MarkerClicked += Pin_MarkerClicked;      
+
+            pinner.MarkerClicked += Pin_MarkerClicked;
+
         }
+
+       
+
+
+
 
         private async void Mapsample_MapClicked(object sender, MapClickedEventArgs e)
         {
@@ -78,7 +85,7 @@ namespace NikeClientApp.Views
                 pinner.Position = e.Position;
                 Mapsample.Pins.Add(pinner);
 
-                var ans = await DisplayAlert("Hej", "Vill du lägga till en pin?", "Ja", "Nej"); //alternativ ta bort pin/ lägg till sevärdhet
+                var ans = await DisplayAlert("Hej", "Vill du lägga till en pin?", "Ja", "Nej"); 
                 if (ans != true)
                 {
                     Mapsample.Pins.Remove(pinner);
@@ -98,9 +105,9 @@ namespace NikeClientApp.Views
             Mapsample.Pins.Remove(pinn);
         }
 
-        private async void Pin_MarkerClicked(object sender, PinClickedEventArgs e)
+        private async void Pin_MarkerClicked(object sender, PinClickedEventArgs e) //när man klickar på pinnen
         {
-            var ans = await DisplayAlert("Ta bort pin", "Vill du ta bort den valda pin?", "Ja", "Nej"); //alternativ ta bort pin/ lägg till sevärdhet
+            var ans = await DisplayAlert("Ta bort pin", "Vill du ta bort den valda pin?", "Ja", "Nej"); 
             if (ans == true)
             {
                 var pin = sender as Pin;
@@ -110,9 +117,55 @@ namespace NikeClientApp.Views
             }
         }
 
-        private void AddLoc_Clicked(object sender, EventArgs e)
+        private async void AddLoc_Clicked(object sender, EventArgs e) //lägg till sevärdhet
         {
+            if (EntryPoi.Text == null || EntryCommentPoi.Text == null || star1.TextColor == Color.Gray)
+            {
+                await DisplayAlert("Fel", "Du måste fylla alla fält och betygsätta. ", "OK");
+                return;
+            }
 
+
+            //if (star1.TextColor == Color.Gray)
+            //{
+            //    await DisplayAlert("Fel", "Du måste betygsätta.", "OK");
+            //    return;
+            //}
+
+            Reset();
+
+            Jonsson.IsVisible = false;
+            await DisplayAlert("Grattis", "Du har nu lagt till en sevärdhet", "OK");
+        }
+
+
+
+        private void streetcommand()
+        {
+            Mapsample.MapType = MapType.Street;
+        }
+        private void Satellitecommand()
+        {
+            Mapsample.MapType = MapType.Satellite;
+        }
+        private void Hybridcommand()
+        {
+            Mapsample.MapType = MapType.Hybrid;
+        }
+
+        private void btn1_Clicked(object sender, EventArgs e)
+        {
+            streetcommand();
+        }
+
+        private void btn2_Clicked(object sender, EventArgs e)
+        {
+            Satellitecommand();
+        }
+
+        private void btn3_Clicked(object sender, EventArgs e)
+        {
+            Hybridcommand();
         }
     }
 }
