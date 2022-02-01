@@ -107,10 +107,11 @@
 
 
 
-            <StackLayout BindingContext="AddPoi" x:Name="Jonsson" Margin="900,400,100,70" BackgroundColor="Pink" Opacity="0.7" IsVisible="false">
+            <StackLayout x:Name="Jonsson" Margin="900,400,100,70" BackgroundColor="Pink" Opacity="0.7" IsVisible="false">
+              
                 <Label x:Name="LabelPoi"  Text="Lägg till sevärdhet" HorizontalOptions="Center" FontSize="20" HeightRequest="40" Margin="0,10,0,0" TextColor="Black"></Label>
-                <Entry x:Name="EntryPoi" Text="{Binding Name}"  Placeholder="Namn på sevärdheten" Margin="30,0,30,0"></Entry>
-                <Entry x:Name="EntryCommentPoi" Text="{Binding Comment}" Placeholder="Kommententar" HeightRequest="70" Margin="30,0,30,0"></Entry>
+                <Entry x:Name="EntryPoi" Text="{Binding AddPoi.Name}"  Placeholder="Namn på sevärdheten" Margin="30,0,30,0"></Entry>
+                <Entry x:Name="EntryCommentPoi" Text="{Binding AddPoi.Comment}" Placeholder="Kommententar" HeightRequest="70" Margin="30,0,30,0"></Entry>
                 <StackLayout Orientation="Horizontal" x:Name="rattingBar" HorizontalOptions="Center">
                     <Label Text="★" FontSize="Large" x:Name="star1" StyleId="star1">
                         <Label.GestureRecognizers>
@@ -143,7 +144,7 @@
                         </Label.GestureRecognizers>
                     </Label>
                 </StackLayout>
-
+                 
                 <Button x:Name="AddLoc"  Text="Lägg till" BackgroundColor="Gray" Command="{Binding AddPOI}"></Button>
             </StackLayout>
 

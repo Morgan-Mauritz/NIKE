@@ -7,7 +7,7 @@ namespace NikeClientApp.ViewModels
 {
     public class MainPageViewModel : BaseViewModel
     {
-        public Xamarin.Forms.Command NextPage => new Command(async () => await NavigationService.NavigateTo<MapPageViewModel>());
+        public Command NextPage => new Command(async () => await NavigationService.NavigateTo<MapPageViewModel>());
         public Command RegisterPage => new Command(async () => await NavigationService.NavigateTo<RegisterPageViewModel>());
 
         public MainPageViewModel(INaviService naviService) : base(naviService)
