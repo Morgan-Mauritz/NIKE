@@ -10,7 +10,8 @@ using System.Text.RegularExpressions;
 using System.Threading.Tasks;
 using Xamarin.Forms;
 using Xamarin.Forms.Maps;
-using RestSharp; 
+using RestSharp;
+using NikeClientApp.ViewModels;
 
 namespace NikeClientApp
 {
@@ -19,10 +20,20 @@ namespace NikeClientApp
         HttpService<User> userClient = new HttpService<User>();
         HttpService<POI> poiClient = new HttpService<POI>();
 
+        MainPageViewModel ViewModel => BindingContext as MainPageViewModel;
         public MainPage()
         {
             InitializeComponent();
+
+            BindingContext = new MainPageViewModel(DependencyService.Get<INaviService>()); 
             
+        }
+        protected override void OnAppearing()
+        {
+            base.OnAppearing();
+
+            // Initialize ViewModel
+            ViewModel?.Init();
         }
         private async void BtnLogIn_Clicked(object sender, EventArgs e)
         {

@@ -7,18 +7,32 @@ using System.Threading.Tasks;
 using Xamarin.Forms;
 using Xamarin.Forms.Xaml;
 using Xamarin.Forms.Maps;
+using NikeClientApp.ViewModels;
+
 namespace NikeClientApp.Views
 {
     [XamlCompilation(XamlCompilationOptions.Compile)]
     public partial class MapPage : ContentPage
     {
+        MapPageViewModel ViewModel => BindingContext as MapPageViewModel;
         public MapPage()
         {
             InitializeComponent();
             BackgroundColor = Color.Black;
 
+            BindingContext = new MapPageViewModel(DependencyService.Get<INaviService>());
+
             Reset();
         }
+
+        protected override void OnAppearing()
+        {
+            base.OnAppearing();
+
+            // Initialize ViewModel
+            ViewModel?.Init();
+        }
+
 
         List<Pin> ListOfPins = new List<Pin>();
         public Pin pinner { get; set; }
@@ -66,15 +80,8 @@ namespace NikeClientApp.Views
                 Type = PinType.Place
             };
 
-
             pinner.MarkerClicked += Pin_MarkerClicked;
-
         }
-
-       
-
-
-
 
         private async void Mapsample_MapClicked(object sender, MapClickedEventArgs e)
         {
@@ -94,7 +101,7 @@ namespace NikeClientApp.Views
                 else
                 {
                     Jonsson.IsVisible = true;
-                    //var Address = await geoCoder.GetAddressesForPositionAsync(e.Position); // TODO: Separate adress/City/Country in method, post to db
+                    var Address = await geoCoder.GetAddressesForPositionAsync(e.Position); // TODO: Separate adress/City/Country in method, post to db
                     ListOfPins.Add(pinner);
                     pinner = null;
                 }

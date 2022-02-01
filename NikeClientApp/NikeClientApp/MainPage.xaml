@@ -35,7 +35,7 @@
                             TextColor="Green"
                             HeightRequest="50"
                             CornerRadius="10"
-                            Clicked="BtnLogIn_Clicked"></Button>
+                            Command="{Binding NextPage}"></Button> 
 
                     <Button Text="Registrera" 
                             Margin="-160,0,0,0"
@@ -48,7 +48,7 @@
                    
 
                 </StackLayout>
-                <Button x:Name="ToMaps" Text="Till Kartan" WidthRequest="100" HeightRequest="30" BackgroundColor="#1A4541" TextColor="Black" CornerRadius="10" Opacity="20" Clicked="ToMaps_Clicked" ></Button>
+                <Button x:Name="ToMaps" Text="Till Kartan" WidthRequest="100" HeightRequest="30" BackgroundColor="#1A4541" TextColor="Black" CornerRadius="10" Opacity="20" Command="{Binding NextPage}" ></Button>
 
             </StackLayout>
 
