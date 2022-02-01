@@ -1,0 +1,57 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://xamarin.com/schemas/2014/forms"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             x:Class="NikeClientApp.Views.UserPage">
+    <ContentPage.Content>
+        
+        <Grid>
+            
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="0.1*"></ColumnDefinition>
+                <ColumnDefinition Width="1*"></ColumnDefinition>
+                <ColumnDefinition Width="0.1*"></ColumnDefinition>
+                <ColumnDefinition Width="1*"></ColumnDefinition>
+                <ColumnDefinition Width="0.1*"></ColumnDefinition>
+            </Grid.ColumnDefinitions>
+
+            <Grid.RowDefinitions>
+                <RowDefinition Height="0.1*"></RowDefinition>
+                <RowDefinition Height="0.1*"></RowDefinition>
+                <RowDefinition Height="0.9*"></RowDefinition>
+                <RowDefinition Height="0.9*"></RowDefinition>
+            </Grid.RowDefinitions>
+
+            <Button Grid.ColumnSpan="5" Text="Tillbaka"></Button>
+            <Frame Grid.Column="1" Grid.Row="2" BackgroundColor="MediumAquamarine">
+            <StackLayout MinimumWidthRequest="500" HorizontalOptions="Center">
+                
+                <Entry Text="asdfasdfasdfasdfsdfasldfkjasldkfj"></Entry>
+                <Entry Text="asdfasdfaj"></Entry>
+                <Entry Text="asdfasdfasdfasdfsdfasldfkjasldkfj"></Entry>
+                <Entry Text="asdfasdfasdfasdfsdfasldfkjasldkfj"></Entry>
+                <Entry Text="asdfasdfasdfasdfsdfasldfkjasldkfj"></Entry>
+                <Button Text="Redigera"></Button>
+                <Button Text="Radera konto"></Button>
+            </StackLayout>
+            </Frame>
+
+            <StackLayout Grid.Column="3" Grid.Row="2">
+                <ListView>
+                    <ListView.Header>Mina inlägg</ListView.Header>
+                </ListView>
+
+                <ListView>
+                    <ListView.Header>Mina kommentarer</ListView.Header>
+                </ListView>
+
+                <ListView>
+                    <ListView.Header>Gillade inlägg</ListView.Header>
+                </ListView>
+
+            </StackLayout>
+
+
+
+        </Grid>
+    </ContentPage.Content>
+</ContentPage>

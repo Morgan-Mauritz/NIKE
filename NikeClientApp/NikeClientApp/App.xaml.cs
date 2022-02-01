@@ -12,7 +12,7 @@ namespace NikeClientApp
         {
             InitializeComponent();
 
-            MainPage = new NavigationPage(new MainPage());
+            MainPage = new NavigationPage(new UserPage());
             
             var navService = DependencyService.Get<INaviService>() as NaviService;
             navService.Navigation = MainPage.Navigation;
