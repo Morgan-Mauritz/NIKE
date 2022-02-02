@@ -3,6 +3,7 @@ using NikeClientApp.Services;
 using NikeClientApp.Views;
 using System;
 using System.Collections.Generic;
+
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -23,6 +24,7 @@ namespace NikeClientApp.ViewModels
         //public ICommand ShowAddPoiModal => new Command(async () => await ShowModalWhenClicked());
 
         HttpService<POI> httpClient = new HttpService<POI>();
+        HttpService<Forecast> weatherClient = new HttpService<Forecast>(); 
 
         List<Pin> ListOfPins = new List<Pin>();
         public Pin pinner { get; set; }
@@ -59,12 +61,19 @@ namespace NikeClientApp.ViewModels
         {
             if (poiToAdd.Name != null || poiToAdd.Comment != null )
             {
-                poiToAdd.Longitude = pinner.Position.Longitude;
-                poiToAdd.Latitude = pinner.Position.Latitude;
-                poiToAdd.City = "";
-                poiToAdd.Country = "";
+               
                 poiToAdd.Category = "";
-                await httpClient.Post("poi", poiToAdd);
+
+                try
+                {
+                    await httpClient.Post("poi", poiToAdd);
+                }
+                catch(Exception ex)
+                {
+                    await App.Current.MainPage.DisplayAlert("Error!", ex.Message, "OK");
+                    map.Pins.Remove(map.Pins.Last()); 
+                }
+                addPoiModalIsVisible = false; 
                 return true;
             }
             else
@@ -81,12 +90,7 @@ namespace NikeClientApp.ViewModels
                 SetProperty(ref _addPoiModalIsVisible, value);
             }
         }
-        //public async Task ShowModalWhenClicked()
-        //{
-        //    if (addPoiModalIsVisible == true) addPoiModalIsVisible = false;
-        //    addPoiModalIsVisible = true;
-        //}
-
+        
         private async Task PinIcon_Clicked()
         {
             pinner = new Pin()
@@ -118,9 +122,15 @@ namespace NikeClientApp.ViewModels
                 {
                     addPoiModalIsVisible = true;
                     var Address = await geoCoder.GetAddressesForPositionAsync(e.Position); // TODO: Separate adress/City/Country in method, post to db
-                    FormatAddressString(Address.First());
+                    //setting the country prop for the PointOfInterest
+                    poiToAdd.Country = GetCountryFromDataString(Address.First());
+                    poiToAdd.Longitude = e.Position.Longitude;
+                    poiToAdd.Latitude = e.Position.Latitude;
+                    //Fetch city from weatherApi
+                    var response = await weatherClient.Get("forecast", $"?longitude={poiToAdd.Longitude}&latitude={poiToAdd.Latitude}");
+                    poiToAdd.City = response.Data.City;  
                     ListOfPins.Add(pinner);
-                    //pinner = null;
+                    pinner = null;
 
                 }
             }
@@ -137,40 +147,16 @@ namespace NikeClientApp.ViewModels
             }
         }
 
-        //private async Task AddPOI_Clicked() //lägg till sevärdhet
-        //{
-        //    if (EntryPoi.Text == null || EntryCommentPoi.Text == null || star1.TextColor == Color.Gray)
-        //    {
-        //        await DisplayAlert("Fel", "Du måste fylla alla fält och betygsätta. ", "OK");
-        //        return;
-        //    }
-
-
-        //    //if (star1.TextColor == Color.Gray)
-        //    //{
-        //    //    await DisplayAlert("Fel", "Du måste betygsätta.", "OK");
-        //    //    return;
-        //    //}
-
-        //    Reset();
-
-        //    AddPoiModal.IsVisible = false;
-        //    await App.Current.MainPage.DisplayAlert("Grattis", "Du har nu lagt till en sevärdhet", "OK");
-        //}
-
-        public string FormatAddressString(string inputString)
+        public string GetCountryFromDataString(string dataString)
         {
-            string city;
             string country;
             string streetAddress;
-            string[] separators = {"\r\n"};
-            string[] splitStrings = inputString.Split(separators, StringSplitOptions.RemoveEmptyEntries);
-
-            streetAddress = splitStrings[0];
-            city = splitStrings[1];  //TODO: Här kommer även postnr och annat orelevant info in.
+            string[] separator = {"\r\n"};
+            string[] splitStrings = dataString.Split(separator, StringSplitOptions.RemoveEmptyEntries);
             country = splitStrings[2];
+            streetAddress = splitStrings[0]; 
 
-            return "";
+            return country;
         }
     }
 }

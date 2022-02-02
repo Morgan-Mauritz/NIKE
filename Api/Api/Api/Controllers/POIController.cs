@@ -1,4 +1,6 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
+using System.Net;
 using System.Threading.Tasks;
 using Api.Model;
 using Api.Services.POIServices;
@@ -80,7 +82,14 @@ namespace Api.Controllers
         [ProducesResponseType(typeof(Response<POIDto>), 200)]
         public async Task<IActionResult> SetPOI([FromBody] POIDto poiDto, [FromHeader] string apiKey)
         {
-            return Ok(new Response<POIDto>(await _service.SetPOI(poiDto, apiKey)));
+            try
+            {
+                return Ok(new Response<POIDto>(await _service.SetPOI(poiDto, apiKey)));
+            }
+            catch (Exception)
+            {
+                return StatusCode((int)HttpStatusCode.BadRequest, new Response<Exception>(Status.Fail, "Something went wrong"));
+            }
         }
     }
 }

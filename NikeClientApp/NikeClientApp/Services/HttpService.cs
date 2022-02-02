@@ -38,7 +38,7 @@ namespace NikeClientApp.Services
         {
             var request = new RestRequest(endPoint + query);
             request.Method = Method.Get;
-            request.AddHeader("apiKey", UserApi.ApiKey);
+            request.AddHeader("apiKey", "b987c270-e582-4664-bea3-36f47f17dc43");
             return await _restClient.GetAsync<Response<T>>(request);
         }
 
