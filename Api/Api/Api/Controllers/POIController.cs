@@ -86,7 +86,7 @@ namespace Api.Controllers
             {
                 return Ok(new Response<POIDto>(await _service.SetPOI(poiDto, apiKey)));
             }
-            catch (Exception)
+            catch (Exception ex)
             {
                 return StatusCode((int)HttpStatusCode.BadRequest, new Response<Exception>(Status.Fail, "Something went wrong"));
             }

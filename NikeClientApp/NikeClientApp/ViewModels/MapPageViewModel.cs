@@ -66,7 +66,7 @@ namespace NikeClientApp.ViewModels
 
                 try
                 {
-                    await httpClient.Post("poi", poiToAdd);
+                    await httpClient.Post("poi", poiToAdd); //TODO: Add entry
                 }
                 catch(Exception ex)
                 {

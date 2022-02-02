@@ -17,11 +17,10 @@ namespace Api.Repository
         }
         public async Task<POI> Get(double longitude, double latitude, string name)
         {
-            var se = new System.Globalization.CultureInfo("sv-SE"); 
             var thingToLookat = await _context.POI
                 .AsNoTracking().Include(x => x.Entries).Include(x => x.City).ThenInclude(c => c.Country)
-                .FirstOrDefaultAsync(POI => (POI.Longitude >= longitude - 0.03 && POI.Longitude <= longitude + 0.03)
-                && (POI.Latitude >= latitude - 0.03 && POI.Latitude <= latitude + 0.03) && se.CompareInfo.Equals(POI.Name.ToLower() == name.ToLower()));
+                .FirstOrDefaultAsync(POI => (POI.Longitude >= longitude - 0.01 && POI.Longitude <= longitude + 0.01)
+                && (POI.Latitude >= latitude - 0.01 && POI.Latitude <= latitude + 0.01) && POI.Name.ToLower() == name.ToLower());
             return thingToLookat;
         }
 
