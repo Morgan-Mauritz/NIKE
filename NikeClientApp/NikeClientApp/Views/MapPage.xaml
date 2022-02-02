@@ -47,7 +47,7 @@
 
                     </StackLayout>
                     <StackLayout>
-                        <ImageButton Source="Assets/knapp.png" Clicked="PinButt_Clicked" HeightRequest="50" HorizontalOptions="End" Margin="0,0,0,0" />
+                        <ImageButton Source="Assets/knapp.png" Command="{Binding _PinIcon_Clicked}" HeightRequest="50" HorizontalOptions="End" Margin="0,0,0,0" />
 
 
                     </StackLayout>
@@ -114,37 +114,44 @@
             <StackLayout x:Name="AddPoiModal" IsVisible="{Binding addPoiModalIsVisible}" Margin="900,400,100,70" BackgroundColor="Pink" Opacity="0.7">
               
                 <Label x:Name="LabelPoi"  Text="Lägg till sevärdhet" HorizontalOptions="Center" FontSize="20" HeightRequest="40" Margin="0,10,0,0" TextColor="Black"></Label>
-                <Entry x:Name="EntryPoi" Text="{Binding AddPoi.Name}"  Placeholder="Namn på sevärdheten" Margin="30,0,30,0"></Entry>
-                <Entry x:Name="EntryCommentPoi" Text="{Binding AddPoi.Comment}" Placeholder="Kommententar" HeightRequest="70" Margin="30,0,30,0"></Entry>
+                <Entry x:Name="EntryPoi" Text="{Binding poiToAdd.Name}"  Placeholder="Namn på sevärdheten" Margin="30,0,30,0"></Entry>
+                <Entry x:Name="EntryCommentPoi" Text="{Binding poiToAdd.Comment}" Placeholder="Kommententar" HeightRequest="70" Margin="30,0,30,0"></Entry>
+                
                 <StackLayout Orientation="Horizontal" x:Name="rattingBar" HorizontalOptions="Center">
+                    
                     <Label Text="★" FontSize="Large" x:Name="star1" StyleId="star1">
                         <Label.GestureRecognizers>
-                            <TapGestureRecognizer Tapped="TapGestureRecognizer_Tapped"/>
+                            <TapGestureRecognizer Tapped="TapGestureRecognizer_Tapped" Command="{Binding _ratingAmount}"/>
                         </Label.GestureRecognizers>
                     </Label>
+                    
                     <Label Text="★" FontSize="Large" x:Name="star2" StyleId="star2">
                         <Label.GestureRecognizers>
                             <TapGestureRecognizer Tapped="TapGestureRecognizer_Tapped"/>
                         </Label.GestureRecognizers>
                     </Label>
+                    
                     <Label Text="★" FontSize="Large" x:Name="star3" StyleId="star3">
                         <Label.GestureRecognizers>
                             <TapGestureRecognizer Tapped="TapGestureRecognizer_Tapped"/>
                         </Label.GestureRecognizers>
                     </Label>
+                    
                     <Label Text="★" FontSize="Large" x:Name="star4" StyleId="star4">
                         <Label.GestureRecognizers>
                             <TapGestureRecognizer Tapped="TapGestureRecognizer_Tapped"/>
                         </Label.GestureRecognizers>
                     </Label>
+                    
                     <Label Text="★" FontSize="Large" x:Name="star5" StyleId="star5">
                         <Label.GestureRecognizers>
                             <TapGestureRecognizer Tapped="TapGestureRecognizer_Tapped"/>
                         </Label.GestureRecognizers>
                     </Label>
+                    
                 </StackLayout>
-                 
-                <Button x:Name="AddLoc"  Text="Lägg till" BackgroundColor="Gray" Command="{Binding AddPOI}"></Button>
+
+                <Button x:Name="AddLoc"  Text="Lägg till" BackgroundColor="Gray" Command="{Binding _AddPOI_Clicked}"></Button>
             </StackLayout>
 
         </Grid>
