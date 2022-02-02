@@ -11,6 +11,7 @@ namespace Api.Model.MappingProfiles
             //TODO add country name 
             CreateMap<POI, POIDto>().ForMember(dest => dest.City, opt => opt.MapFrom(src => src.City.Name))
                 .ForMember(dest => dest.Country, opt => opt.MapFrom(src => src.City.Country.Name))
+                .ForMember(dest => dest.Category, opt => opt.MapFrom(src => src.Category.Name))
                 .ForMember(dest => dest.AvgRating, opt =>
                 {
                     opt.MapFrom(src =>

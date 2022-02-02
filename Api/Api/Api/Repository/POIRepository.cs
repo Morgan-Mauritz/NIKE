@@ -17,10 +17,11 @@ namespace Api.Repository
         }
         public async Task<POI> Get(double longitude, double latitude, string name)
         {
+            var se = new System.Globalization.CultureInfo("sv-SE"); 
             var thingToLookat = await _context.POI
                 .AsNoTracking().Include(x => x.Entries).Include(x => x.City).ThenInclude(c => c.Country)
                 .FirstOrDefaultAsync(POI => (POI.Longitude >= longitude - 0.03 && POI.Longitude <= longitude + 0.03)
-                && (POI.Latitude >= latitude - 0.03 && POI.Latitude <= latitude + 0.03) && POI.Name.ToLower() == name.ToLower());
+                && (POI.Latitude >= latitude - 0.03 && POI.Latitude <= latitude + 0.03) && se.CompareInfo.Equals(POI.Name.ToLower() == name.ToLower()));
             return thingToLookat;
         }
 
@@ -29,7 +30,8 @@ namespace Api.Repository
             var query = _context.POI.AsNoTracking().Include(c => c.City).ThenInclude(c => c.Country)
                 .Where(x => (string.IsNullOrEmpty(filterPOI.Country) || x.City.Country.Name.ToLower().Contains(filterPOI.Country.ToLower()))
                 && (string.IsNullOrEmpty(filterPOI.City) || x.City.Name.ToLower().Contains(filterPOI.City.ToLower()))
-                && (string.IsNullOrEmpty(filterPOI.Name) || x.Name.ToLower().Contains(filterPOI.Name.ToLower())));
+                && (string.IsNullOrEmpty(filterPOI.Name) || x.Name.ToLower().Contains(filterPOI.Name.ToLower()))
+                && (string.IsNullOrEmpty(filterPOI.Category) || x.Category.Name.ToLower().Contains(filterPOI.Category.ToLower())));
 
             var total = query.Count();
 
@@ -38,6 +40,7 @@ namespace Api.Repository
                 Sort.Name => query.OrderBy(x => x.Name),
                 Sort.City => query.OrderBy(x => x.City.Name),
                 Sort.Country => query.OrderBy(x => x.City),
+                Sort.Category => query.OrderBy(x => x.Category.Name),
                 _ => query.OrderBy(x => x.Id)
             };
 
@@ -61,7 +64,17 @@ namespace Api.Repository
                 await _context.Cities.AddAsync(city);
                 await _context.SaveChangesAsync();
             }
-            var poi = new POI { Name = pOIDto.Name, Longitude = pOIDto.Longitude, Latitude = pOIDto.Latitude, CityID = city.Id };
+
+            var category = await _context.Categories.FirstOrDefaultAsync(ca => ca.Name == pOIDto.Category);
+
+            if(category == null)
+            {
+                category = new Category { Name = pOIDto.Category };
+                await _context.Categories.AddAsync(category);
+                await _context.SaveChangesAsync();
+            }
+
+            var poi = new POI { Name = pOIDto.Name, Longitude = pOIDto.Longitude, Latitude = pOIDto.Latitude, CityID = city.Id, CategoryID = category.Id };
 
             await _context.AddAsync(poi);
 

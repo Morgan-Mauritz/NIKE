@@ -1,4 +1,6 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
+using System.Net;
 using System.Threading.Tasks;
 using Api.Model;
 using Api.Services.POIServices;
@@ -52,10 +54,10 @@ namespace Api.Controllers
             }
 
             var result = await _service.GetPOIList(filterPOI);
+
+
             var nextPage = httpString + $"/poi/list?offset={nextOffset}&amount={filterPOI.Amount}&sort={filterPOI.Sort}&city={filterPOI.City}&country={filterPOI.Country}&name={filterPOI.Name}";
             var prevPage = httpString + $"/poi/list?offset={prevOffset}&amount={filterPOI.Amount}&sort={filterPOI.Sort}&city={filterPOI.City}&country={filterPOI.Country}&name={filterPOI.Name}";
-
-
 
             if (filterPOI.Offset == 0)
             {
@@ -80,7 +82,14 @@ namespace Api.Controllers
         [ProducesResponseType(typeof(Response<POIDto>), 200)]
         public async Task<IActionResult> SetPOI([FromBody] POIDto poiDto, [FromHeader] string apiKey)
         {
-            return Ok(new Response<POIDto>(await _service.SetPOI(poiDto, apiKey)));
+            try
+            {
+                return Ok(new Response<POIDto>(await _service.SetPOI(poiDto, apiKey)));
+            }
+            catch (Exception)
+            {
+                return StatusCode((int)HttpStatusCode.BadRequest, new Response<Exception>(Status.Fail, "Something went wrong"));
+            }
         }
     }
 }

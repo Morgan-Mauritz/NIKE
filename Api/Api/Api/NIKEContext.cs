@@ -28,6 +28,8 @@ namespace Api
         public virtual DbSet<User> Users { get; set; }
         public virtual DbSet<LikeDislikeEntry> LikeDislikeEntry { get; set; }
 
+        public virtual DbSet<Category> Categories { get; set; }
+
         
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
@@ -40,6 +42,15 @@ namespace Api
 
                 entity.Property(e => e.CountryId).HasColumnName("CountryID");
                 entity.HasOne(e => e.Country).WithMany(p => p.Cities).HasForeignKey(o => o.CountryId).HasConstraintName("FK_Country");
+            });
+
+            modelBuilder.Entity<Category>(entity =>
+            {
+                entity.ToTable("Category");
+
+                entity.Property(e => e.Id).HasColumnName("ID");
+
+                entity.Property(e => e.Name).HasColumnName("Name");
             });
 
             modelBuilder.Entity<Comment>(entity =>
@@ -89,6 +100,7 @@ namespace Api
 
                 entity.Property(e => e.Latitude).HasColumnName("Latitude");
                 entity.HasOne(e => e.City).WithMany(p => p.POI).HasForeignKey(o => o.CityID).HasConstraintName("FK_City");
+                entity.HasOne(e => e.Category).WithMany(p => p.POIs).HasForeignKey(o => o.CategoryID).HasConstraintName("FK_Category");
             });
 
             modelBuilder.Entity<Reaction>(entity =>
