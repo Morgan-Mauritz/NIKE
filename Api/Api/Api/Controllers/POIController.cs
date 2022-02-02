@@ -52,10 +52,10 @@ namespace Api.Controllers
             }
 
             var result = await _service.GetPOIList(filterPOI);
+
+
             var nextPage = httpString + $"/poi/list?offset={nextOffset}&amount={filterPOI.Amount}&sort={filterPOI.Sort}&city={filterPOI.City}&country={filterPOI.Country}&name={filterPOI.Name}";
             var prevPage = httpString + $"/poi/list?offset={prevOffset}&amount={filterPOI.Amount}&sort={filterPOI.Sort}&city={filterPOI.City}&country={filterPOI.Country}&name={filterPOI.Name}";
-
-
 
             if (filterPOI.Offset == 0)
             {
