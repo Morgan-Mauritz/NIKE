@@ -20,6 +20,7 @@ namespace NikeClientApp.Models
         public long? AvgRating { get; set; }
         public string City { get; set; }
         public string Country { get; set; }
+        public string Category { get; set; }
         //public List<EntryDto> Entries { get; set; }
     }
 }
