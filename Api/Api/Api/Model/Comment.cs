@@ -24,7 +24,7 @@ namespace Api.Model
     public class CommentDTO 
     {
         public EntryDto Entry { get; set; }
-        public string CommentText { get; set; }
+        public string Text { get; set; }
     }
 
 
