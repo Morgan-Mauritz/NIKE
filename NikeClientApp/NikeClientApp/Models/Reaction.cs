@@ -7,7 +7,7 @@ namespace NikeClientApp.Models
     public class Reaction
     {
         public Entry Entry { get; set; }
-        public int User { get; set; }
+        public string User { get; set; }
         public int Like { get; set; }
     }
 }

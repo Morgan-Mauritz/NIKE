@@ -62,7 +62,7 @@ namespace NikeClientApp.ViewModels
 
         private async Task OnShow()
         {
-            var comments = await commentClient.GetList("entry/list", "");
+            var comments = await commentClient.GetList("entry/comments", "");
 
             var reactions = await reactionClient.GetList("entry/reactions", "");
 
