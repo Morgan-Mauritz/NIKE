@@ -68,7 +68,7 @@ namespace NikeClientApp.Views
             CityName.Text = TBSearchbar.Text;
 
             MapSpan maps = new MapSpan(position, 1.10, 0.10);
-            Mapsample.MoveToRegion(maps);
+            //Mapsample.MoveToRegion(maps);
         }
 
         private void PinButt_Clicked(object sender, EventArgs e)
@@ -85,44 +85,24 @@ namespace NikeClientApp.Views
 
         private async void Mapsample_MapClicked(object sender, MapClickedEventArgs e)
         {
-            var geoCoder = new Geocoder(); 
-
-            if (pinner != null)
-            {
-                pinner.Position = e.Position;
-                Mapsample.Pins.Add(pinner);
-
-                var ans = await DisplayAlert("Hej", "Vill du lägga till en pin?", "Ja", "Nej"); 
-                if (ans != true)
-                {
-                    Mapsample.Pins.Remove(pinner);
-                    pinner = null;
-                }
-                else
-                {
-                    Jonsson.IsVisible = true;
-                    var Address = await geoCoder.GetAddressesForPositionAsync(e.Position); // TODO: Separate adress/City/Country in method, post to db
-                    ListOfPins.Add(pinner);
-                    pinner = null;
-                }
-            }
+            
         }
         private void Remove_Click(Pin pinn)
         {
-            Mapsample.Pins.Remove(pinn);
+            //Mapsample.Pins.Remove(pinn);
         }
 
-        private async void Pin_MarkerClicked(object sender, PinClickedEventArgs e) //när man klickar på pinnen
-        {
-            var ans = await DisplayAlert("Ta bort pin", "Vill du ta bort den valda pin?", "Ja", "Nej"); 
-            if (ans == true)
-            {
-                var pin = sender as Pin;
-                Mapsample.Pins.Remove(ListOfPins.Where(x => x.Position == pin.Position).FirstOrDefault());
-                ListOfPins.Remove(pin);
-                Jonsson.IsVisible = false;
-            }
-        }
+        //private async void Pin_MarkerClicked(object sender, PinClickedEventArgs e) //när man klickar på pinnen
+        //{
+        //    var ans = await DisplayAlert("Ta bort pin", "Vill du ta bort den valda pin?", "Ja", "Nej"); 
+        //    if (ans == true)
+        //    {
+        //        var pin = sender as Pin;
+        //        //Mapsample.Pins.Remove(ListOfPins.Where(x => x.Position == pin.Position).FirstOrDefault());
+        //        ListOfPins.Remove(pin);
+        //        AddPoiModal.IsVisible = false;
+        //    }
+        //}
 
         private async void AddLoc_Clicked(object sender, EventArgs e) //lägg till sevärdhet
         {
@@ -141,7 +121,7 @@ namespace NikeClientApp.Views
 
             Reset();
 
-            Jonsson.IsVisible = false;
+            AddPoiModal.IsVisible = false;
             await DisplayAlert("Grattis", "Du har nu lagt till en sevärdhet", "OK");
         }
 
@@ -149,15 +129,15 @@ namespace NikeClientApp.Views
 
         private void streetcommand()
         {
-            Mapsample.MapType = MapType.Street;
+            //Mapsample.MapType = MapType.Street;
         }
         private void Satellitecommand()
         {
-            Mapsample.MapType = MapType.Satellite;
+            //Mapsample.MapType = MapType.Satellite;
         }
         private void Hybridcommand()
         {
-            Mapsample.MapType = MapType.Hybrid;
+            //Mapsample.MapType = MapType.Hybrid;
         }
 
         private void btn1_Clicked(object sender, EventArgs e)
