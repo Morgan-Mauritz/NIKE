@@ -12,7 +12,7 @@ namespace Api.Model.MappingProfiles
             CreateMap<UpdateEntry, Entry>().ForAllMembers(opt => opt.Condition((src, dest, srcmember) => srcmember != null));
 
             CreateMap<LikeDislikeEntry, LikeDislikeEntryDto>();
-            CreateMap<Comment, CommentDTO>();
+            CreateMap<Comment, CommentDTO>().ForMember(dest => dest.Text, opt => opt.MapFrom(src => src.Comment1));
 
 
         }
