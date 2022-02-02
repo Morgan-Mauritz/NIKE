@@ -42,7 +42,7 @@ namespace Api
         {
             services.AddCors(options =>
              {
-                 options.AddPolicy("AllowAllHeaders",
+                options.AddPolicy("AllowAllHeaders",
                 builder =>
                 {
                     builder.AllowAnyOrigin()
@@ -51,7 +51,10 @@ namespace Api
                     .WithHeaders("Authorization", "Accept", "Content-Type", "Origin");
                 });
              });
-            services.AddDbContext<NIKEContext>(options => options.UseSqlite(Configuration.GetConnectionString("DefaultConnection")));
+            services.AddDbContext<NIKEContext>(options =>
+            {
+                options.UseSqlite(Configuration.GetConnectionString("DefaultConnection"));
+            });
             services.AddControllers()
                 .AddNewtonsoftJson(x =>
                 {
