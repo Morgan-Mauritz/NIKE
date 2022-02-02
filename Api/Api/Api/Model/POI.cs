@@ -20,8 +20,12 @@ namespace Api.Model
         [Required]
         public long CityID { get; set; }
 
+        [Required]
+        public long CategoryID { get; set; }
+
         public virtual City City { get; set; }
 
+        public virtual Category Category { get; set; }
         public virtual ICollection<Entry> Entries { get; set; }
 
         public POI()
@@ -41,6 +45,8 @@ namespace Api.Model
         public long? AvgRating { get; set; }
         public string City { get; set; }
         public string Country { get; set; }
+
+        public string Category { get; set; }
         public List<EntryDto> Entries { get; set; }
     }
 
@@ -51,6 +57,9 @@ namespace Api.Model
         public int Amount { get; set; } = 10;
         public string Country { get; set; }
         public string City { get; set; }
+        public string Category { get; set; }
+
+
         [EnumDataType(typeof(Sort))]
         public Sort Sort { get; set; }
     }
@@ -61,5 +70,6 @@ namespace Api.Model
         Name,
         City,
         Country,
+        Category
     }
 }
