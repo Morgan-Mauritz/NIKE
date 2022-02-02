@@ -47,7 +47,7 @@
 
                     </StackLayout>
                     <StackLayout>
-                        <ImageButton Source="Assets/knapp.png" Clicked="PinButt_Clicked" HeightRequest="50" HorizontalOptions="End" Margin="0,0,0,0" />
+                        <ImageButton Source="Assets/knapp.png" HeightRequest="50" HorizontalOptions="End" Margin="0,0,0,0" />
 
 
                     </StackLayout>

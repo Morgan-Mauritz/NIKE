@@ -1,10 +1,11 @@
 ﻿<?xml version="1.0" encoding="utf-8" ?>
 <ContentPage xmlns="http://xamarin.com/schemas/2014/forms"
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
-             x:Class="NikeClientApp.Views.UserPage">
-    <ContentPage.Content>
-        
-        <Grid>
+             x:Class="NikeClientApp.Views.UserPage"
+             BackgroundColor="WhiteSmoke">
+    <ContentPage.Content BackgroundColor="WhiteSmoke">
+
+        <Grid BackgroundColor="WhiteSmoke">
             
             <Grid.ColumnDefinitions>
                 <ColumnDefinition Width="0.1*"></ColumnDefinition>
@@ -35,16 +36,23 @@
             </StackLayout>
             </Frame>
 
-            <StackLayout Grid.Column="3" Grid.Row="2">
-                <ListView>
+            <StackLayout Grid.Column="3" Grid.Row="2" BackgroundColor="WhiteSmoke">
+                <ListView BindingContext="{Binding Entries}">
                     <ListView.Header>Mina inlägg</ListView.Header>
                 </ListView>
 
-                <ListView>
+                <ListView ItemsSource="{Binding DataContext.Comments}">
                     <ListView.Header>Mina kommentarer</ListView.Header>
+                    <ListView.ItemTemplate>
+                        <DataTemplate>
+                            <StackLayout BindingContext="{Binding Entry}">
+                                <Label Text="{Binding Description}"></Label>
+                            </StackLayout>
+                        </DataTemplate>
+                    </ListView.ItemTemplate>
                 </ListView>
 
-                <ListView>
+                <ListView BindingContext="{Binding Reactions}">
                     <ListView.Header>Gillade inlägg</ListView.Header>
                 </ListView>
 

@@ -71,17 +71,17 @@ namespace NikeClientApp.Views
             //Mapsample.MoveToRegion(maps);
         }
 
-        private void PinButt_Clicked(object sender, EventArgs e)
-        {
-            pinner = new Pin()
-            {
-                Label = "BlaBla",
-                Address = "BlaStreet",
-                Type = PinType.Place
-            };
+        //private void PinButt_Clicked(object sender, EventArgs e)
+        //{
+        //    pinner = new Pin()
+        //    {
+        //        Label = "BlaBla",
+        //        Address = "BlaStreet",
+        //        Type = PinType.Place
+        //    };
 
-            pinner.MarkerClicked += Pin_MarkerClicked;
-        }
+        //    pinner.MarkerClicked += Pin_MarkerClicked;
+        //}
 
         private async void Mapsample_MapClicked(object sender, MapClickedEventArgs e)
         {

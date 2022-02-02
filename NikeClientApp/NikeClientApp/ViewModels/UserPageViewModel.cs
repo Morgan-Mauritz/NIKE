@@ -55,22 +55,33 @@ namespace NikeClientApp.ViewModels
         }
 
 
-        private async Task<object> OnEdit(object param)
+        private async Task OnEdit(object param)
         {
 
         }
 
         private async Task OnShow()
         {
-            Entries = new ObservableCollection<Models.Entry>((await entryClient.GetList("entry/list", "")).Data);
+            var comments = await commentClient.GetList("entry/list", "");
 
-            Comments = new ObservableCollection<Comment>((await commentClient.GetList("entry/comments", "")).Data);
+            var reactions = await reactionClient.GetList("entry/reactions", "");
 
-            Reactions = new ObservableCollection<Reaction>((await reactionClient.GetList("entry/reactions", "")).Data);
+            var entries = await entryClient.GetList("entry/list", "");
+  
+            Comments = new ObservableCollection<Comment>(comments.Data);
+
+            Reactions = new ObservableCollection<Reaction>(reactions.Data);
+
+            Entries = new ObservableCollection<Models.Entry>(entries.Data);  
         }
          
         public UserPageViewModel(INaviService naviService) : base(naviService)
         {
+            userClient = new HttpService<User>();
+            reactionClient = new HttpService<Reaction>();
+            commentClient = new HttpService<Comment>();
+            entryClient = new HttpService<Models.Entry>();
+
             Task.Run(async () => await OnShow());
         }
     }
