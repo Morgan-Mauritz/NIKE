@@ -46,7 +46,7 @@ namespace Api.Model
     {
         public long Id { get; set; }
         public string Description { get; set; }
-        public string UserName { get; set; }
+        public string Username { get; set; }
         public long? Likes { get; set; }
         public long? Rating { get; set; }
         public string POI { get; set; }

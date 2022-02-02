@@ -188,7 +188,7 @@ namespace Api.Controllers
                 prevOffset = 0;
             }
 
-            var result = await _service.GetComments(apiKey, filter);
+            var result = await _service.GetLikes(apiKey, filter);
             var nextPage = httpString + $"/poi/list?offset={nextOffset}&amount={filter.Amount}";
             var prevPage = httpString + $"/poi/list?offset={prevOffset}&amount={filter.Amount}";
 
@@ -204,7 +204,7 @@ namespace Api.Controllers
             {
                 nextPage = null;
             }
-            return Ok(new PaginationResponse<List<CommentDTO>>(result.comments, filter.Offset, filter.Amount, nextPage, prevPage, result.total));
+            return Ok(new PaginationResponse<List<LikeDislikeEntryDto>>(result.likes, filter.Offset, filter.Amount, nextPage, prevPage, result.total));
         }
        [HttpGet("list")]
        public async Task<IActionResult> GetEntries([FromHeader] string apiKey, [FromQuery] BaseFilter filter)
@@ -218,7 +218,7 @@ namespace Api.Controllers
                 prevOffset = 0;
             }
 
-            var result = await _service.GetComments(apiKey, filter);
+            var result = await _service.GetEntries(apiKey, filter);
             var nextPage = httpString + $"/poi/list?offset={nextOffset}&amount={filter.Amount}";
             var prevPage = httpString + $"/poi/list?offset={prevOffset}&amount={filter.Amount}";
 
@@ -234,7 +234,7 @@ namespace Api.Controllers
             {
                 nextPage = null;
             }
-            return Ok(new PaginationResponse<List<CommentDTO>>(result.comments, filter.Offset, filter.Amount, nextPage, prevPage, result.total));
+            return Ok(new PaginationResponse<List<EntryDto>>(result.entries, filter.Offset, filter.Amount, nextPage, prevPage, result.total));
         }
     }
 }
