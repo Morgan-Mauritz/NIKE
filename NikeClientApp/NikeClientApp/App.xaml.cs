@@ -3,6 +3,7 @@ using Xamarin.Forms;
 using Xamarin.Forms.Xaml;
 using NikeClientApp.Views;
 using NikeClientApp.ViewModels;
+using Xamarin.Essentials;
 
 namespace NikeClientApp
 {
@@ -11,9 +12,10 @@ namespace NikeClientApp
         public App()
         {
             InitializeComponent();
-
-            MainPage = new NavigationPage(new MainPage());
-            
+            var theme = Preferences.Get("OSAppTheme", Enum.GetName(typeof(OSAppTheme), OSAppTheme.Unspecified));
+            App.Current.UserAppTheme = (OSAppTheme)Enum.Parse(typeof(OSAppTheme), theme);
+            MainPage = new NavigationPage(new Settings());
+           
             var navService = DependencyService.Get<INaviService>() as NaviService;
             navService.Navigation = MainPage.Navigation;
 
