@@ -11,6 +11,8 @@ namespace Api.Model.MappingProfiles
             CreateMap<AddEntry, Entry>().ForMember(c => c.POI, opt => opt.Ignore());
             CreateMap<UpdateEntry, Entry>().ForAllMembers(opt => opt.Condition((src, dest, srcmember) => srcmember != null));
 
+            CreateMap<LikeDislikeEntry, LikeDislikeEntryDto>();
+            CreateMap<Comment, CommentDTO>();
 
 
         }
