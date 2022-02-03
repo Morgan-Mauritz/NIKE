@@ -13,15 +13,15 @@ namespace NikeClientApp.Views
     [XamlCompilation(XamlCompilationOptions.Compile)]
     public partial class UserPage : ContentPage
     {
-        MapPageViewModel ViewModel => BindingContext as MapPageViewModel;
-        
+        UserPageViewModel ViewModel => BindingContext as UserPageViewModel;
 
-        protected override void OnAppearing()
+
+        protected async override void OnAppearing()
         {
             base.OnAppearing();
 
             // Initialize ViewModel
-            ViewModel?.Init();
+            await ViewModel?.InitAsync();
         }
 
         public UserPage()

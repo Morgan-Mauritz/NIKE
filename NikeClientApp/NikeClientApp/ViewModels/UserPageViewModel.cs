@@ -81,8 +81,11 @@ namespace NikeClientApp.ViewModels
             reactionClient = new HttpService<Reaction>();
             commentClient = new HttpService<Comment>();
             entryClient = new HttpService<Models.Entry>();
+        }
 
-            Task.Run(async () => await OnShow());
+        public async override Task InitAsync()
+        {
+            await OnShow();
         }
     }
 }
