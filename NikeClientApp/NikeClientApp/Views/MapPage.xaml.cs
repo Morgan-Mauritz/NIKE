@@ -80,8 +80,7 @@ namespace NikeClientApp.Views
         //        Type = PinType.Place
         //    };
 
-        //    pinner.MarkerClicked += Pin_MarkerClicked;
-
+        //    //pinner.MarkerClicked += Pin_MarkerClicked;
         //}
 
         private async void Mapsample_MapClicked(object sender, MapClickedEventArgs e)

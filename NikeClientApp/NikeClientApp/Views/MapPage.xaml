@@ -47,7 +47,6 @@
 
                     </StackLayout>
                     <StackLayout>
-
                         <ImageButton Source="Assets/knapp.png" Command="{Binding _PinIcon_Clicked}" HeightRequest="50" HorizontalOptions="End" Margin="0,0,0,0" />
 
 
