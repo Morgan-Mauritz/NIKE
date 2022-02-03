@@ -87,6 +87,7 @@
                     
             </Frame>
 
+
             <StackLayout Grid.Column="3" Grid.Row="2" BackgroundColor="Black">
                 <ListView ItemsSource="{Binding Entries}">
                     <ListView.Header>Mina inlägg</ListView.Header>
@@ -140,19 +141,19 @@
 
                 <ListView ItemsSource="{Binding Reactions}">
                     <ListView.Header>Gillade inlägg</ListView.Header>
-                    <ListView.ItemTemplate>
-                        <DataTemplate>
-                            <ViewCell>
-                                <StackLayout BindingContext="{Binding Entry}">
-                                    <Label Text="{Binding Description}"></Label>
-                                    <Label Text="{Binding Rating}"></Label>
-                                    <Label Text="{Binding Username}"></Label>
-                                    <Label Text="{Binding POI}"></Label>
-                                </StackLayout>
-                            </ViewCell>
-                        </DataTemplate>
-                    </ListView.ItemTemplate>
-                </ListView>
+                            <ListView.ItemTemplate>
+                                <DataTemplate>
+                                    <ViewCell>
+                                        <StackLayout BindingContext="{Binding Entry}">
+                                            <Label Text="{Binding Description}"></Label>
+                                            <Label Text="{Binding Rating}"></Label>
+                                            <Label Text="{Binding Username}"></Label>
+                                            <Label Text="{Binding POI}"></Label>
+                                        </StackLayout>
+                                    </ViewCell>
+                                </DataTemplate>
+                            </ListView.ItemTemplate>
+                        </ListView>
 
             </StackLayout>
 

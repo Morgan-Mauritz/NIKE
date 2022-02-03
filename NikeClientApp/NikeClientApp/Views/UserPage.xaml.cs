@@ -21,6 +21,7 @@ namespace NikeClientApp.Views
             base.OnAppearing();
 
             // Initialize ViewModel
+          
             await ViewModel?.InitAsync();
         }
 
