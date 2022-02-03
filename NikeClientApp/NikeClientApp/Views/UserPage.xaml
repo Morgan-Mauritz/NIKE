@@ -56,30 +56,30 @@
 
                 <StackLayout MinimumWidthRequest="500" HorizontalOptions="Center">
                     <StackLayout Orientation="Horizontal">
-                        <Entry x:Name="editUsername" Placeholder="Användarnamn" WidthRequest="300" Margin="0,20,0,0" IsReadOnly="True"></Entry>
-                        <ImageButton x:Name="editButtonUsername"  Source="Assets/roundicon.png" HeightRequest="30" Margin="0,20,0,0" > </ImageButton>
+                        <Entry x:Name="editUsername" Placeholder="Användarnamn" WidthRequest="300" Margin="0,20,0,0" IsReadOnly="{Binding UserReadOnly.Username}"></Entry>
+                        <ImageButton x:Name="editButtonUsername"  Source="Assets/roundicon.png" HeightRequest="30" Margin="0,20,0,0" Command="{Binding Edit}" CommandParameter="username" ></ImageButton>
                         </StackLayout>
                     <StackLayout Orientation="Horizontal">
-                        <Entry x:Name="editName"  Placeholder="Förnamn" WidthRequest="300" IsReadOnly="True"></Entry>
-                        <ImageButton x:Name="buttonEditName"  Source="Assets/roundicon.png" HeightRequest="30"></ImageButton>
+                        <Entry x:Name="editName"  Placeholder="Förnamn" WidthRequest="300" IsReadOnly="{Binding UserReadOnly.Firstname}"></Entry>
+                        <ImageButton x:Name="buttonEditName"  Source="Assets/roundicon.png" HeightRequest="30" Command="{Binding Edit}" CommandParameter="name"></ImageButton>
                     </StackLayout>
                     <StackLayout Orientation="Horizontal">
-                        <Entry x:Name="editLastname" Placeholder="Efternamn" WidthRequest="300" IsReadOnly="True"></Entry>
-                        <ImageButton x:Name="buttonEditLastname"  Source="Assets/roundicon.png" HeightRequest="30" ></ImageButton>
+                        <Entry x:Name="editLastname" Placeholder="Efternamn" WidthRequest="300" IsReadOnly="{Binding UserReadOnly.Lastname}"></Entry>
+                        <ImageButton x:Name="buttonEditLastname"  Source="Assets/roundicon.png" HeightRequest="30" Command="{Binding Edit}" CommandParameter="lastname" ></ImageButton>
                     </StackLayout>
                     <StackLayout Orientation="Horizontal">
-                        <Entry x:Name="editEmail"  Placeholder="Email" WidthRequest="300" IsReadOnly="True"></Entry>
-                        <ImageButton x:Name="buttonEditEmail"  Source="Assets/roundicon.png" HeightRequest="30"></ImageButton>
+                        <Entry x:Name="editEmail"  Placeholder="Email" WidthRequest="300" IsReadOnly="{Binding UserReadOnly.Email}"></Entry>
+                        <ImageButton x:Name="buttonEditEmail"  Source="Assets/roundicon.png" HeightRequest="30" Command="{Binding Edit}" CommandParameter="email"></ImageButton>
                     </StackLayout>
                     <StackLayout Orientation="Horizontal">
-                        <Entry x:Name="editPassword"  IsPassword="True" Placeholder="Lösenord" WidthRequest="300" IsReadOnly="True" ></Entry>
-                        <ImageButton x:Name="buttonEditPassword"  Source="Assets/roundicon.png" HeightRequest="30" ></ImageButton>
+                        <Entry x:Name="editPassword"  IsPassword="True" Placeholder="Lösenord" WidthRequest="300" IsReadOnly="{Binding UserReadOnly.Password}" ></Entry>
+                        <ImageButton x:Name="buttonEditPassword"  Source="Assets/roundicon.png" HeightRequest="30" Command="{Binding Edit}" CommandParameter="password"></ImageButton>
                     </StackLayout>
                    
                     <!--<Button Text="Redigera"></Button>-->
                     <StackLayout Orientation="Vertical">
-                    <Button x:Name="buttonSaveInfo" Text="Spara" CornerRadius="15" Margin="0,20,35,0"></Button>
-                        <Button x:Name="buttonRemoveAcc" Text="Radera konto" BackgroundColor="DarkRed" CornerRadius="15" Margin="0,100,35,0"></Button>
+                        <Button x:Name="buttonSaveInfo" Text="Spara" CornerRadius="15" Margin="0,20,35,0" Command="{Binding Save}"></Button>
+                        <Button x:Name="buttonRemoveAcc" Text="Radera konto" BackgroundColor="DarkRed" CornerRadius="15" Margin="0,100,35,0" Command="{Binding Delete}" ></Button>
                     </StackLayout>
                     
                

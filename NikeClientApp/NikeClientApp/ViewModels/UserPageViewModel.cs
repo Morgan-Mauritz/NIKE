@@ -15,8 +15,9 @@ namespace NikeClientApp.ViewModels
         //public ICommand NextPage => new Command(async () => await NavigationService.NavigateTo<MainPageViewModel>());
         public ICommand BackPage => new Command(async () => await NavigationService.GoBack());
         //public ICommand Show => new Command(async () => await OnShow());
-        public ICommand Edit => new Command(async (param) => await OnEdit(param));
-
+        public ICommand Edit => new Command<string>(async (param) => await OnEdit(param));
+        public ICommand Delete => new Command(async (param) => await OnDelete(param));
+        public ICommand Save => new Command(async (param) => await OnSave(param));
         private HttpService<User> userClient;
         private HttpService<Reaction> reactionClient;
         private HttpService<Comment> commentClient;
@@ -55,10 +56,6 @@ namespace NikeClientApp.ViewModels
         }
 
 
-        private async Task OnEdit(object param)
-        {
-
-        }
 
         private async Task OnShow()
         {
@@ -67,20 +64,61 @@ namespace NikeClientApp.ViewModels
             var reactions = await reactionClient.GetList("entry/reactions", "");
 
             var entries = await entryClient.GetList("entry/list", "");
-  
+
             Comments = new ObservableCollection<Comment>(comments.Data);
 
             Reactions = new ObservableCollection<Reaction>(reactions.Data);
 
-            Entries = new ObservableCollection<Models.Entry>(entries.Data);  
+            Entries = new ObservableCollection<Models.Entry>(entries.Data);
         }
-         
+
+        private EditUser _userReadOnly;
+
+        public EditUser UserReadOnly
+        {
+            get { return _userReadOnly; }
+            set { SetProperty(ref _userReadOnly, value); }
+        }
+
+        private async Task OnEdit(string param)
+        {
+            switch (param)
+            {
+                case "username":
+                    UserReadOnly.Username = false;
+                    break;
+                case "name":
+                    UserReadOnly.Firstname = false;
+                    break;
+                case "lastname":
+                    UserReadOnly.Lastname = false;
+                    break;
+                case "email":
+                    UserReadOnly.Email = false;
+                    break;
+                case "password":
+                    UserReadOnly.Password = false;
+                    break;
+
+            }
+        }
+
+
+        public async Task OnSave(object obj)
+        {
+
+        }
+        public async Task OnDelete(object obj)
+        {
+
+        }
         public UserPageViewModel(INaviService naviService) : base(naviService)
         {
             userClient = new HttpService<User>();
             reactionClient = new HttpService<Reaction>();
             commentClient = new HttpService<Comment>();
             entryClient = new HttpService<Models.Entry>();
+            UserReadOnly = new EditUser();
         }
 
         public async override Task InitAsync()
