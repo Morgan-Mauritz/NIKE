@@ -1,11 +1,12 @@
 ﻿<?xml version="1.0" encoding="utf-8" ?>
 <ContentPage xmlns="http://xamarin.com/schemas/2014/forms"
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
-             x:Class="NikeClientApp.Views.UserPage">
+             x:Class="NikeClientApp.Views.UserPage"
+             BackgroundImageSource="Assets/halvkarta.png">
     <ContentPage.Content>
-        
+
         <Grid>
-            
+
             <Grid.ColumnDefinitions>
                 <ColumnDefinition Width="0.1*"></ColumnDefinition>
                 <ColumnDefinition Width="1*"></ColumnDefinition>
@@ -16,36 +17,95 @@
 
             <Grid.RowDefinitions>
                 <RowDefinition Height="0.1*"></RowDefinition>
+                <RowDefinition Height="0.2*"></RowDefinition>
+                <RowDefinition Height="1*"></RowDefinition>
+                <RowDefinition Height="0.9*"></RowDefinition>
                 <RowDefinition Height="0.1*"></RowDefinition>
-                <RowDefinition Height="0.9*"></RowDefinition>
-                <RowDefinition Height="0.9*"></RowDefinition>
             </Grid.RowDefinitions>
 
             <Button Grid.ColumnSpan="5" Text="Tillbaka"></Button>
-            <Frame Grid.Column="1" Grid.Row="2" BackgroundColor="MediumAquamarine">
-            <StackLayout MinimumWidthRequest="500" HorizontalOptions="Center">
-                
-                <Entry Text="asdfasdfasdfasdfsdfasldfkjasldkfj"></Entry>
-                <Entry Text="asdfasdfaj"></Entry>
-                <Entry Text="asdfasdfasdfasdfsdfasldfkjasldkfj"></Entry>
-                <Entry Text="asdfasdfasdfasdfsdfasldfkjasldkfj"></Entry>
-                <Entry Text="asdfasdfasdfasdfsdfasldfkjasldkfj"></Entry>
-                <Button Text="Redigera"></Button>
-                <Button Text="Radera konto"></Button>
-            </StackLayout>
+
+
+            <Grid Grid.Column="1" Grid.Row="1" Grid.RowSpan="4" >
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="0.7*"></ColumnDefinition>
+                    <ColumnDefinition Width="1*"></ColumnDefinition>
+                    <ColumnDefinition Width="0.7*"></ColumnDefinition>
+                </Grid.ColumnDefinitions>
+
+                <Grid.RowDefinitions>
+                         <RowDefinition Height="1*"></RowDefinition>
+                        <RowDefinition Height="1*"></RowDefinition>
+                        <RowDefinition Height="1*"></RowDefinition>
+                </Grid.RowDefinitions>
+               
+
+                <Frame BackgroundColor="DarkSlateGray" CornerRadius="500" Grid.Column="1" Grid.Row="0">
+
+                    <StackLayout>
+                        <Label TextColor="White" Text=" Min&#10;Profil" HorizontalOptions="Center" VerticalOptions="Center" Margin="0,40,0,0" FontSize="40"></Label>
+                      
+                    </StackLayout>
+                    
+                </Frame>
+  
+                </Grid>
+            
+            
+            <Frame Grid.Column="1" Grid.Row="2" BackgroundColor="DarkSlateGray" Grid.RowSpan="2" Margin="100,165,100,0" >
+
+                <StackLayout MinimumWidthRequest="500" HorizontalOptions="Center">
+                    <StackLayout Orientation="Horizontal">
+                        <Entry x:Name="editUsername" Placeholder="Användarnamn" WidthRequest="300" Margin="0,20,0,0" IsReadOnly="True"></Entry>
+                        <ImageButton x:Name="editButtonUsername"  Source="Assets/roundicon.png" HeightRequest="30" Margin="0,20,0,0" > </ImageButton>
+                        </StackLayout>
+                    <StackLayout Orientation="Horizontal">
+                        <Entry x:Name="editName"  Placeholder="Förnamn" WidthRequest="300" IsReadOnly="True"></Entry>
+                        <ImageButton x:Name="buttonEditName"  Source="Assets/roundicon.png" HeightRequest="30"></ImageButton>
+                    </StackLayout>
+                    <StackLayout Orientation="Horizontal">
+                        <Entry x:Name="editLastname" Placeholder="Efternamn" WidthRequest="300" IsReadOnly="True"></Entry>
+                        <ImageButton x:Name="buttonEditLastname"  Source="Assets/roundicon.png" HeightRequest="30" ></ImageButton>
+                    </StackLayout>
+                    <StackLayout Orientation="Horizontal">
+                        <Entry x:Name="editEmail"  Placeholder="Email" WidthRequest="300" IsReadOnly="True"></Entry>
+                        <ImageButton x:Name="buttonEditEmail"  Source="Assets/roundicon.png" HeightRequest="30"></ImageButton>
+                    </StackLayout>
+                    <StackLayout Orientation="Horizontal">
+                        <Entry x:Name="editPassword"  IsPassword="True" Placeholder="Lösenord" WidthRequest="300" IsReadOnly="True" ></Entry>
+                        <ImageButton x:Name="buttonEditPassword"  Source="Assets/roundicon.png" HeightRequest="30" ></ImageButton>
+                    </StackLayout>
+                   
+                    <!--<Button Text="Redigera"></Button>-->
+                    <StackLayout Orientation="Vertical">
+                    <Button x:Name="buttonSaveInfo" Text="Spara" CornerRadius="15" Margin="0,20,35,0"></Button>
+                        <Button x:Name="buttonRemoveAcc" Text="Radera konto" BackgroundColor="DarkRed" CornerRadius="15" Margin="0,100,35,0"></Button>
+                    </StackLayout>
+                    
+               
+                </StackLayout>  
+                    
             </Frame>
 
-            <StackLayout Grid.Column="3" Grid.Row="2">
-                <ListView>
-                    <ListView.Header>Mina inlägg</ListView.Header>
+            <StackLayout Grid.Column="3" Grid.Row="1" Grid.RowSpan="3" >
+                <ListView BackgroundColor="DarkSlateGray" HorizontalOptions="Center">
+                    <ListView.Header>
+                        
+                            <Label Text="Mina inlägg" TextColor="White" HorizontalOptions="Center"></Label>
+                        
+                    </ListView.Header>
                 </ListView>
 
-                <ListView>
-                    <ListView.Header>Mina kommentarer</ListView.Header>
+                <ListView BackgroundColor="DarkSlateGray">
+                    <ListView.Header>
+                        <Label Text="Mina kommentarer" TextColor="White" HorizontalOptions="Center"></Label>
+                    </ListView.Header>
                 </ListView>
 
-                <ListView>
-                    <ListView.Header>Gillade inlägg</ListView.Header>
+                <ListView BackgroundColor="DarkSlateGray">
+                    <ListView.Header>
+                        <Label Text="Gillade inlägg" TextColor="White" HorizontalOptions="Center" ></Label>
+                    </ListView.Header>
                 </ListView>
 
             </StackLayout>
