@@ -28,7 +28,7 @@ namespace NikeClientApp.Views
         public UserPage()
         {
             InitializeComponent();
-            BackgroundColor = Color.Black;
+            //BackgroundColor = Color.Black;
 
             BindingContext = new UserPageViewModel(DependencyService.Get<INaviService>());
 

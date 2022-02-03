@@ -17,17 +17,22 @@ namespace NikeClientApp.Models
         public string Username { get; set; }
         public string ApiKey { get; set; }
     }
-    public class EditUser
+    public class EditUser : NotifyModel
     {
-        public bool Firstname { get; set; } = true;
+        private bool _firstname = true;
+        public bool Firstname { get => _firstname; set { SetProperty(ref _firstname, value); } }
 
-        public bool Lastname { get; set; } = true;
+        private bool _lastname = true;
+        public bool Lastname { get => _lastname; set { SetProperty(ref _lastname, value); } }
 
-        public bool Email { get; set; } = true;
+        private bool _email = true;
+        public bool Email { get => _email; set { SetProperty(ref _email, value); } }
 
-        public bool Password { get; set; } = true;
+        private bool _password = true;
+        public bool Password { get => _password; set { SetProperty(ref _password, value); } }
 
-        public bool Username { get; set; } = true;
+        private bool _username = true;
+        public bool Username { get => _username; set { SetProperty(ref _username, value); } }
 
     }
 }

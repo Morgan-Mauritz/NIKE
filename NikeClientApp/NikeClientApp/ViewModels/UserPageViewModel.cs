@@ -15,7 +15,7 @@ namespace NikeClientApp.ViewModels
         //public ICommand NextPage => new Command(async () => await NavigationService.NavigateTo<MainPageViewModel>());
         public ICommand BackPage => new Command(async () => await NavigationService.GoBack());
         //public ICommand Show => new Command(async () => await OnShow());
-        public ICommand Edit => new Command<string>(async (param) => await OnEdit(param));
+        public ICommand Edit => new Command<string>((param) => OnEdit(param));
         public ICommand Delete => new Command(async (param) => await OnDelete(param));
         public ICommand Save => new Command(async (param) => await OnSave(param));
         private HttpService<User> userClient;
@@ -80,7 +80,7 @@ namespace NikeClientApp.ViewModels
             set { SetProperty(ref _userReadOnly, value); }
         }
 
-        private async Task OnEdit(string param)
+        private void OnEdit(string param)
         {
             switch (param)
             {
@@ -106,8 +106,9 @@ namespace NikeClientApp.ViewModels
 
         public async Task OnSave(object obj)
         {
-
+            var user = User;
         }
+
         public async Task OnDelete(object obj)
         {
 
@@ -119,6 +120,12 @@ namespace NikeClientApp.ViewModels
             commentClient = new HttpService<Comment>();
             entryClient = new HttpService<Models.Entry>();
             UserReadOnly = new EditUser();
+
+            User = new User();
+
+            User.Firstname = "Olle";
+            User.Lastname = "Ollesson";
+            User.Email = "olle@olle.com";
         }
 
         public async override Task InitAsync()
