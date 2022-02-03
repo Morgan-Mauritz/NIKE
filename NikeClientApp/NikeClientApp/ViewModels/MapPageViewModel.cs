@@ -19,11 +19,11 @@ namespace NikeClientApp.ViewModels
         public Command BackPage; // => new Command(async () => await NavigationService.GoBack());
         public ICommand _AddPOI_Clicked => new Command(async () => await AddPOI_Clicked());
         public ICommand _PinIcon_Clicked => new Command(async () => await PinIcon_Clicked());
-        //public ICommand _ratingAmount => new Command(async () => await );
+        public ICommand _RatingAmount => new Command(async (object sender) => await RatingAmount(sender));
 
         //public ICommand ShowAddPoiModal => new Command(async () => await ShowModalWhenClicked());
 
-        HttpService<POI> httpClient = new HttpService<POI>();
+        HttpService<Models.Entry> httpClient = new HttpService<Models.Entry>();
         HttpService<Forecast> weatherClient = new HttpService<Forecast>(); 
 
         List<Pin> ListOfPins = new List<Pin>();
@@ -56,16 +56,27 @@ namespace NikeClientApp.ViewModels
             }
         }
 
+        Models.Entry _entry = new Models.Entry();
+        public Models.Entry entryToAdd
+        {
+            get => _entry;
+
+            set
+            {
+                SetProperty(ref _entry, value);
+            }
+        }
+
         async Task<bool> AddPOI_Clicked()
         {
-            if (poiToAdd.Name != null || poiToAdd.Comment != null )
+
+            if (poiToAdd.Name != null )
             {
-               
                 poiToAdd.Category = "";
 
                 try
                 {
-                    await httpClient.Post("poi", poiToAdd);
+                    await httpClient.Post("entry", entryToAdd);
                 }
                 catch(Exception ex)
                 {
@@ -104,8 +115,6 @@ namespace NikeClientApp.ViewModels
 
         public async void MapClicked(object sender, MapClickedEventArgs e)
         {
-            var geoCoder = new Geocoder();
-
             if (pinner != null)
             {
                 pinner.Position = e.Position;
@@ -120,19 +129,20 @@ namespace NikeClientApp.ViewModels
                 else
                 {
                     addPoiModalIsVisible = true;
-                    var Address = await geoCoder.GetAddressesForPositionAsync(e.Position); // TODO: Separate adress/City/Country in method, post to db
-                    //setting the country prop for the PointOfInterest
-                    poiToAdd.Country = GetCountryFromDataString(Address.First());
-                    poiToAdd.Longitude = e.Position.Longitude;
-                    poiToAdd.Latitude = e.Position.Latitude;
-                    //Fetch city from weatherApi
-                    var response = await weatherClient.Get("forecast", $"?longitude={poiToAdd.Longitude}&latitude={poiToAdd.Latitude}");
-                    poiToAdd.City = response.Data.City;  
+                    //Method to populate POI
+                    await PopulatePOI(e.Position);
+                    await PopulateEntry();
+
                     ListOfPins.Add(pinner);
                     pinner = null;
-
                 }
             }
+        }
+
+        public async Task RatingAmount(object sender)
+        {
+            entryRating = int.Parse(sender.ToString());
+            
         }
         private async void Pin_MarkerClicked(object sender, PinClickedEventArgs e) //när man klickar på pinnen
         {
@@ -145,7 +155,6 @@ namespace NikeClientApp.ViewModels
                 addPoiModalIsVisible = false;
             }
         }
-
         public string GetCountryFromDataString(string dataString)
         {
             string country;
@@ -156,6 +165,29 @@ namespace NikeClientApp.ViewModels
             streetAddress = splitStrings[0]; 
 
             return country;
+        }
+
+        public async Task PopulatePOI(Position position)
+        {
+            var geoCoder = new Geocoder();
+            var Address = await geoCoder.GetAddressesForPositionAsync(position); // TODO: Separate adress/City/Country in method, post to db
+
+            //setting the country prop for the PointOfInterest
+            poiToAdd.Country = GetCountryFromDataString(Address.First());
+            poiToAdd.Longitude = position.Longitude;
+            poiToAdd.Latitude = position.Latitude;
+
+            //Fetch city from weatherApi
+            var response = await weatherClient.Get("forecast", $"?longitude={poiToAdd.Longitude}&latitude={poiToAdd.Latitude}");
+            poiToAdd.City = response.Data.City;
+        }
+
+        int entryRating;
+        public async Task PopulateEntry()
+        {
+            entryToAdd.POI = poiToAdd;
+            entryToAdd.Rating = entryRating;
+            entryToAdd.UserName = "admin";
         }
     }
 }
