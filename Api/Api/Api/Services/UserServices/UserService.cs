@@ -56,5 +56,17 @@ namespace Api.Services.UserServices
 
             return _mapper.Map<UserDto>(user);
         }
+
+        public async Task<UserDto> GetUser(string apiKey)
+        {
+            var user = await _repository.GetByApiKey(apiKey);
+
+            if (user == null)
+            {
+                throw new UnauthorizedAccessException("Du har ej åtkomst till användaren");
+            }
+
+            return _mapper.Map<UserDto>(user);
+        }
     }
 }

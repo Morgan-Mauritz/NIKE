@@ -7,7 +7,7 @@ namespace Api.Services.UserServices
     {
         Task<UserDto> AddUser(AddUserDto addUserDto);
         Task<UserDto> UpdateUser(UpdateUserDto user, string apiKey);
-
+        Task<UserDto> GetUser(string apiKey);
         Task<UserDto> RemoveUser(string apiKey);
     }
 }
