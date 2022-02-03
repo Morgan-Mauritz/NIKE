@@ -87,25 +87,71 @@
                     
             </Frame>
 
-            <StackLayout Grid.Column="3" Grid.Row="1" Grid.RowSpan="3" >
-                <ListView BackgroundColor="DarkSlateGray" HorizontalOptions="Center">
-                    <ListView.Header>
-                        
-                            <Label Text="Mina inlägg" TextColor="White" HorizontalOptions="Center"></Label>
-                        
-                    </ListView.Header>
+            <StackLayout Grid.Column="3" Grid.Row="2" BackgroundColor="Black">
+                <ListView ItemsSource="{Binding Entries}">
+                    <ListView.Header>Mina inlägg</ListView.Header>
+                    <ListView.ItemTemplate>
+                        <DataTemplate>
+                            <ViewCell>
+                                <StackLayout>
+                                    <Label Text="{Binding Description}"></Label>
+                                    <Label Text="{Binding Rating}"></Label>
+                                    <Label Text="{Binding Username}"></Label>
+                                    <Label Text="{Binding POI}"></Label>
+                                </StackLayout>
+                            </ViewCell>
+                        </DataTemplate>
+                    </ListView.ItemTemplate>
                 </ListView>
 
-                <ListView BackgroundColor="DarkSlateGray">
-                    <ListView.Header>
-                        <Label Text="Mina kommentarer" TextColor="White" HorizontalOptions="Center"></Label>
-                    </ListView.Header>
+                <ListView ItemsSource="{Binding Comments}" >
+                    <ListView.Header>Mina kommentarer</ListView.Header>
+                    <ListView.ItemTemplate>
+                        <DataTemplate>
+                            <ViewCell>
+                                <StackLayout>
+                                    
+                                        <Label Text="{Binding Entry.Username}"></Label>
+                                        <Label Text="{Binding Entry.POI}"></Label>
+                                    <StackLayout Orientation="Horizontal">
+                                        
+                                    <StackLayout Orientation="Horizontal">
+                                        <Label Text="Inlägg:"></Label>
+                                        <Label Text="{Binding Entry.Description}"></Label>
+                                    </StackLayout>
+                                    <StackLayout Orientation="Horizontal">
+                                            <StackLayout Orientation="Horizontal" x:Name="ratingBar" HorizontalOptions="Center">
+
+                                                <Label Text="{Binding Entry.StarRating}" FontSize="Large" x:Name="star1" StyleId="star1"/>
+
+                                            </StackLayout>
+                                        </StackLayout>
+                                    </StackLayout>
+                                    <StackLayout Orientation="Horizontal">
+                                        <Label Text="Din kommentar:"></Label>
+                                        <Label Text="{Binding Text}"></Label>
+                                    </StackLayout>
+                                </StackLayout>
+                                
+                            </ViewCell>
+                        </DataTemplate>
+                    </ListView.ItemTemplate>
                 </ListView>
 
-                <ListView BackgroundColor="DarkSlateGray">
-                    <ListView.Header>
-                        <Label Text="Gillade inlägg" TextColor="White" HorizontalOptions="Center" ></Label>
-                    </ListView.Header>
+                <ListView ItemsSource="{Binding Reactions}">
+                    <ListView.Header>Gillade inlägg</ListView.Header>
+                    <ListView.ItemTemplate>
+                        <DataTemplate>
+                            <ViewCell>
+                                <StackLayout BindingContext="{Binding Entry}">
+                                    <Label Text="{Binding Description}"></Label>
+                                    <Label Text="{Binding Rating}"></Label>
+                                    <Label Text="{Binding Username}"></Label>
+                                    <Label Text="{Binding POI}"></Label>
+                                </StackLayout>
+                            </ViewCell>
+                        </DataTemplate>
+                    </ListView.ItemTemplate>
                 </ListView>
 
             </StackLayout>

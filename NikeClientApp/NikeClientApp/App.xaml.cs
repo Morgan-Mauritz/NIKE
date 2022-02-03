@@ -20,6 +20,7 @@ namespace NikeClientApp
            
             navService.RegisterViewMapping(typeof(MainPageViewModel), typeof(MainPage));
             navService.RegisterViewMapping(typeof(MapPageViewModel), typeof(MapPage));
+            navService.RegisterViewMapping(typeof(UserPageViewModel), typeof(UserPage));
         }
 
         protected override void OnStart()

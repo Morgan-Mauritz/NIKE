@@ -7,10 +7,12 @@ namespace Api.Model.MappingProfiles
         public EntryMapping()
         {
             CreateMap<Entry, EntryDto>().ForMember(c => c.POI, opt => opt.MapFrom(src => src.POI.Name))
-                .ForMember(c => c.UserName, opt => opt.MapFrom(src => src.User.Username));
+                .ForMember(c => c.Username, opt => opt.MapFrom(src => src.User.Username));
             CreateMap<AddEntry, Entry>().ForMember(c => c.POI, opt => opt.Ignore());
             CreateMap<UpdateEntry, Entry>().ForAllMembers(opt => opt.Condition((src, dest, srcmember) => srcmember != null));
 
+            CreateMap<LikeDislikeEntry, LikeDislikeEntryDto>();
+            CreateMap<Comment, CommentDTO>().ForMember(dest => dest.Text, opt => opt.MapFrom(src => src.Comment1));
 
 
         }
