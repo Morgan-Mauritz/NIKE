@@ -58,12 +58,30 @@
                     <ListView.ItemTemplate>
                         <DataTemplate>
                             <ViewCell>
-                                <StackLayout BindingContext="{Binding Entry}">
-                                    <Label Text="{Binding Description}"></Label>
-                                    <Label Text="{Binding Rating}"></Label>
-                                    <Label Text="{Binding Username}"></Label>
-                                    <Label Text="{Binding POI}"></Label>
+                                <StackLayout>
+                                    
+                                        <Label Text="{Binding Entry.Username}"></Label>
+                                        <Label Text="{Binding Entry.POI}"></Label>
+                                    <StackLayout Orientation="Horizontal">
+                                        
+                                    <StackLayout Orientation="Horizontal">
+                                        <Label Text="Inlägg:"></Label>
+                                        <Label Text="{Binding Entry.Description}"></Label>
+                                    </StackLayout>
+                                    <StackLayout Orientation="Horizontal">
+                                            <StackLayout Orientation="Horizontal" x:Name="ratingBar" HorizontalOptions="Center">
+
+                                                <Label Text="{Binding Entry.StarRating}" FontSize="Large" x:Name="star1" StyleId="star1"/>
+
+                                            </StackLayout>
+                                        </StackLayout>
+                                    </StackLayout>
+                                    <StackLayout Orientation="Horizontal">
+                                        <Label Text="Din kommentar:"></Label>
+                                        <Label Text="{Binding Text}"></Label>
+                                    </StackLayout>
                                 </StackLayout>
+                                
                             </ViewCell>
                         </DataTemplate>
                     </ListView.ItemTemplate>
