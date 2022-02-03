@@ -94,7 +94,7 @@ namespace NikeClientApp.Views
 
         //private async void Pin_MarkerClicked(object sender, PinClickedEventArgs e) //när man klickar på pinnen
         //{
-        //    var ans = await DisplayAlert("Ta bort pin", "Vill du ta bort den valda pin?", "Ja", "Nej"); 
+        //    var ans = await DisplayAlert("Ta bort pin", "Vill du ta bort den valda pin?", "Ja", "Nej");
         //    if (ans == true)
         //    {
         //        var pin = sender as Pin;

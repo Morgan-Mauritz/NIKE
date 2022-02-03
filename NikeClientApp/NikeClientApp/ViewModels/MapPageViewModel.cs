@@ -29,7 +29,6 @@ namespace NikeClientApp.ViewModels
         List<Pin> ListOfPins = new List<Pin>();
         public Pin pinner { get; set; }
 
-
         public MapPageViewModel(INaviService naviService) : base(naviService)
         {
             map.MapClicked += MapClicked;
@@ -66,7 +65,7 @@ namespace NikeClientApp.ViewModels
 
                 try
                 {
-                    await httpClient.Post("poi", poiToAdd); //TODO: Add entry
+                    await httpClient.Post("poi", poiToAdd);
                 }
                 catch(Exception ex)
                 {
