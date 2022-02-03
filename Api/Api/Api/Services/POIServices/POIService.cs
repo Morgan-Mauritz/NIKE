@@ -37,6 +37,12 @@ namespace Api.Services.POIServices
                 throw new UnauthorizedAccessException("Du behöver logga in för att lägga till en sevärdhet");
             }
 
+            var checkIfExists = await _POIRepository.Get(pOIDto.Longitude, pOIDto.Latitude, pOIDto.Name);
+            if (checkIfExists != null)
+            {
+                throw new Exception("Du har redan gjort ett inlägg för den här platsen");
+            }
+
             return _mapper.Map<POIDto>(await _POIRepository.Set(pOIDto));
         }
     }

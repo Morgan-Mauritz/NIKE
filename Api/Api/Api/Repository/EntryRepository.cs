@@ -66,7 +66,7 @@ namespace Api.Repository
 
         public async Task<(List<Comment> comments, int total)> GetComments(long userID, BaseFilter filter) 
         {
-            var query = _context.Comments.Where(x => x.UserId == userID).Include(x => x.Entry);
+            var query = _context.Comments.Where(x => x.UserId == userID).Include(x => x.Entry).ThenInclude(x => x.User).Include(x => x.Entry).ThenInclude(x => x.POI);
 
             var total = query.Count();
 
@@ -75,7 +75,7 @@ namespace Api.Repository
         }
         public async Task<(List<Entry> entries, int total)> GetEntries(long userID, BaseFilter filter)
         {
-            var query = _context.Entries.Where(x => x.UserId == userID);
+            var query = _context.Entries.Where(x => x.UserId == userID).Include(x => x.User).Include(x => x.POI);
 
             var total = query.Count();
 
@@ -84,7 +84,7 @@ namespace Api.Repository
         }
         public async Task<(List<LikeDislikeEntry> likes, int total)> GetLikes(long userID, BaseFilter filter)
         {
-            var query = _context.LikeDislikeEntry.Where(x => x.UserId == userID).Include(x => x.Entry);
+            var query = _context.LikeDislikeEntry.Where(x => x.UserId == userID).Include(x => x.Entry).ThenInclude(x => x.User).Include(x => x.Entry).ThenInclude(x => x.POI);
 
             var total = query.Count();
 

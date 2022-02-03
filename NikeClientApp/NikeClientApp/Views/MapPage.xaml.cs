@@ -81,6 +81,7 @@ namespace NikeClientApp.Views
         //    };
 
         //    pinner.MarkerClicked += Pin_MarkerClicked;
+
         //}
 
         private async void Mapsample_MapClicked(object sender, MapClickedEventArgs e)
@@ -104,26 +105,26 @@ namespace NikeClientApp.Views
         //    }
         //}
 
-        private async void AddLoc_Clicked(object sender, EventArgs e) //lägg till sevärdhet
-        {
-            if (EntryPoi.Text == null || EntryCommentPoi.Text == null || star1.TextColor == Color.Gray)
-            {
-                await DisplayAlert("Fel", "Du måste fylla alla fält och betygsätta. ", "OK");
-                return;
-            }
+        //private async void AddLoc_Clicked(object sender, EventArgs e) //lägg till sevärdhet
+        //{
+        //    if (EntryPoi.Text == null || EntryCommentPoi.Text == null || star1.TextColor == Color.Gray)
+        //    {
+        //        await DisplayAlert("Fel", "Du måste fylla alla fält och betygsätta. ", "OK");
+        //        return;
+        //    }
 
 
-            //if (star1.TextColor == Color.Gray)
-            //{
-            //    await DisplayAlert("Fel", "Du måste betygsätta.", "OK");
-            //    return;
-            //}
+        //    //if (star1.TextColor == Color.Gray)
+        //    //{
+        //    //    await DisplayAlert("Fel", "Du måste betygsätta.", "OK");
+        //    //    return;
+        //    //}
 
-            Reset();
+        //    Reset();
 
-            AddPoiModal.IsVisible = false;
-            await DisplayAlert("Grattis", "Du har nu lagt till en sevärdhet", "OK");
-        }
+        //    AddPoiModal.IsVisible = false;
+        //    await DisplayAlert("Grattis", "Du har nu lagt till en sevärdhet", "OK");
+        //}
 
 
 
