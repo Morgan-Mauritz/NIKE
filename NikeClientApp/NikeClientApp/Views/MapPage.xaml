@@ -4,90 +4,46 @@
              xmlns:Map ="Windows.UI.Xaml.Controls.Maps; assembly=Windows.UI.Xaml.Controls.Maps"
              x:Class="NikeClientApp.Views.MapPage">
     <ContentPage.Content>
-
-
-        <Grid >
-
-            <!--<maps:Map  x:Name="Mapsample" 
-                       Margin="0,0,0,0" 
-                       MapClicked="Mapsample_MapClicked"
-                       ItemsSource="{Binding Locations}">
-
-                <maps:Map.ItemTemplate>
-
-                    <DataTemplate>
-
-                        <maps:Pin Position="{Binding Position}" 
-                              Address="{Binding Address}" 
-                              Label="{Binding Description}" 
-                              MarkerClicked="Pin_MarkerClicked" >
-
-                        </maps:Pin>
-                    </DataTemplate>
-                </maps:Map.ItemTemplate>
-
-            </maps:Map>-->
-
-            <ContentView Content="{Binding map}">
-                
-            </ContentView>
+        <Grid>
+            <ContentView Content="{Binding map}"></ContentView>
 
             <Frame Margin="530,0,0,0" HorizontalOptions="End">
-
-
                 <StackLayout Spacing="50" Margin="0,0,0,0">
                     <StackLayout Orientation="Horizontal">
                         <Frame Padding="0.1" CornerRadius="15" BorderColor="Black"  IsClippedToBounds="True">
                             <Editor x:Name="TBSearchbar"   BackgroundColor="White" Opacity="0.4"  Margin="0,0,0,0"  WidthRequest="160" />
-
-
                         </Frame>
                         <ImageButton Source="Assets/gg.png" HeightRequest="40" VerticalOptions="EndAndExpand" Clicked="SearchButt_Clicked" />
-
-
                     </StackLayout>
                     <StackLayout>
                         <ImageButton Source="Assets/knapp.png" Command="{Binding _PinIcon_Clicked}" HeightRequest="50" HorizontalOptions="End" Margin="0,0,0,0" />
-
-
                     </StackLayout>
-
                     <StackLayout VerticalOptions="EndAndExpand">
-
                         <Button
                             x:Name="btn1"
                             Grid.Row="1"
-                            Command="{Binding StandartMapCommand}"
-                            Text="Street" Clicked="btn1_Clicked" BackgroundColor="White" BorderColor="Black" CornerRadius="15" />
+                            Command="{Binding _StandardMapView}"
+                            Text="Street" BackgroundColor="White" BorderColor="Black" CornerRadius="15" />
                         <Button
                             x:Name="btn2"
                             Grid.Row="1"
                             Grid.Column="1"
-                            Command="{Binding SatelliteMapCommand}"
-                            Text="Satellite" Clicked="btn2_Clicked" BackgroundColor="White" BorderColor="Black" CornerRadius="15" />
+                            Command="{Binding _SatelliteMapView}"
+                            Text="Satellite" BackgroundColor="White" BorderColor="Black" CornerRadius="15" />
                         <Button
                             x:Name="btn3"
                             Grid.Row="1"
                             Grid.Column="2"
-                            Command="{Binding HybridMapCommand}"
-                            Text="Hybrid" Clicked="btn3_Clicked" BackgroundColor="White" BorderColor="Black" CornerRadius="15" />
+                            Command="{Binding _HybridMapView}"
+                            Text="Hybrid" BackgroundColor="White" BorderColor="Black" CornerRadius="15" />
                     </StackLayout>
-
                 </StackLayout>
-
-
             </Frame>
 
             <Frame Margin="0,0,600,0" BackgroundColor="White" Opacity="0.7" HorizontalOptions="Start" WidthRequest="270" >
-
-
                 <StackLayout>
                     <Frame BorderColor="Black" CornerRadius="15" HeightRequest="20">
-
-                        <Label x:Name="CityName" HorizontalOptions="CenterAndExpand" HeightRequest="30" BackgroundColor="Transparent" Text="Location" Margin="0,0,0,0">
-
-                        </Label>
-
+                        <Label x:Name="CityName" HorizontalOptions="CenterAndExpand" HeightRequest="30" BackgroundColor="Transparent" Text="Location" Margin="0,0,0,0"/>
                     </Frame>
                     <ListView x:Name="ListDrop">
                         <ListView.ItemsSource>
@@ -104,58 +60,42 @@
                             </x:Array>
                         </ListView.ItemsSource>
                     </ListView>
-
                 </StackLayout>
-
             </Frame>
 
-
-
             <StackLayout x:Name="AddPoiModal" IsVisible="{Binding addPoiModalIsVisible}" Margin="900,400,100,70" BackgroundColor="Pink" Opacity="0.7">
-              
                 <Label x:Name="LabelPoi"  Text="Lägg till sevärdhet" HorizontalOptions="Center" FontSize="20" HeightRequest="40" Margin="0,10,0,0" TextColor="Black"></Label>
                 <Entry x:Name="EntryPoi" Text="{Binding poiToAdd.Name}"  Placeholder="Namn på sevärdheten" Margin="30,0,30,0"></Entry>
-                <Entry x:Name="EntryCommentPoi" Text="{Binding entryToAdd.Description}" Placeholder="Kommententar" HeightRequest="70" Margin="30,0,30,0"></Entry>
-                
+                <Entry x:Name="EntryCommentPoi" Text="{Binding entryToAdd.Description}" Placeholder="Kommentar" HeightRequest="70" Margin="30,0,30,0"></Entry>
                 <StackLayout Orientation="Horizontal" x:Name="rattingBar" HorizontalOptions="Center">
-                    
                     <Label Text="★" FontSize="Large" x:Name="star1" StyleId="star1">
                         <Label.GestureRecognizers>
-                            <TapGestureRecognizer Command="{Binding _RatingAmount}" CommandParameter="1"/>
+                            <TapGestureRecognizer Tapped="TapGestureRecognizer_Tapped" Command="{Binding _RatingAmount}" CommandParameter="1"/>
                         </Label.GestureRecognizers>
                     </Label>
-                    
                     <Label Text="★" FontSize="Large" x:Name="star2" StyleId="star2">
                         <Label.GestureRecognizers>
-                            <TapGestureRecognizer Command="{Binding _RatingAmount}" CommandParameter="2"/>
+                            <TapGestureRecognizer Tapped="TapGestureRecognizer_Tapped" Command="{Binding _RatingAmount}" CommandParameter="2"/>
                         </Label.GestureRecognizers>
                     </Label>
-                    
                     <Label Text="★" FontSize="Large" x:Name="star3" StyleId="star3">
                         <Label.GestureRecognizers>
-                            <TapGestureRecognizer Command="{Binding _RatingAmount}" CommandParameter="3"/>
+                            <TapGestureRecognizer Tapped="TapGestureRecognizer_Tapped" Command="{Binding _RatingAmount}" CommandParameter="3"/>
                         </Label.GestureRecognizers>
                     </Label>
-                    
                     <Label Text="★" FontSize="Large" x:Name="star4" StyleId="star4">
                         <Label.GestureRecognizers>
-                            <TapGestureRecognizer Command="{Binding _RatingAmount}" CommandParameter="4"/>
+                            <TapGestureRecognizer Tapped="TapGestureRecognizer_Tapped" Command="{Binding _RatingAmount}" CommandParameter="4"/>
                         </Label.GestureRecognizers>
                     </Label>
-                    
                     <Label Text="★" FontSize="Large" x:Name="star5" StyleId="star5">
                         <Label.GestureRecognizers>
-                            <TapGestureRecognizer Command="{Binding _RatingAmount}" CommandParameter="5"/>
+                            <TapGestureRecognizer Tapped="TapGestureRecognizer_Tapped" Command="{Binding _RatingAmount}" CommandParameter="5"/>
                         </Label.GestureRecognizers>
                     </Label>
-                    
                 </StackLayout>
-
                 <Button x:Name="AddLoc"  Text="Lägg till" BackgroundColor="Gray" Command="{Binding _AddPOI_Clicked}"></Button>
             </StackLayout>
-
         </Grid>
-
-
     </ContentPage.Content>
 </ContentPage>

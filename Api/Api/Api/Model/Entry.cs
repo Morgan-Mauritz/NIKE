@@ -47,7 +47,7 @@ namespace Api.Model
         public string UserName { get; set; }
         public long? Likes { get; set; }
         public long? Rating { get; set; }
-        public string POI { get; set; }
+        public string POIString { get; set; }
     }
 
     public class LikeDislikeEntry

@@ -83,15 +83,6 @@ namespace NikeClientApp.Views
         //    //pinner.MarkerClicked += Pin_MarkerClicked;
         //}
 
-        private async void Mapsample_MapClicked(object sender, MapClickedEventArgs e)
-        {
-            
-        }
-        private void Remove_Click(Pin pinn)
-        {
-            //Mapsample.Pins.Remove(pinn);
-        }
-
         //private async void Pin_MarkerClicked(object sender, PinClickedEventArgs e) //när man klickar på pinnen
         //{
         //    var ans = await DisplayAlert("Ta bort pin", "Vill du ta bort den valda pin?", "Ja", "Nej");
@@ -103,14 +94,6 @@ namespace NikeClientApp.Views
         //        AddPoiModal.IsVisible = false;
         //    }
         //}
-
-        //private async void AddLoc_Clicked(object sender, EventArgs e) //lägg till sevärdhet
-        //{
-        //    if (EntryPoi.Text == null || EntryCommentPoi.Text == null || star1.TextColor == Color.Gray)
-        //    {
-        //        await DisplayAlert("Fel", "Du måste fylla alla fält och betygsätta. ", "OK");
-        //        return;
-        //    }
 
 
         //    //if (star1.TextColor == Color.Gray)
@@ -124,35 +107,6 @@ namespace NikeClientApp.Views
         //    AddPoiModal.IsVisible = false;
         //    await DisplayAlert("Grattis", "Du har nu lagt till en sevärdhet", "OK");
         //}
-
-
-
-        private void streetcommand()
-        {
-            //Mapsample.MapType = MapType.Street;
-        }
-        private void Satellitecommand()
-        {
-            //Mapsample.MapType = MapType.Satellite;
-        }
-        private void Hybridcommand()
-        {
-            //Mapsample.MapType = MapType.Hybrid;
-        }
-
-        private void btn1_Clicked(object sender, EventArgs e)
-        {
-            streetcommand();
-        }
-
-        private void btn2_Clicked(object sender, EventArgs e)
-        {
-            Satellitecommand();
-        }
-
-        private void btn3_Clicked(object sender, EventArgs e)
-        {
-            Hybridcommand();
-        }
+        
     }
 }

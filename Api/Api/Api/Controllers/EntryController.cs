@@ -43,11 +43,11 @@ namespace Api.Controllers
         /// </remarks>
         [HttpPost]
         [ProducesResponseType(typeof(Response<EntryDto>), 200)]
-        public async Task<IActionResult> SetEntry([FromBody] AddEntry entryDto, [FromHeader] string apiKey)
+        public async Task<IActionResult> SetEntry([FromBody] AddEntry addEntry, [FromHeader] string apiKey)
         {
             try
             {
-                return Ok(new Response<EntryDto>(await _service.SetEntry(entryDto, apiKey)));
+                return Ok(new Response<EntryDto>(await _service.SetEntry(addEntry, apiKey)));
             }
             catch (Exception)
             {
