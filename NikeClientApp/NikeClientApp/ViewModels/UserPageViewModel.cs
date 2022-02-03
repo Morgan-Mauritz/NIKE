@@ -59,6 +59,8 @@ namespace NikeClientApp.ViewModels
 
         private async Task OnShow()
         {
+            var user = await userClient.Get("user", "");
+
             var comments = await commentClient.GetList("entry/comments", "");
 
             var reactions = await reactionClient.GetList("entry/reactions", "");
@@ -70,6 +72,8 @@ namespace NikeClientApp.ViewModels
             Reactions = new ObservableCollection<Reaction>(reactions.Data);
 
             Entries = new ObservableCollection<Models.Entry>(entries.Data);
+
+            User = user.Data;
         }
 
         private EditUser _userReadOnly;
@@ -106,13 +110,14 @@ namespace NikeClientApp.ViewModels
 
         public async Task OnSave(object obj)
         {
-            var user = User;
+            await userClient.Update("user", User);
         }
 
         public async Task OnDelete(object obj)
         {
-
+            await userClient.Delete("user");
         }
+
         public UserPageViewModel(INaviService naviService) : base(naviService)
         {
             userClient = new HttpService<User>();
@@ -121,11 +126,6 @@ namespace NikeClientApp.ViewModels
             entryClient = new HttpService<Models.Entry>();
             UserReadOnly = new EditUser();
 
-            User = new User();
-
-            User.Firstname = "Olle";
-            User.Lastname = "Ollesson";
-            User.Email = "olle@olle.com";
         }
 
         public async override Task InitAsync()
