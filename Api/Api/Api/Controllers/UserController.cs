@@ -94,5 +94,20 @@ namespace Api.Controllers
                 return StatusCode((int)HttpStatusCode.Unauthorized, new Response<UnauthorizedAccessException>(Status.Fail, ex.Message, ex));
             }
         }
+
+        [HttpGet]
+        [ProducesResponseType(typeof(Response<UserDto>), 200)]
+        public async Task<IActionResult> GetUser([FromHeader] string apiKey)
+        {
+            try
+            {
+                return Ok(new Response<UserDto>(await _userService.GetUser(apiKey)));
+            }
+            catch (UnauthorizedAccessException ex)
+            {
+
+                return StatusCode((int)HttpStatusCode.Unauthorized, new Response<UnauthorizedAccessException>(Status.Fail, ex.Message, ex));
+            }
+        }
     }
 }
