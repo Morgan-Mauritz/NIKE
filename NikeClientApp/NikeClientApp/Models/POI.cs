@@ -14,7 +14,7 @@ namespace NikeClientApp.Models
 
       
         public string Name { get; set; } //{ get { return name; } set { SetProperty(ref name, value); } }
-        public string Comment { get; set; } // { get { return comment; } set { SetProperty(ref comment, value); } }
+        //public string Comment { get; set; } // { get { return comment; } set { SetProperty(ref comment, value); } }
         public double Longitude { get; set; }
         public double Latitude { get; set; }
         public long? AvgRating { get; set; }

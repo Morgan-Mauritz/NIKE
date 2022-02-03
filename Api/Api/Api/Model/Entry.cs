@@ -34,8 +34,6 @@ namespace Api.Model
         public long? Rating { get; set; }
         public POIDto POI { get; set; }
     }
-
-
     public class UpdateEntry
     {
         public string Description { get; set; }
