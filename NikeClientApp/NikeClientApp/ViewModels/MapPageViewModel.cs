@@ -2,6 +2,7 @@
 using NikeClientApp.Services;
 using System;
 using System.Collections.Generic;
+using System.Collections.ObjectModel;
 using System.Linq;
 using System.Threading.Tasks;
 using System.Windows.Input;
@@ -24,8 +25,8 @@ namespace NikeClientApp.ViewModels
         public ICommand _HybridMapView => new Command(async () => await HybridMapView());
 
         HttpService<Models.Entry> httpClient = new HttpService<Models.Entry>();
-        HttpService<Forecast> weatherClient = new HttpService<Forecast>(); 
-        HttpService<>// TODO: Implementera get POILIST
+        HttpService<Forecast> weatherClient = new HttpService<Forecast>();
+        HttpService<POI> poiListClient = new HttpService<POI>();
 
         //Constructor
         #region Constructor
@@ -37,7 +38,7 @@ namespace NikeClientApp.ViewModels
 
         public async Task StandardMapView()
         {
-             map.MapType = MapType.Street; 
+            map.MapType = MapType.Street;
         }
         public async Task SatelliteMapView()
         {
@@ -54,27 +55,30 @@ namespace NikeClientApp.ViewModels
         List<Pin> ListOfPins = new List<Pin>();
         public Pin pinner { get; set; }
 
-        int _entryRating = 0;  
-        public int EntryRating { get => _entryRating; set { SetProperty(ref _entryRating, value);} }
+        int _entryRating = 0;
+        public int EntryRating { get => _entryRating; set { SetProperty(ref _entryRating, value); } }
 
         Map _map = new Map();
-        public Map map { get => _map; set { SetProperty(ref _map, value);} }
+        public Map map { get => _map; set { SetProperty(ref _map, value); } }
 
         POI _poi = new POI();
-        public POI poiToAdd { get => _poi; set { SetProperty(ref _poi, value);} }
+        public POI poiToAdd { get => _poi; set { SetProperty(ref _poi, value); } }
 
         Models.Entry _entry = new Models.Entry();
-        public Models.Entry entryToAdd { get => _entry; set { SetProperty(ref _entry, value);} }
+        public Models.Entry entryToAdd { get => _entry; set { SetProperty(ref _entry, value); } }
 
         private bool _addPoiModalIsVisible;
         public bool addPoiModalIsVisible { get { return _addPoiModalIsVisible; } set { SetProperty(ref _addPoiModalIsVisible, value); } }
         #endregion;
 
-        string _searchBarText; 
+        string _searchBarText;
         public string SearchBarText { get => _searchBarText; set { SetProperty(ref _searchBarText, value); } }
 
-        string _cityResult = "Location"; 
+        string _cityResult = "Location";
         public string CityResult { get => _cityResult; set { SetProperty(ref _cityResult, value); } }
+
+        private PaginationResponse<List<POI>> _listOfPOI;
+        public PaginationResponse<List<POI>> ListOfPOI { get => _listOfPOI; set { SetProperty(ref _listOfPOI, value); } }
 
         //Methods
         #region Methods
@@ -113,16 +117,23 @@ namespace NikeClientApp.ViewModels
                 return; 
             }
 
-            Geocoder geoCoder = new Geocoder();
+            Geocoder geoCoder = new Geocoder(); 
 
             IEnumerable<Position> approximateLocations = await geoCoder.GetPositionsForAddressAsync(SearchBarText);
 
             Position position = approximateLocations.FirstOrDefault();
+
             string coordinates = $"{position.Latitude}, {position.Longitude}";
-           
+
+            var Address = await geoCoder.GetAddressesForPositionAsync(position);
+            var country = GetCountryFromDataString(Address.FirstOrDefault());
+            var response = await weatherClient.Get("forecast", $"?longitude={position.Longitude}&latitude={position.Latitude}");
+            var city = response.Data.City;
 
             MapSpan maps = new MapSpan(position, 1.10, 0.10);
             map.MoveToRegion(maps);
+            
+            var test = await GetPOIList(country, city);
         }
 
         private async Task PinIcon_Clicked()
@@ -202,6 +213,13 @@ namespace NikeClientApp.ViewModels
             entryToAdd.Rating = EntryRating;
             entryToAdd.UserName = "admin";
         }
+
+        public async Task<PaginationResponse<List<POI>>> GetPOIList(string country, string city)
+        {
+            ListOfPOI = await poiListClient.GetList("poi/list", $"?Country={country}&City={city}");
+            return ListOfPOI;
+        }
+
         #endregion;
     }
 }

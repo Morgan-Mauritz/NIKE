@@ -21,6 +21,9 @@ namespace NikeClientApp.Models
         public string City { get; set; }
         public string Country { get; set; }
         public string Category { get; set; }
-        //public List<EntryDto> Entries { get; set; }
+        public int Offset { get; set; }
+        public int Amount { get; set; } = 10;
+        public int Total { get; set; }
+        public List<Entry> Entries { get; set; }
     }
 }
