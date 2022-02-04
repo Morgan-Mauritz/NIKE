@@ -37,7 +37,7 @@
                             TextColor="Green"
                             HeightRequest="50"
                             CornerRadius="10"
-                            Command="{Binding NextPage}"></Button> 
+                            Command="{Binding LogIn}"></Button> 
 
                     <Button Text="Registrera" 
                             Margin="-160,0,0,0"

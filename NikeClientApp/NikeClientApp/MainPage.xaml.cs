@@ -35,28 +35,6 @@ namespace NikeClientApp
             // Initialize ViewModel
             ViewModel?.Init();
         }
-        private async void BtnLogIn_Clicked(object sender, EventArgs e)
-        {
-            //Vertification that the user exist, if true than send to next page, if no write error message.
-
-            if (entryEmail.Text == null)
-            {
-                await DisplayAlert("Fel", "Du måste fylla alla fält ", "OK");
-                return;
-            }
-            if (!Regex.IsMatch(entryEmail.Text, @"^[a-zåäöA-ZÅÄÖ][\w\.-]*[a-zåäöA-ZÅÄÖ0-9]@[a-zåäöA-ZÅÄÖ0-9][\w\.-]*[a-zåäöA-ZÅÄÖ0-9]\.[a-zåäöA-ZÅÄÖ][a-zåäöA-ZÅÄÖ\.]*[a-zåäöA-ZÅÄÖ]$"))
-            {
-                await DisplayAlert("Email", "Ange korrekt e-mail", "OK");
-                return;
-
-            }
-            //Felhantering här
-            var responseData = await userClient.Post("Authorization/login", new User { Email = entryEmail.Text, Password = entryPassword.Text });
-
-            UserApi.ApiKey = responseData.Data.ApiKey;
-
-            await Navigation.PushAsync(new UserPage());
-        }
 
         private async void BtnRegister_Clicked(object sender, EventArgs e)
         {
