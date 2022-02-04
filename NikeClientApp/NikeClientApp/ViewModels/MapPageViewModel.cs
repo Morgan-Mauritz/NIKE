@@ -24,6 +24,10 @@ namespace NikeClientApp.ViewModels
         public ICommand _SatelliteMapView => new Command(async () => await SatelliteMapView());
         public ICommand _HybridMapView => new Command(async () => await HybridMapView());
 
+        public ICommand _ShowEntriesForPOI => new Command(async () => await ShowEntriesForPOI());
+
+      
+
         HttpService<Models.Entry> httpClient = new HttpService<Models.Entry>();
         HttpService<Forecast> weatherClient = new HttpService<Forecast>();
         HttpService<POI> poiListClient = new HttpService<POI>();
@@ -77,8 +81,8 @@ namespace NikeClientApp.ViewModels
         string _cityResult = "Location";
         public string CityResult { get => _cityResult; set { SetProperty(ref _cityResult, value); } }
 
-        private PaginationResponse<List<POI>> _listOfPOI;
-        public PaginationResponse<List<POI>> ListOfPOI { get => _listOfPOI; set { SetProperty(ref _listOfPOI, value); } }
+        private PaginationResponse<ObservableCollection<POI>> _listOfPOI;
+        public PaginationResponse<ObservableCollection<POI>> ListOfPOI { get => _listOfPOI; set { SetProperty(ref _listOfPOI, value); } }
 
         //Methods
         #region Methods
@@ -214,11 +218,23 @@ namespace NikeClientApp.ViewModels
             entryToAdd.UserName = "admin";
         }
 
-        public async Task<PaginationResponse<List<POI>>> GetPOIList(string country, string city)
+        public async Task<PaginationResponse<ObservableCollection<POI>>> GetPOIList(string country, string city)
         {
-            ListOfPOI = await poiListClient.GetList("poi/list", $"?Country={country}&City={city}");
-            return ListOfPOI;
+            return ListOfPOI = await poiListClient.GetList("poi/list", $"?Country={country}&City={city}");
+           
         }
+
+
+        private Task ShowEntriesForPOI()
+        {
+            //TODO: Get entries from selected POI
+
+
+
+            throw new NotImplementedException();
+        }
+
+
 
         #endregion;
     }

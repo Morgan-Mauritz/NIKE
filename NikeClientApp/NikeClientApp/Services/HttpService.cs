@@ -5,6 +5,7 @@ using RestSharp;
 using System.Threading;
 using System.Threading.Tasks;
 using NikeClientApp.Models;
+using System.Collections.ObjectModel;
 
 namespace NikeClientApp.Services
 {
@@ -27,12 +28,12 @@ namespace NikeClientApp.Services
             return await _restClient.PostAsync<Response<T>>(request);
         }
 
-        public async Task<PaginationResponse<List<T>>> GetList(string endPoint, string query)
+        public async Task<PaginationResponse<ObservableCollection<T>>> GetList(string endPoint, string query)
         {
             var request = new RestRequest(endPoint + query);
             request.Method = Method.Get;
             //request.AddHeader("apiKey", "b987c270-e582-4664-bea3-36f47f17dc43");
-            return await _restClient.GetAsync<PaginationResponse<List<T>>>(request);
+            return await _restClient.GetAsync<PaginationResponse<ObservableCollection<T>>>(request);
         }
 
         public async Task<Response<T>> Get(string endPoint, string query)
