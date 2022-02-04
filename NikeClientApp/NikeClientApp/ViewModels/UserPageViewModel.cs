@@ -116,6 +116,8 @@ namespace NikeClientApp.ViewModels
         public async Task OnDelete(object obj)
         {
             await userClient.Delete("user");
+            UserApi.ApiKey = null;
+            await NavigationService.NavigateTo<MainPageViewModel>();
         }
 
         public UserPageViewModel(INaviService naviService) : base(naviService)

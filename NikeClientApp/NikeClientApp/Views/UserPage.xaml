@@ -131,6 +131,7 @@
                                     <StackLayout Orientation="Horizontal">
                                         <Label Text="Din kommentar:"></Label>
                                         <Label Text="{Binding Text}"></Label>
+                                        <Button Text="Radera"/>
                                     </StackLayout>
                                 </StackLayout>
                                 

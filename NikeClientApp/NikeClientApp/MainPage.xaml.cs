@@ -55,7 +55,7 @@ namespace NikeClientApp
 
             UserApi.ApiKey = responseData.Data.ApiKey;
 
-            await Navigation.PushAsync(new MapPage());
+            await Navigation.PushAsync(new UserPage());
         }
 
         private async void BtnRegister_Clicked(object sender, EventArgs e)

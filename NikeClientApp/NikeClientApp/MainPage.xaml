@@ -12,12 +12,14 @@
                          Padding="50" 
                          Spacing="50">
                 <Label Text="NikeMap" HorizontalOptions="Center" Margin="35,-50,0,0" FontFamily="Elephant" FontSize="50" TextColor="#FFD9EC16" WidthRequest="917" HeightRequest="75" Grid.Row="1" />
-                <Entry Placeholder="Email" 
+                <Entry Text="{Binding User.Email}"
+                       Placeholder="Email" 
                        x:Name="entryEmail"
                        HeightRequest="50"
                        HorizontalTextAlignment="Center"></Entry>
 
-                <Entry Placeholder="Lösenord" 
+                <Entry Text="{Binding User.Password}" 
+                       Placeholder="Lösenord" 
                        x:Name="entryPassword"
                        IsPassword="True"
                        HeightRequest="50"
