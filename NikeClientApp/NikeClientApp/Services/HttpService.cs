@@ -17,12 +17,12 @@ namespace NikeClientApp.Services
             _restClient = new RestClient("https://localhost:44393/");
         }
         
-        public async Task<Response<T>> Post(string endPoint, T obj)
+        public async Task<Response<T>> Post(string endPoint, T obj, bool useApiKey = true)
         {
             var request = new RestRequest(endPoint);
             request.Method = Method.Post;
             request.AddBody(obj);
-            request.AddHeader("apiKey", UserApi.ApiKey);
+            if (useApiKey) request.AddHeader("apiKey", UserApi.ApiKey);
             return await _restClient.PostAsync<Response<T>>(request);
         }
         

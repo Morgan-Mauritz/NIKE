@@ -76,10 +76,9 @@
                         <ImageButton x:Name="buttonEditPassword"  Source="Assets/roundicon.png" HeightRequest="30" Command="{Binding Edit}" CommandParameter="password"></ImageButton>
                     </StackLayout>
                    
-                    <!--<Button Text="Redigera"></Button>-->
                     <StackLayout Orientation="Vertical">
                         <Button x:Name="buttonSaveInfo" Text="Spara" CornerRadius="15" Margin="0,20,35,0" Command="{Binding Save}"></Button>
-                        <Button x:Name="buttonRemoveAcc" Text="Radera konto" BackgroundColor="DarkRed" CornerRadius="15" Margin="0,100,35,0" Command="{Binding Delete}" ></Button>
+                        <Button x:Name="buttonRemoveAcc" Text="Radera konto" BackgroundColor="DarkRed" CornerRadius="15" Margin="0,100,35,0" Command="{Binding Delete}" CommandParameter="user"></Button>
                     </StackLayout>
                     
                
@@ -131,7 +130,7 @@
                                     <StackLayout Orientation="Horizontal">
                                         <Label Text="Din kommentar:"></Label>
                                         <Label Text="{Binding Text}"></Label>
-                                        <Button Text="Radera"/>
+                                        <Button Text="Radera" Command="{Binding Delete}" CommandParameter="{Binding Endpoint}"/>
                                     </StackLayout>
                                 </StackLayout>
                                 

@@ -16,7 +16,7 @@ namespace NikeClientApp.ViewModels
         public ICommand BackPage => new Command(async () => await NavigationService.GoBack());
         //public ICommand Show => new Command(async () => await OnShow());
         public ICommand Edit => new Command<string>((param) => OnEdit(param));
-        public ICommand Delete => new Command(async (param) => await OnDelete(param));
+        public ICommand Delete => new Command<string>(async (endpoint) => await OnDelete(endpoint));
         public ICommand Save => new Command(async (param) => await OnSave(param));
         private HttpService<User> userClient;
         private HttpService<Reaction> reactionClient;
@@ -113,9 +113,9 @@ namespace NikeClientApp.ViewModels
             await userClient.Update("user", User);
         }
 
-        public async Task OnDelete(object obj)
+        public async Task OnDelete(string endpoint)
         {
-            await userClient.Delete("user");
+            await userClient.Delete(endpoint);
             UserApi.ApiKey = null;
             await NavigationService.NavigateTo<MainPageViewModel>();
         }
