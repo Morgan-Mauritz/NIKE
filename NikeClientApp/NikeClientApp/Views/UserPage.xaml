@@ -2,6 +2,7 @@
 <ContentPage xmlns="http://xamarin.com/schemas/2014/forms"
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
              x:Class="NikeClientApp.Views.UserPage"
+             x:Name="Root"
              BackgroundImageSource="Assets/halvkarta.png">
     <ContentPage.Content>
 
@@ -77,7 +78,8 @@
                     </StackLayout>
                    
                     <StackLayout Orientation="Vertical">
-                        <Button x:Name="buttonSaveInfo" Text="Spara" CornerRadius="15" Margin="0,20,35,0" Command="{Binding Save}"></Button>
+                        <Button x:Name="buttonSaveInfo" Text="Spara" CornerRadius="15" Margin="0,20,35,0" Command="{Binding Save}">
+                        </Button>
                         <Button x:Name="buttonRemoveAcc" Text="Radera konto" BackgroundColor="DarkRed" CornerRadius="15" Margin="0,100,35,0" Command="{Binding Delete}" CommandParameter="user"></Button>
                     </StackLayout>
                     
@@ -95,16 +97,17 @@
                             <ViewCell>
                                 <StackLayout>
                                     <Label Text="{Binding Description}"></Label>
-                                    <Label Text="{Binding Rating}"></Label>
+                                    <Label Text="{Binding StarRating}"></Label>
                                     <Label Text="{Binding Username}"></Label>
                                     <Label Text="{Binding POI}"></Label>
+                                    <Button Command="{Binding Path=BindingContext.Delete, Source={x:Reference Name=Root}}"  Text="Radera" CommandParameter="{Binding Endpoint}"/>
                                 </StackLayout>
                             </ViewCell>
                         </DataTemplate>
                     </ListView.ItemTemplate>
                 </ListView>
 
-                <ListView ItemsSource="{Binding Comments}" >
+                <ListView ItemsSource="{Binding Comments}">
                     <ListView.Header>Mina kommentarer</ListView.Header>
                     <ListView.ItemTemplate>
                         <DataTemplate>
@@ -129,8 +132,8 @@
                                     </StackLayout>
                                     <StackLayout Orientation="Horizontal">
                                         <Label Text="Din kommentar:"></Label>
-                                        <Label Text="{Binding Text}"></Label>
-                                        <Button Text="Radera" Command="{Binding Delete}" CommandParameter="{Binding Endpoint}"/>
+                                        <Entry Text="{Binding Text}"></Entry>
+                                        <Button Command="{Binding Path=BindingContext.Delete, Source={x:Reference Name=Root}}"  Text="Radera" CommandParameter="{Binding Endpoint}"/>
                                     </StackLayout>
                                 </StackLayout>
                                 
@@ -144,11 +147,11 @@
                             <ListView.ItemTemplate>
                                 <DataTemplate>
                                     <ViewCell>
-                                        <StackLayout BindingContext="{Binding Entry}">
-                                            <Label Text="{Binding Description}"></Label>
-                                            <Label Text="{Binding Rating}"></Label>
-                                            <Label Text="{Binding Username}"></Label>
-                                            <Label Text="{Binding POI}"></Label>
+                                        <StackLayout>
+                                            <Label Text="{Binding Entry.Description}"></Label>
+                                            <Label Text="{Binding Entry.StarRating}"></Label>
+                                            <Label Text="{Binding Entry.Username}"></Label>
+                                            <Label Text="{Binding Entry.POI}"></Label>
                                         </StackLayout>
                                     </ViewCell>
                                 </DataTemplate>

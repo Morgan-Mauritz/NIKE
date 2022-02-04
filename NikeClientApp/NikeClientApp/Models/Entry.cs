@@ -7,6 +7,7 @@ namespace NikeClientApp.Models
 {
     public class Entry
     {
+        public long Id { get; set; }
         public string Description { get; set; }
         public string POI { get; set; }
         public int Rating { get; set; }
@@ -22,5 +23,7 @@ namespace NikeClientApp.Models
                 return stars;
             } 
         }
+        public string Endpoint { get => $"entry/{Id}"; }
+
     }
 }

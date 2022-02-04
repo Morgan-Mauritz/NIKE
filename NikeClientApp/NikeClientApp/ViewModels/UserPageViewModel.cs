@@ -7,6 +7,7 @@ using Xamarin.Forms;
 using NikeClientApp.Services;
 using NikeClientApp.Models;
 using System.Collections.ObjectModel;
+using System.Linq;
 
 namespace NikeClientApp.ViewModels
 {
@@ -17,7 +18,7 @@ namespace NikeClientApp.ViewModels
         //public ICommand Show => new Command(async () => await OnShow());
         public ICommand Edit => new Command<string>((param) => OnEdit(param));
         public ICommand Delete => new Command<string>(async (endpoint) => await OnDelete(endpoint));
-        public ICommand Save => new Command(async (param) => await OnSave(param));
+        public ICommand Save => new Command<(string,int)>(async (param) => await OnSave(param));
         private HttpService<User> userClient;
         private HttpService<Reaction> reactionClient;
         private HttpService<Comment> commentClient;
@@ -89,36 +90,72 @@ namespace NikeClientApp.ViewModels
             switch (param)
             {
                 case "username":
-                    UserReadOnly.Username = false;
+                    UserReadOnly.Username = !UserReadOnly.Username;
                     break;
                 case "name":
-                    UserReadOnly.Firstname = false;
+                    UserReadOnly.Firstname = !UserReadOnly.Firstname;
                     break;
                 case "lastname":
-                    UserReadOnly.Lastname = false;
+                    UserReadOnly.Lastname = !UserReadOnly.Lastname;
                     break;
                 case "email":
-                    UserReadOnly.Email = false;
+                    UserReadOnly.Email = !UserReadOnly.Email;
                     break;
                 case "password":
-                    UserReadOnly.Password = false;
+                    UserReadOnly.Password = !UserReadOnly.Password;
                     break;
-
             }
         }
 
 
-        public async Task OnSave(object obj)
+        public async Task OnSave((string param, int id) tuple)
         {
-            await userClient.Update("user", User);
+            switch (tuple.param)
+            {
+                case "user":
+                    await userClient.Update("user", User);
+                    break;
+                case "comment":
+                    await commentClient.Update("comments", Comments.First(x => x.Id == tuple.id));
+                    break;
+                case "entry":
+                    break;
+                case "like":
+                    break;
+            
+            
+            }
         }
 
         public async Task OnDelete(string endpoint)
         {
-            await userClient.Delete(endpoint);
-            UserApi.ApiKey = null;
-            await NavigationService.NavigateTo<MainPageViewModel>();
+
+            if (endpoint == "user")
+            {
+                UserApi.ApiKey = null;
+                await userClient.Delete(endpoint);
+                await NavigationService.NavigateTo<MainPageViewModel>();
+            }
+            else if (endpoint.Contains("comment"))
+            {
+                var response = await commentClient.Delete(endpoint);
+                var comment = Comments.First(x => x.Id == response.Data.Id);
+                Comments.Remove(comment);
+            }
+            else if ( endpoint.Contains("entry"))
+            {
+                var response = await entryClient.Delete(endpoint);
+                var entry = Entries.First(x => x.Id == response.Data.Id);
+                Entries.Remove(entry);
+            }
+            else if (endpoint.Contains("like"))
+            {
+                var response = await reactionClient.Delete(endpoint);
+                var reaction = Reactions.First(x => x.Id == response.Data.Id);
+                Reactions.Remove(reaction);
+            }
         }
+
 
         public UserPageViewModel(INaviService naviService) : base(naviService)
         {
