@@ -23,6 +23,7 @@ namespace Api.Model
 
     public class CommentDTO 
     {
+        public long Id { get; set; }
         public EntryDto Entry { get; set; }
         public string Text { get; set; }
     }

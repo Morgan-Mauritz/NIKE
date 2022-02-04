@@ -112,7 +112,7 @@ namespace Api.Controllers
         /// <param name="id">Id of the entry to delete</param>
         /// <param name="apiKey"></param>
         /// <returns></returns>
-        [HttpDelete(":id")]
+        [HttpDelete("{id}")]
         [ProducesResponseType(typeof(Response<EntryDto>), 200)]
         public async Task<IActionResult> RemoveEntry(long id, [FromHeader] string apiKey)
         {

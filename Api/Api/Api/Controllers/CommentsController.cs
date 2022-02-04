@@ -19,7 +19,7 @@ namespace Api.Controllers
             _service = service;
         }
 
-        [HttpDelete(":id")]
+        [HttpDelete("{id}")]
         [ProducesResponseType(typeof(int), 200)]
         public async Task<IActionResult> DeleteComment(int id, [FromHeader] string apiKey)
         {

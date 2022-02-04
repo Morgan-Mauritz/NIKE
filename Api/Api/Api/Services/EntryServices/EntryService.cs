@@ -87,7 +87,7 @@ namespace Api.Services.EntryServices
                 throw new NotFoundException("Kunde inte hitta inlägget");
             }
             var userToCheck = await _userRepository.GetByApiKey(apiKey);
-            if (entryDelete.UserId != userToCheck.Id)
+            if (userToCheck == null || entryDelete.UserId != userToCheck.Id)
             {
                 throw new UnauthorizedAccessException("Du får inte ta bort det här inlägget");
             }
