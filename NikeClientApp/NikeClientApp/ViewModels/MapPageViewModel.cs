@@ -19,7 +19,9 @@ namespace NikeClientApp.ViewModels
         public Command BackPage; // => new Command(async () => await NavigationService.GoBack());
         public ICommand _AddPOI_Clicked => new Command(async () => await AddPOI_Clicked());
         public ICommand _PinIcon_Clicked => new Command(async () => await PinIcon_Clicked());
-        public ICommand _RatingAmount => new Command(async (object sender) => await RatingAmount(sender));
+        public ICommand _RatingAmount => new Command((object sender) => RatingAmount(sender));
+        public ICommand _SearchButton_Clicked => new Command(async () => await SearchButton_Clicked());
+
         public ICommand _StandardMapView => new Command(async () => await StandardMapView());
         public ICommand _SatelliteMapView => new Command(async () => await SatelliteMapView());
         public ICommand _HybridMapView => new Command(async () => await HybridMapView());
@@ -75,8 +77,11 @@ namespace NikeClientApp.ViewModels
         public bool addPoiModalIsVisible { get { return _addPoiModalIsVisible; } set { SetProperty(ref _addPoiModalIsVisible, value); } }
         #endregion;
 
+        string _searchBarText; 
+        public string SearchBarText { get => _searchBarText; set { SetProperty(ref _searchBarText, value); } }
 
-
+        string _cityResult = "Location"; 
+        public string CityResult { get => _cityResult; set { SetProperty(ref _cityResult, value); } }
 
         //Methods
         #region Methods
@@ -105,6 +110,28 @@ namespace NikeClientApp.ViewModels
             }
                 return false;
         }
+
+        private async Task SearchButton_Clicked()
+        { 
+            CityResult = SearchBarText;
+            
+            if(_cityResult == "Location")
+            {
+                return; 
+            }
+
+            Geocoder geoCoder = new Geocoder();
+
+            IEnumerable<Position> approximateLocations = await geoCoder.GetPositionsForAddressAsync(SearchBarText);
+
+            Position position = approximateLocations.FirstOrDefault();
+            string coordinates = $"{position.Latitude}, {position.Longitude}";
+           
+
+            MapSpan maps = new MapSpan(position, 1.10, 0.10);
+            map.MoveToRegion(maps);
+        }
+
 
         private async Task PinIcon_Clicked()
         {

@@ -22,7 +22,7 @@ namespace NikeClientApp.Views
 
             BindingContext = new MapPageViewModel(DependencyService.Get<INaviService>());
 
-            Reset();
+            ResetStarColor();
         }
 
         protected override void OnAppearing()
@@ -33,16 +33,12 @@ namespace NikeClientApp.Views
             ViewModel?.Init();
         }
 
-
-        List<Pin> ListOfPins = new List<Pin>();
-        public Pin pinner { get; set; }
-
-        void Reset() // reset rating
+        void ResetStarColor() // reset rating
         {
-            ChangeTextColor(5, Color.Gray);
+            ChangeStarColor(5, Color.Gray);
         }
 
-        void ChangeTextColor(int starcount, Color color)
+        void ChangeStarColor(int starcount, Color color)
         {
             for (int i = 1; i <= starcount; i++)
             {
@@ -52,24 +48,35 @@ namespace NikeClientApp.Views
 
         private void TapGestureRecognizer_Tapped(object sender, EventArgs e) //rating
         {
-            Reset();
+            ResetStarColor();
             Label clicked = sender as Label;
-            ChangeTextColor(Convert.ToInt32(clicked.StyleId.Substring(4, 1)), Color.Yellow);
+            ChangeStarColor(Convert.ToInt32(clicked.StyleId.Substring(4, 1)), Color.Yellow);
         }
 
-        private async void SearchButt_Clicked(object sender, EventArgs e) //sök på plats
+        private void Searchbar_Focused(object sender, FocusEventArgs e)
         {
-            Geocoder geoCoder = new Geocoder();
+            Searchbar.Text = ""; 
 
-            IEnumerable<Position> approximateLocations = await geoCoder.GetPositionsForAddressAsync(TBSearchbar.Text);
-           
-            Position position = approximateLocations.FirstOrDefault();
-            string coordinates = $"{position.Latitude}, {position.Longitude}";
-            CityName.Text = TBSearchbar.Text;
-
-            MapSpan maps = new MapSpan(position, 1.10, 0.10);
-            //Mapsample.MoveToRegion(maps);
         }
+
+        private void Searchbar_Unfocused(object sender, FocusEventArgs e)
+        {
+            Searchbar.Text = "Location"; 
+        }
+
+        //private async void SearchButt_Clicked(object sender, EventArgs e) //sök på plats
+        //{
+        //    Geocoder geoCoder = new Geocoder();
+
+        //    IEnumerable<Position> approximateLocations = await geoCoder.GetPositionsForAddressAsync(TBSearchbar.Text);
+
+        //    Position position = approximateLocations.FirstOrDefault();
+        //    string coordinates = $"{position.Latitude}, {position.Longitude}";
+        //    CityName.Text = TBSearchbar.Text;
+
+        //    MapSpan maps = new MapSpan(position, 1.10, 0.10);
+        //    //Mapsample.MoveToRegion(maps);
+        //}
 
         //private void PinButt_Clicked(object sender, EventArgs e)
         //{
@@ -107,6 +114,6 @@ namespace NikeClientApp.Views
         //    AddPoiModal.IsVisible = false;
         //    await DisplayAlert("Grattis", "Du har nu lagt till en sevärdhet", "OK");
         //}
-        
+
     }
 }
