@@ -24,18 +24,18 @@ namespace NikeClientApp.ViewModels
         public ICommand _SatelliteMapView => new Command(async () => await SatelliteMapView());
         public ICommand _HybridMapView => new Command(async () => await HybridMapView());
 
-        //public ICommand ShowAddPoiModal => new Command(async () => await ShowModalWhenClicked());
-
         HttpService<Models.Entry> httpClient = new HttpService<Models.Entry>();
         HttpService<Forecast> weatherClient = new HttpService<Forecast>(); 
 
-        List<Pin> ListOfPins = new List<Pin>();
-        public Pin pinner { get; set; }
+       
 
+        //Constructor
+        #region Constructor
         public MapPageViewModel(INaviService naviService) : base(naviService)
         {
             map.MapClicked += MapClicked;
         }
+        #endregion; 
 
         public async Task StandardMapView()
         {
@@ -50,49 +50,36 @@ namespace NikeClientApp.ViewModels
             map.MapType = MapType.Hybrid;
         }
 
-        int _entryRating = 0;  
-        public int EntryRating { 
-            get => _entryRating; 
-            set 
-            { 
-                SetProperty(ref _entryRating, value); 
-            } 
-        }
 
+        //Properties 
+        #region Properties
+
+        List<Pin> ListOfPins = new List<Pin>();
+        public Pin pinner { get; set; }
+
+        int _entryRating = 0;  
+        public int EntryRating { get => _entryRating; set { SetProperty(ref _entryRating, value);} }
 
         Map _map = new Map();
-        public Map map
-        {
-            get => _map;
+        public Map map { get => _map; set { SetProperty(ref _map, value);} }
 
-            set
-            {
-                SetProperty(ref _map, value);
-            }
-        }
 
         POI _poi = new POI();
-        public POI poiToAdd
-        {
-            get => _poi;
+        public POI poiToAdd { get => _poi; set { SetProperty(ref _poi, value);} }
 
-            set
-            {
-                SetProperty(ref _poi, value);
-            }
-        }
 
         Models.Entry _entry = new Models.Entry();
-        public Models.Entry entryToAdd
-        {
-            get => _entry;
+        public Models.Entry entryToAdd { get => _entry; set { SetProperty(ref _entry, value);} }
 
-            set
-            {
-                SetProperty(ref _entry, value);
-            }
-        }
+        private bool _addPoiModalIsVisible;
+        public bool addPoiModalIsVisible { get { return _addPoiModalIsVisible; } set { SetProperty(ref _addPoiModalIsVisible, value); } }
+        #endregion;
 
+
+
+
+        //Methods
+        #region Methods
         async Task<bool> AddPOI_Clicked()
         {
             if (!string.IsNullOrEmpty(poiToAdd.Name) && _entryRating > 0 && !string.IsNullOrEmpty(entryToAdd.Description)) 
@@ -119,17 +106,6 @@ namespace NikeClientApp.ViewModels
                 return false;
         }
 
-        private bool _addPoiModalIsVisible;
-        public bool addPoiModalIsVisible
-        {
-            get { return _addPoiModalIsVisible; }
-
-            set 
-            {
-                SetProperty(ref _addPoiModalIsVisible, value);
-            }
-        }
-        
         private async Task PinIcon_Clicked()
         {
             pinner = new Pin()
@@ -163,11 +139,11 @@ namespace NikeClientApp.ViewModels
             }
         }
 
-        public async Task RatingAmount(object sender)
+        public void RatingAmount(object sender)
         {
             EntryRating = int.Parse(sender.ToString());
-            
         }
+
         private async void Pin_MarkerClicked(object sender, PinClickedEventArgs e) //när man klickar på pinnen
         {
             var ans = await App.Current.MainPage.DisplayAlert("Ta bort pin", "Vill du ta bort den valda pin?", "Ja", "Nej");
@@ -179,6 +155,7 @@ namespace NikeClientApp.ViewModels
                 addPoiModalIsVisible = false;
             }
         }
+
         public string GetCountryFromDataString(string dataString)
         {   
             string[] separator = {"\r\n"};
@@ -200,12 +177,12 @@ namespace NikeClientApp.ViewModels
             poiToAdd.City = response.Data.City;
         }
 
-        
         public async Task PopulateEntry()
         {
             entryToAdd.POI = poiToAdd;
             entryToAdd.Rating = EntryRating;
             entryToAdd.UserName = "admin";
         }
+        #endregion;
     }
 }
