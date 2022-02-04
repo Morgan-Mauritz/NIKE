@@ -4,8 +4,9 @@ using System.Reflection;
 using Api.Model;
 using Api.Model.MappingProfiles;
 using Api.Repository;
+using Api.Repository.CommentRepository;
 using Api.Services.AuthorizationServices;
-
+using Api.Services.CommentService;
 using Api.Services.EntryServices;
 
 using Api.Services.ForecastServices;
@@ -91,10 +92,9 @@ namespace Api
             services.AddScoped<IUserService, UserService>();
             services.AddScoped<IAuthorizationService, AuthorizationService>();
             services.AddScoped<IPOIService, POIService>();
-
             services.AddScoped<IEntryService, EntryService>();
-
             services.AddScoped<IForceastService, ForecastService>();
+            services.AddScoped<ICommentService, CommentService>();
 
         }
 
@@ -103,6 +103,7 @@ namespace Api
             services.AddScoped<IRepository<User>, UserRepository>();
             services.AddScoped<IPOIRepository, POIRepository>();
             services.AddScoped<IEntryRepository, EntryRepository>();
+            services.AddScoped<ICommentRepository, CommentRepository>();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
