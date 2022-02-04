@@ -1,11 +1,8 @@
 ﻿using NikeClientApp.Models;
 using NikeClientApp.Services;
-using NikeClientApp.Views;
 using System;
 using System.Collections.Generic;
-
 using System.Linq;
-using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Input;
 using Xamarin.Forms;
@@ -29,8 +26,6 @@ namespace NikeClientApp.ViewModels
         HttpService<Models.Entry> httpClient = new HttpService<Models.Entry>();
         HttpService<Forecast> weatherClient = new HttpService<Forecast>(); 
 
-       
-
         //Constructor
         #region Constructor
         public MapPageViewModel(INaviService naviService) : base(naviService)
@@ -52,7 +47,6 @@ namespace NikeClientApp.ViewModels
             map.MapType = MapType.Hybrid;
         }
 
-
         //Properties 
         #region Properties
 
@@ -65,10 +59,8 @@ namespace NikeClientApp.ViewModels
         Map _map = new Map();
         public Map map { get => _map; set { SetProperty(ref _map, value);} }
 
-
         POI _poi = new POI();
         public POI poiToAdd { get => _poi; set { SetProperty(ref _poi, value);} }
-
 
         Models.Entry _entry = new Models.Entry();
         public Models.Entry entryToAdd { get => _entry; set { SetProperty(ref _entry, value);} }
@@ -131,7 +123,6 @@ namespace NikeClientApp.ViewModels
             MapSpan maps = new MapSpan(position, 1.10, 0.10);
             map.MoveToRegion(maps);
         }
-
 
         private async Task PinIcon_Clicked()
         {

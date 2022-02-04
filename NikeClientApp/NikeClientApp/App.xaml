@@ -3,6 +3,23 @@
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
              x:Class="NikeClientApp.App">
     <Application.Resources>
-
+        <Color x:Key = "BackgroundLight">white</Color>
+        <Color x:Key = "TextLight">Black</Color>
+        <Color x:Key = "BackgroundDark">Gray</Color>
+        <Color x:Key = "TextDark">White</Color>
+        <Style x:Key = "ContainerBackgroundColor" TargetType ="StackLayout">
+            <Setter Property = "BackgroundColor"
+        Value= "{AppThemeBinding Dark ={StaticResource BackgroundDark}, Light={StaticResource BackgroundLight}}"/>
+        </Style>
+        <Style x:Key = "LabelColor" TargetType ="Label">
+            <Setter Property = "TextColor"
+        Value= "{AppThemeBinding Dark ={StaticResource TextDark}, Light={StaticResource TextLight}}"/>
+        </Style>
+        <Style
+         x:Key = "EntryColor" TargetType ="Entry">
+         <Setter Property = "TextColor"
+            Value= "{AppThemeBinding Dark ={StaticResource TextDark}, Light={StaticResource TextLight}}"/>
+            </Style>
+        
     </Application.Resources>
 </Application>

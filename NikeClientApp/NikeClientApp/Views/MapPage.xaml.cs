@@ -59,11 +59,6 @@ namespace NikeClientApp.Views
 
         }
 
-        private void Searchbar_Unfocused(object sender, FocusEventArgs e)
-        {
-            Searchbar.Text = "Location"; 
-        }
-
         //private async void SearchButt_Clicked(object sender, EventArgs e) //sök på plats
         //{
         //    Geocoder geoCoder = new Geocoder();
