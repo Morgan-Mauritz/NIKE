@@ -25,6 +25,7 @@ namespace NikeClientApp.ViewModels
 
         HttpService<Models.Entry> httpClient = new HttpService<Models.Entry>();
         HttpService<Forecast> weatherClient = new HttpService<Forecast>(); 
+        HttpService<>// TODO: Implementera get POILIST
 
         //Constructor
         #region Constructor

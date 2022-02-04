@@ -5,7 +5,7 @@
     <Application.Resources>
         <Color x:Key = "BackgroundLight">white</Color>
         <Color x:Key = "TextLight">Black</Color>
-        <Color x:Key = "BackgroundDark">Gray</Color>
+        <Color x:Key = "BackgroundDark">Black</Color>
         <Color x:Key = "TextDark">White</Color>
         <Style x:Key = "ContainerBackgroundColor" TargetType ="StackLayout">
             <Setter Property = "BackgroundColor"
