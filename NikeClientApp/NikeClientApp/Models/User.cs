@@ -16,6 +16,8 @@ namespace NikeClientApp.Models
         
         public string Username { get; set; }
         public string ApiKey { get; set; }
+
+        public string PasswordValidation { get; set; }
     }
     public class EditUser : NotifyModel
     {

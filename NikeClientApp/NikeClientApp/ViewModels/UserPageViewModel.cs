@@ -143,6 +143,7 @@ namespace NikeClientApp.ViewModels
 
         public async Task OnSave(string endpoint)
         {
+           User.PasswordValidation = await Application.Current.MainPage.DisplayPromptAsync("Uppdatera uppgifter", "För att kunna spara nya ändringar måste \ndu skriva in det gamla lösenordet", initialValue: "");
             switch (endpoint)
             {
                 case "user":
