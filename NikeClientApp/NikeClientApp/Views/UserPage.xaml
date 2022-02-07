@@ -138,7 +138,7 @@
 
 
                 <Button Text="Mina kommentarer" Command="{Binding Load}" BackgroundColor="ForestGreen" CommandParameter="comments"></Button>
-                <ListView ItemsSource="{Binding Comments}" SelectedItem="{Binding SelectedComment}" IsVisible="{Binding CommentsLoaded}" MinimumHeightRequest="0" VerticalOptions="Start" BackgroundColor="Black">
+                <ListView ItemsSource="{Binding Comments}" IsVisible="{Binding CommentsLoaded}" MinimumHeightRequest="0" VerticalOptions="Start" BackgroundColor="Black">
                     <ListView.Style>
                         <Style TargetType="ListView">
                             <Style.Triggers>
@@ -179,7 +179,7 @@
                                                 <Label FontAttributes="Bold" Text="Din kommentar:"></Label>
                                                 <Entry Text="{Binding Text}" IsReadOnly="{Binding CommentReadOnly}" ></Entry>
                                                 <ImageButton Source="Assets/roundicon.png" HeightRequest="30" Command="{Binding Edit}" CommandParameter="text"></ImageButton>
-                                                <Button Text="Spara" Command="{Binding Path=BindingContext.Save, Source={x:Reference Name=Root}}"/>
+                                                <Button Text="Spara" Command="{Binding Save}"/>
                                                 <Button Text="Radera" BackgroundColor="DarkRed" Command="{Binding Path=BindingContext.Delete, Source={x:Reference Name=Root}}" CommandParameter="{Binding Endpoint}"/>
 
                                             </StackLayout>

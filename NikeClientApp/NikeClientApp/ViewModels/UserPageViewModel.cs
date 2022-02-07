@@ -133,31 +133,11 @@ namespace NikeClientApp.ViewModels
         }
 
 
-        private Comment _selectedComment;
-
-        public Comment SelectedComment
-        {
-            get { return _selectedComment; }
-            set { SetProperty(ref _selectedComment, value); }
-        }
-
         public async Task OnSave(string endpoint)
         {
-            switch (endpoint)
-            {
-                case "user":
-                    await userClient.Update("user", User);
-                    break;
-                case "comments":
-                    await commentClient.Update("comments", SelectedComment);
-                    break;
-                case "entry":
-                    break;
-                case "like":
-                    break;
 
+            await userClient.Update("user", User);
 
-            }
         }
 
         #region OnLoad Props
@@ -184,8 +164,8 @@ namespace NikeClientApp.ViewModels
         {
             get { return _loadedReactions; }
             set { SetProperty(ref _loadedReactions, value); }
-        }    
-        
+        }
+
         private bool _reactionsLoaded;
 
         public bool ReactionsLoaded
@@ -251,7 +231,7 @@ namespace NikeClientApp.ViewModels
                         Entries = new ObservableCollection<Models.Entry>();
                     }
                     EntriesLoaded = !EntriesLoaded;
-                    break; 
+                    break;
             }
         }
         public async Task OnDelete(string endpoint)
@@ -291,7 +271,6 @@ namespace NikeClientApp.ViewModels
             commentClient = new HttpService<Comment>();
             entryClient = new HttpService<Models.Entry>();
             UserReadOnly = new EditUser();
-            SelectedComment = new Comment();
             Comments = new ObservableCollection<Comment>();
             Entries = new ObservableCollection<Models.Entry>();
             Reactions = new ObservableCollection<Reaction>();

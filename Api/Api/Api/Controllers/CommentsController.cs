@@ -36,7 +36,7 @@ namespace Api.Controllers
                 return StatusCode((int)HttpStatusCode.NotFound, new Response<NotFoundException>(Status.Fail, ex.Message));
             }
         }
-        [HttpPut(":id")]
+        [HttpPut()]
         [ProducesResponseType(typeof(int?), 200)] 
         public async Task<IActionResult> UpdateComment([FromBody] EditComment comment, [FromHeader] string apiKey)
         {

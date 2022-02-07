@@ -1,7 +1,9 @@
 ﻿using Newtonsoft.Json;
+using NikeClientApp.Services;
 using System;
 using System.Collections.Generic;
 using System.Text;
+using System.Threading.Tasks;
 using System.Windows.Input;
 using Xamarin.Forms;
 
@@ -10,6 +12,15 @@ namespace NikeClientApp.Models
     public class Entry : NotifyModel
     {
         public ICommand Edit => new Command<string>((param) => OnEdit(param));
+        public ICommand Save => new Command(async () => await OnSave());
+
+        public HttpService<Entry> HttpService { get; set; }
+
+        public Entry()
+        {
+            HttpService = new HttpService<Entry>();
+        }
+
         public long Id { get; set; }
         public string Description { get; set; }
         public string POI { get; set; }
@@ -48,6 +59,11 @@ namespace NikeClientApp.Models
             EntryReadOnly = !EntryReadOnly;
             RatingReadOnly = !RatingReadOnly;
 
+        }
+
+        public async Task OnSave()
+        {
+            await HttpService.Update("entry", this);
         }
 
     }
