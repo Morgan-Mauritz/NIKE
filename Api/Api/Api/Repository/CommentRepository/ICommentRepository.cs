@@ -8,6 +8,6 @@ namespace Api.Repository.CommentRepository
         Task<Comment> DeleteComment(Comment comment);
         Task<Comment> GetComment(long id);
         Task<Comment> GetComments(BaseFilter filter, long userID);
-        Task<Comment> UpdateComments();
+        Task UpdateComments();
     }
 }

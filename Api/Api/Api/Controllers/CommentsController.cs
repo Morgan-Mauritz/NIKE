@@ -38,7 +38,7 @@ namespace Api.Controllers
         }
         [HttpPut(":id")]
         [ProducesResponseType(typeof(int?), 200)] 
-        public async Task<IActionResult> UpdateComment([FromBody] EditComment comment [FromHeader] string apiKey)
+        public async Task<IActionResult> UpdateComment([FromBody] EditComment comment, [FromHeader] string apiKey)
         {
             try
             {

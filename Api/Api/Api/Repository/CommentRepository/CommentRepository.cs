@@ -25,7 +25,7 @@ namespace Api.Repository.CommentRepository
         {
             return await _context.Comments.FirstOrDefaultAsync(x => x.Id == id);
         } 
-        public async Task<Comment> UpdateComment()
+        public async Task UpdateComments()
         {
              await _context.SaveChangesAsync();
         }
@@ -34,5 +34,6 @@ namespace Api.Repository.CommentRepository
         {
             throw new System.NotImplementedException();
         }
+
     }
 }
