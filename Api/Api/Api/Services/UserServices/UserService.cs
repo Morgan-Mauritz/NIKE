@@ -1,4 +1,5 @@
-﻿using Api.Model;
+﻿using Api.Helpers;
+using Api.Model;
 using Api.Repository;
 using AutoMapper;
 using System;
@@ -30,6 +31,11 @@ namespace Api.Services.UserServices
         public async Task<UserDto> UpdateUser(UpdateUserDto updateUserDto, string apiKey)
         {
             var user = await _repository.GetByApiKey(apiKey);
+            var hash = updateUserDto.PasswordValidation.GenerateEncryption();
+            if (user.Password != hash)
+            {
+                throw new UnauthorizedAccessException("Fel lösenord");
+            }
 
             if(user == null)
             {
