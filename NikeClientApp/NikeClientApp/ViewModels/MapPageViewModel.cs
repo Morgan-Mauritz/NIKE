@@ -15,7 +15,7 @@ namespace NikeClientApp.ViewModels
     public class MapPageViewModel : BaseViewModel
     {
         public Command NextPage => new Command(async () => await NavigationService.NavigateTo<MainPageViewModel>());
-        public Command BackPage; // => new Command(async () => await NavigationService.GoBack());
+       
         public ICommand _AddPOI_Clicked => new Command(async () => await AddPOI_Clicked());
         public ICommand _PinIcon_Clicked => new Command(async () => await PinIcon_Clicked());
         public ICommand _RatingAmount => new Command((object sender) => RatingAmount(sender));

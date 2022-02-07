@@ -61,7 +61,8 @@
                         </StackLayout>
                     </Frame>
 
-                    <Button x:Name="AddEntry" Text="Lägg till en recension" Command="{Binding _EntryButton_Clicked}" BackgroundColor="White" TextColor="Black"/>
+                    
+                    
                     <ListView ItemsSource="{Binding ListOfPOI.Data}"  SelectedItem="{Binding SelectedPOI, Mode=TwoWay}" IsVisible="{Binding POIListIsVisible}">
 
                         <ListView.ItemTemplate>
@@ -75,7 +76,9 @@
 
                
                     <ListView x:Name="ListViewForEntryOnPOI" ItemsSource="{Binding ListOfEntries}" IsVisible="{Binding EntryListIsVisible}">
-
+                        <ListView.Header>
+                            <Button x:Name="AddEntry" Text="Lägg till en recension" Command="{Binding _EntryButton_Clicked}" BackgroundColor="White" TextColor="Black" />
+                        </ListView.Header>
                             <ListView.ItemTemplate>
 
                                 <DataTemplate>
