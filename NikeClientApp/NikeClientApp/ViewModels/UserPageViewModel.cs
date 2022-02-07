@@ -17,6 +17,7 @@ namespace NikeClientApp.ViewModels
         public ICommand BackPage => new Command(async () => await NavigationService.GoBack());
         //public ICommand Show => new Command(async () => await OnShow());
         public ICommand Edit => new Command<string>((param) => OnEdit(param));
+        public ICommand Load => new Command<string>((param) => OnLoad(param));
         public ICommand Delete => new Command<string>(async (endpoint) => await OnDelete(endpoint));
         public ICommand Save => new Command<string>(async (param) => await OnSave(param));
         private HttpService<User> userClient;
@@ -68,12 +69,12 @@ namespace NikeClientApp.ViewModels
 
             var entries = await entryClient.GetList("entry/list", "");
 
-            Comments = new ObservableCollection<Comment>(comments.Data);
-
-            Reactions = new ObservableCollection<Reaction>(reactions.Data);
-
-            Entries = new ObservableCollection<Models.Entry>(entries.Data);
-
+            if (comments != null)
+                LoadedComments = new ObservableCollection<Comment>(comments.Data);
+            if (reactions != null)
+                Reactions = new ObservableCollection<Reaction>(reactions.Data);
+            if (entries != null)
+                Entries = new ObservableCollection<Models.Entry>(entries.Data);
             User = user.Data;
         }
 
@@ -113,7 +114,7 @@ namespace NikeClientApp.ViewModels
         public Comment SelectedComment
         {
             get { return _selectedComment; }
-            set { _selectedComment = value; }
+            set { SetProperty(ref _selectedComment, value); }
         }
 
         public async Task OnSave(string endpoint)
@@ -130,11 +131,105 @@ namespace NikeClientApp.ViewModels
                     break;
                 case "like":
                     break;
-            
-            
+
+
             }
         }
 
+        #region OnLoad Props
+        private ObservableCollection<Comment> _loadedComments;
+
+        public ObservableCollection<Comment> LoadedComments
+        {
+            get { return _loadedComments; }
+            set { _loadedComments = value; }
+        }
+
+        private bool _commentsLoaded;
+
+        public bool CommentsLoaded
+        {
+            get { return _commentsLoaded; }
+            set { SetProperty(ref _commentsLoaded, value); }
+        }
+
+
+        private ObservableCollection<Reaction> _loadedReactions;
+
+        public ObservableCollection<Reaction> LoadedReactions
+        {
+            get { return _loadedReactions; }
+            set { SetProperty(ref _loadedReactions, value); }
+        }    
+        
+        private bool _reactionsLoaded;
+
+        public bool ReactionsLoaded
+        {
+            get { return _reactionsLoaded; }
+            set { SetProperty(ref _reactionsLoaded, value); }
+        }
+
+
+        private ObservableCollection<Models.Entry> _loadedEntries;
+
+        public ObservableCollection<Models.Entry> LoadedEntries
+        {
+            get { return _loadedEntries; }
+            set { SetProperty(ref _loadedEntries, value); }
+        }
+
+        private bool _entriesLoaded;
+
+        public bool EntriesLoaded
+        {
+            get { return _entriesLoaded; }
+            set { SetProperty(ref _entriesLoaded, value); }
+        }
+
+
+        #endregion
+        public void OnLoad(string param)
+        {
+            switch (param)
+            {
+                case "comments":
+
+                    if (!CommentsLoaded)
+                    {
+                        Comments = LoadedComments;
+                    }
+                    else
+                    {
+                        Comments = new ObservableCollection<Comment>();
+                    }
+                    CommentsLoaded = !CommentsLoaded;
+
+                    break;
+                case "reactions":
+                    if (!ReactionsLoaded)
+                    {
+                        Reactions = LoadedReactions;
+                    }
+                    else
+                    {
+                        Reactions = new ObservableCollection<Reaction>();
+                    }
+                    ReactionsLoaded = !ReactionsLoaded;
+                    break;
+                case "entries":
+                    if (!EntriesLoaded)
+                    {
+                        Entries = LoadedEntries;
+                    }
+                    else
+                    {
+                        Entries = new ObservableCollection<Models.Entry>();
+                    }
+                    EntriesLoaded = !EntriesLoaded;
+                    break; 
+            }
+        }
         public async Task OnDelete(string endpoint)
         {
 
@@ -150,7 +245,7 @@ namespace NikeClientApp.ViewModels
                 var comment = Comments.First(x => x.Id == response.Data.Id);
                 Comments.Remove(comment);
             }
-            else if ( endpoint.Contains("entry"))
+            else if (endpoint.Contains("entry"))
             {
                 var response = await entryClient.Delete(endpoint);
                 var entry = Entries.First(x => x.Id == response.Data.Id);
@@ -173,6 +268,9 @@ namespace NikeClientApp.ViewModels
             entryClient = new HttpService<Models.Entry>();
             UserReadOnly = new EditUser();
             SelectedComment = new Comment();
+            Comments = new ObservableCollection<Comment>();
+            Entries = new ObservableCollection<Models.Entry>();
+            Reactions = new ObservableCollection<Reaction>();
 
         }
 

@@ -89,10 +89,20 @@
             </Frame>
 
 
-            <StackLayout Grid.Column="3" Grid.Row="2" BackgroundColor="Black">
-                <ListView ItemsSource="{Binding Entries}">
-                    <ListView.Header>Mina inlägg</ListView.Header>
-                    <ListView.ItemTemplate>
+            <StackLayout Grid.Column="3" Grid.Row="2" Grid.RowSpan="2" >
+
+                <Button Text="Mina inlägg" BackgroundColor="ForestGreen"  Command="{Binding Load}" CommandParameter="entries"></Button>
+                <ListView ItemsSource="{Binding Entries}" MinimumHeightRequest="0" VerticalOptions="Start" IsVisible="{Binding EntriesLoaded}" BackgroundColor="Black">
+                    <ListView.Style>
+                        <Style TargetType="ListView">
+                            <Style.Triggers>
+                                <DataTrigger TargetType="ListView" Binding="{Binding Entries.Count}" Value="0">
+                                    <Setter Property="HeightRequest" Value="0"/>
+                                </DataTrigger>
+                            </Style.Triggers>
+                        </Style>
+                    </ListView.Style>
+                        <ListView.ItemTemplate>
                         <DataTemplate>
                             <ViewCell>
                                 <StackLayout>
@@ -107,14 +117,24 @@
                     </ListView.ItemTemplate>
                 </ListView>
 
-                <ListView ItemsSource="{Binding Comments}" SelectedItem="{Binding SelectedComment}">
-                    <ListView.Header>Mina kommentarer</ListView.Header>
+
+
+                <Button Text="Mina kommentarer" Command="{Binding Load}" BackgroundColor="ForestGreen" CommandParameter="comments"></Button>
+                <ListView ItemsSource="{Binding Comments}" SelectedItem="{Binding SelectedComment}" IsVisible="{Binding CommentsLoaded}" MinimumHeightRequest="0" VerticalOptions="Start" BackgroundColor="Black">
+                    <ListView.Style>
+                        <Style TargetType="ListView">
+                            <Style.Triggers>
+                                <DataTrigger TargetType="ListView" Binding="{Binding Comments.Count}" Value="0">
+                                    <Setter Property="HeightRequest" Value="0"/>
+                                </DataTrigger>
+                            </Style.Triggers>
+                        </Style>
+                    </ListView.Style>
                     <ListView.ItemTemplate>
                         <DataTemplate>
                             <ViewCell>
                                 <StackLayout>
-                                    
-                                        <Label Text="{Binding Entry.Username}"></Label>
+                                    <Label Text="{Binding Entry.Username}"></Label>
                                         <Label Text="{Binding Entry.POI}"></Label>
                                     <StackLayout Orientation="Horizontal">
                                         
@@ -143,8 +163,17 @@
                     </ListView.ItemTemplate>
                 </ListView>
 
-                <ListView ItemsSource="{Binding Reactions}">
-                    <ListView.Header>Gillade inlägg</ListView.Header>
+                <Button Text="Mina gillade inlägg" BackgroundColor="ForestGreen"  Command="{Binding Load}" CommandParameter="reactions"></Button>
+                <ListView ItemsSource="{Binding Reactions}" MinimumHeightRequest="0" IsVisible="{Binding ReactionsLoaded}" VerticalOptions="Start" BackgroundColor="Black">
+                    <ListView.Style>
+                        <Style TargetType="ListView">
+                            <Style.Triggers>
+                                <DataTrigger TargetType="ListView" Binding="{Binding Reactions.Count}" Value="0">
+                                    <Setter Property="HeightRequest" Value="0"/>
+                                </DataTrigger>
+                            </Style.Triggers>
+                        </Style>
+                    </ListView.Style>
                             <ListView.ItemTemplate>
                                 <DataTemplate>
                                     <ViewCell>
