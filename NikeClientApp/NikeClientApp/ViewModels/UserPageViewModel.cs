@@ -18,7 +18,7 @@ namespace NikeClientApp.ViewModels
         //public ICommand Show => new Command(async () => await OnShow());
         public ICommand Edit => new Command<string>((param) => OnEdit(param));
         public ICommand Delete => new Command<string>(async (endpoint) => await OnDelete(endpoint));
-        public ICommand Save => new Command<(string,int)>(async (param) => await OnSave(param));
+        public ICommand Save => new Command<string>(async (param) => await OnSave(param));
         private HttpService<User> userClient;
         private HttpService<Reaction> reactionClient;
         private HttpService<Comment> commentClient;
@@ -108,15 +108,23 @@ namespace NikeClientApp.ViewModels
         }
 
 
-        public async Task OnSave((string param, int id) tuple)
+        private Comment _selectedComment;
+
+        public Comment SelectedComment
         {
-            switch (tuple.param)
+            get { return _selectedComment; }
+            set { _selectedComment = value; }
+        }
+
+        public async Task OnSave(string endpoint)
+        {
+            switch (endpoint)
             {
                 case "user":
                     await userClient.Update("user", User);
                     break;
-                case "comment":
-                    await commentClient.Update("comments", Comments.First(x => x.Id == tuple.id));
+                case "comments":
+                    await commentClient.Update("comments", SelectedComment);
                     break;
                 case "entry":
                     break;
@@ -164,6 +172,7 @@ namespace NikeClientApp.ViewModels
             commentClient = new HttpService<Comment>();
             entryClient = new HttpService<Models.Entry>();
             UserReadOnly = new EditUser();
+            SelectedComment = new Comment();
 
         }
 

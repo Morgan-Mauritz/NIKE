@@ -78,7 +78,7 @@
                     </StackLayout>
                    
                     <StackLayout Orientation="Vertical">
-                        <Button x:Name="buttonSaveInfo" Text="Spara" CornerRadius="15" Margin="0,20,35,0" Command="{Binding Save}">
+                        <Button x:Name="buttonSaveInfo" Text="Spara" CornerRadius="15" Margin="0,20,35,0" Command="{Binding Save}" CommandParameter="user">
                         </Button>
                         <Button x:Name="buttonRemoveAcc" Text="Radera konto" BackgroundColor="DarkRed" CornerRadius="15" Margin="0,100,35,0" Command="{Binding Delete}" CommandParameter="user"></Button>
                     </StackLayout>
@@ -107,7 +107,7 @@
                     </ListView.ItemTemplate>
                 </ListView>
 
-                <ListView ItemsSource="{Binding Comments}">
+                <ListView ItemsSource="{Binding Comments}" SelectedItem="{Binding SelectedComment}">
                     <ListView.Header>Mina kommentarer</ListView.Header>
                     <ListView.ItemTemplate>
                         <DataTemplate>
@@ -134,6 +134,7 @@
                                         <Label Text="Din kommentar:"></Label>
                                         <Entry Text="{Binding Text}"></Entry>
                                         <Button Command="{Binding Path=BindingContext.Delete, Source={x:Reference Name=Root}}"  Text="Radera" CommandParameter="{Binding Endpoint}"/>
+                                        <Button Command="{Binding Path=BindingContext.Save, Source={x:Reference Name=Root}}"  Text="Spara" CommandParameter="comments"/>
                                     </StackLayout>
                                 </StackLayout>
                                 
