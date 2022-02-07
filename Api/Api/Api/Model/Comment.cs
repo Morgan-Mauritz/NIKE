@@ -26,6 +26,11 @@ namespace Api.Model
         public EntryDto Entry { get; set; }
         public string Text { get; set; }
     }
+    public class EditComment
+    {
+        public int Id { get; set; }
+        public string Text { get; set; }
+    }
 
 
 }
