@@ -41,6 +41,26 @@ namespace Api.Services.CommentService
 
         }
 
+        public async Task<CommentDTO> UpdateComment(EditComment editComment, string apiKey)
+        {
+            var user = await _userRepository.GetByApiKey(apiKey);
+            var comment = await _commentRepository.GetComment(editComment.Id);
+
+            if (comment == null)
+            {
+                throw new NotFoundException("Kommentaren kunde ej hittas");
+            }
+            if (user == null || user.Id != comment.UserId)
+            {
+                throw new UnauthorizedAccessException("Du har ej tillgång till denna åtgärd");
+            }
+            comment.Comment1 = editComment.Text;
+            await _commentRepository.UpdateComments();
+
+            return _mapper.Map<CommentDTO>(comment);
+
+        }
+
         public Task<CommentDTO> GetComment(long Id, string apiKey)
         {
             throw new System.NotImplementedException();

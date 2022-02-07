@@ -36,5 +36,22 @@ namespace Api.Controllers
                 return StatusCode((int)HttpStatusCode.NotFound, new Response<NotFoundException>(Status.Fail, ex.Message));
             }
         }
+        [HttpPut(":id")]
+        [ProducesResponseType(typeof(int?), 200)] 
+        public async Task<IActionResult> UpdateComment([FromBody] EditComment comment, [FromHeader] string apiKey)
+        {
+            try
+            {
+                return Ok(new Response<CommentDTO>(await _service.UpdateComment(comment, apiKey)));
+            }
+            catch (UnauthorizedAccessException ex)
+            {
+                return StatusCode((int)HttpStatusCode.Unauthorized, new Response<UnauthorizedAccessException>(Status.Fail, ex.Message));
+            }
+            catch (NotFoundException ex)
+            {
+                return StatusCode((int)HttpStatusCode.NotFound, new Response<NotFoundException>(Status.Fail, ex.Message));
+            }
+        }
     }
 }
