@@ -106,14 +106,31 @@
                         <ListView.ItemTemplate>
                         <DataTemplate>
                             <ViewCell>
-                                <StackLayout>
-                                    <Label Text="{Binding Description}"></Label>
-                                    <Label Text="{Binding StarRating}"></Label>
-                                    <Label Text="{Binding Username}"></Label>
-                                    <Label Text="{Binding POI}"></Label>
-                                    <Button Command="{Binding Path=BindingContext.Delete, Source={x:Reference Name=Root}}"  Text="Radera" CommandParameter="{Binding Endpoint}"/>
-                                </StackLayout>
-                            </ViewCell>
+                                        <StackLayout Orientation="Vertical">
+
+                                            <StackLayout Orientation="Horizontal">
+                                                <Label FontAttributes="Bold" Text="Sevärdheten:"></Label>
+                                                <Label Text="{Binding Entry.POI}"></Label>
+                                            </StackLayout>
+
+                                            <StackLayout Orientation="Horizontal">
+                                                <Label FontAttributes="Bold" Text="Inlägg:"></Label>
+                                                <Entry Text="{Binding Entry.Description}" IsReadOnly="{Binding EntryReadOnly}"></Entry>
+                                                <ImageButton Source="Assets/roundicon.png" HeightRequest="30"  Command="{Binding Edit}" CommandParameter="entry"></ImageButton>
+
+                                            </StackLayout>
+                                            <StackLayout Orientation="Horizontal">
+                                                <Label FontAttributes="Bold" Text="Betyg:"></Label>
+                                                <Label Text="{Binding Entry.StarRating}" FontSize="Micro" x:Name="star1" StyleId="star1"/>
+                                                <Entry IsReadOnly="{Binding RatingReadOnly}" ></Entry>
+                                                <ImageButton Source="Assets/roundicon.png" Command="{Binding Edit}" CommandParameter="rating" HeightRequest="30"></ImageButton>
+                                                <Button Text="Spara" Command="{Binding Save}"/>
+                                                <Button Text="Radera" BackgroundColor="DarkRed" Command="{Binding Delete}" CommandParameter="{Binding Endpoint}"/>
+
+                                            </StackLayout>
+
+                                        </StackLayout>
+                                    </ViewCell>
                         </DataTemplate>
                     </ListView.ItemTemplate>
                 </ListView>
@@ -134,31 +151,43 @@
                     <ListView.ItemTemplate>
                         <DataTemplate>
                             <ViewCell>
-                                <StackLayout>
-                                    <Label Text="{Binding Entry.Username}"></Label>
-                                        <Label Text="{Binding Entry.POI}"></Label>
-                                    <StackLayout Orientation="Horizontal">
-                                        
-                                    <StackLayout Orientation="Horizontal">
-                                        <Label Text="Inlägg:"></Label>
-                                        <Label Text="{Binding Entry.Description}"></Label>
-                                    </StackLayout>
-                                    <StackLayout Orientation="Horizontal">
-                                            <StackLayout Orientation="Horizontal" x:Name="ratingBar" HorizontalOptions="Center">
+                                        <StackLayout Orientation="Vertical">
 
+                                            <StackLayout Orientation="Horizontal">
+                                                <Label FontAttributes="Bold" Text="Användare:"></Label>
+                                                <Label Text="{Binding Entry.Username}"></Label>
 
                                             </StackLayout>
+                                            <StackLayout Orientation="Horizontal">
+                                                <Label FontAttributes="Bold" Text="Sevärdheten:"></Label>
+                                                <Label Text="{Binding Entry.POI}"></Label>
+                                            </StackLayout>
+
+
+                                            <StackLayout Orientation="Horizontal">
+                                                <Label FontAttributes="Bold" Text="Inlägg:"></Label>
+                                                <Label Text="{Binding Entry.Description}"></Label>
+                                            </StackLayout>
+
+                                            <StackLayout Orientation="Horizontal">
+                                                <Label FontAttributes="Bold" Text="Betyg:"></Label>
+                                                <Label Text="{Binding Entry.StarRating}" FontSize="Micro" x:Name="star1" StyleId="star1"/>
+                                            </StackLayout>
+
+
+                                            <StackLayout Orientation="Horizontal">
+                                                <Label FontAttributes="Bold" Text="Din kommentar:"></Label>
+                                                <Entry Text="{Binding Text}" IsReadOnly="{Binding CommentReadOnly}" ></Entry>
+                                                <ImageButton Source="Assets/roundicon.png" HeightRequest="30" Command="{Binding Edit}" CommandParameter="text"></ImageButton>
+                                                <Button Text="Spara" Command="{Binding Path=BindingContext.Save, Source={x:Reference Name=Root}}"/>
+                                                <Button Text="Radera" BackgroundColor="DarkRed" Command="{Binding Path=BindingContext.Delete, Source={x:Reference Name=Root}}" CommandParameter="{Binding Endpoint}"/>
+
+                                            </StackLayout>
+
+
                                         </StackLayout>
-                                    </StackLayout>
-                                    <StackLayout Orientation="Horizontal">
-                                        <Label Text="Din kommentar:"></Label>
-                                        <Entry Text="{Binding Text}"></Entry>
-                                        <Button Command="{Binding Path=BindingContext.Delete, Source={x:Reference Name=Root}}"  Text="Radera" CommandParameter="{Binding Endpoint}"/>
-                                        <Button Command="{Binding Path=BindingContext.Save, Source={x:Reference Name=Root}}"  Text="Spara" CommandParameter="comments"/>
-                                    </StackLayout>
-                                </StackLayout>
-                                
-                            </ViewCell>
+
+                                    </ViewCell>
                         </DataTemplate>
                     </ListView.ItemTemplate>
                 </ListView>
@@ -177,11 +206,39 @@
                             <ListView.ItemTemplate>
                                 <DataTemplate>
                                     <ViewCell>
-                                        <StackLayout>
-                                            <Label Text="{Binding Entry.Description}"></Label>
-                                            <Label Text="{Binding Entry.StarRating}"></Label>
-                                            <Label Text="{Binding Entry.Username}"></Label>
-                                            <Label Text="{Binding Entry.POI}"></Label>
+                                        <StackLayout BindingContext="{Binding Entry}">
+                                            <StackLayout Orientation="Vertical">
+
+                                                <StackLayout Orientation="Horizontal">
+                                                    <Label FontAttributes="Bold" Text="Användare:"></Label>
+                                                    <Label Text="{Binding Entry.Username}"></Label>
+
+                                                </StackLayout>
+
+                                                <StackLayout Orientation="Horizontal">
+                                                    <Label FontAttributes="Bold" Text="Sevärdheten:"></Label>
+                                                    <Label Text="{Binding Entry.POI}"></Label>
+                                                </StackLayout>
+
+                                                <StackLayout Orientation="Horizontal">
+                                                    <Label FontAttributes="Bold" Text="Inlägg:"></Label>
+                                                    <Label Text="{Binding Entry.Description}"></Label>
+                                                </StackLayout>
+
+                                                <StackLayout Orientation="Horizontal">
+                                                    <Label FontAttributes="Bold" Text="Betyg:"></Label>
+                                                    <Label Text="{Binding Entry.StarRating}" FontSize="Micro" x:Name="star1" StyleId="star1"/>
+                                                </StackLayout>
+
+                                                <StackLayout Orientation="Horizontal">
+                                                    <Button Text="Sluta gilla" BackgroundColor="DarkRed" Command="{Binding Delete}" CommandParameter="{Binding Endpoint}"/>
+                                                </StackLayout>
+
+
+                                            </StackLayout>
+
+
+
                                         </StackLayout>
                                     </ViewCell>
                                 </DataTemplate>
@@ -189,6 +246,7 @@
                         </ListView>
 
                 </StackLayout>
+                    </StackLayout>
             </Frame>
 
 
