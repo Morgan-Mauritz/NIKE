@@ -104,7 +104,6 @@
     </AppxManifest>
   </ItemGroup>
   <ItemGroup>
-
     <Content Include="Assets\halvkarta.png" />
     <Content Include="Assets\gg.png" />
     <Content Include="Assets\glas.png" />
@@ -154,6 +153,15 @@
     <PackageReference Include="Xamarin.Forms" Version="5.0.0.2196" />
     <PackageReference Include="Microsoft.NETCore.UniversalWindowsPlatform" Version="6.2.12" />
     <PackageReference Include="Xamarin.Essentials" Version="1.7.0" />
+    <PackageReference Include="Xamarin.Forms.Theme.Base">
+      <Version>1.0.0.43-pre1</Version>
+    </PackageReference>
+    <PackageReference Include="Xamarin.Forms.Theme.Dark">
+      <Version>1.0.0.43-pre1</Version>
+    </PackageReference>
+    <PackageReference Include="Xamarin.Forms.Theme.Light">
+      <Version>1.0.0.43-pre1</Version>
+    </PackageReference>
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\NikeClientApp\NikeClientApp.csproj">

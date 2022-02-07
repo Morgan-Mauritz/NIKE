@@ -1,8 +1,26 @@
 ﻿<?xml version="1.0" encoding="utf-8" ?>
 <Application xmlns="http://xamarin.com/schemas/2014/forms"
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
-             x:Class="NikeClientApp.App">
+             x:Class="NikeClientApp.App"
+   
+    xmlns:light="clr-namespace:Xamarin.Forms.Themes;assembly=Xamarin.Forms.Theme.Light"
+    xmlns:dark="clr-namespace:Xamarin.Forms.Themes;assembly=Xamarin.Forms.Theme.Dark">
     <Application.Resources>
+        <Color x:Key = "BackgroundLight">white</Color>
+        <Color x:Key = "TextLight">Black</Color>
 
+        <Color x:Key = "BackgroundDark">Gray</Color>
+        <Color x:Key = "TextDark">White</Color>
+
+        <Style x:Key = "ContainerBackgroundColor" TargetType ="StackLayout">
+            <Setter Property = "BackgroundColor"
+        Value= "{AppThemeBinding Dark ={StaticResource BackgroundDark}, Light={StaticResource BackgroundLight}}"/>
+        </Style>
+
+
+        <Style x:Key = "TextColor" TargetType ="Label">
+            <Setter Property = "TextColor"
+        Value= "{AppThemeBinding Dark ={StaticResource TextDark}, Light={StaticResource TextLight}}"/>
+        </Style>
     </Application.Resources>
 </Application>
