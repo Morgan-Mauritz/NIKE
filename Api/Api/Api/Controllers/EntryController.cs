@@ -49,7 +49,7 @@ namespace Api.Controllers
             {
                 return Ok(new Response<EntryDto>(await _service.SetEntry(addEntry, apiKey)));
             }
-            catch (Exception)
+            catch (Exception ex)
             {
                 //TODO: dont catch exception instead catch a specified exception
                 return StatusCode((int)HttpStatusCode.BadRequest, new Response<Exception>(Status.Fail, "Something went wrong"));

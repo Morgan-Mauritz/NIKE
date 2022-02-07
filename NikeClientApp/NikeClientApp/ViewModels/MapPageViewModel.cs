@@ -8,6 +8,7 @@ using System.Threading.Tasks;
 using System.Windows.Input;
 using Xamarin.Forms;
 using Xamarin.Forms.Maps;
+using Entry = NikeClientApp.Models.Entry;
 
 namespace NikeClientApp.ViewModels
 {
@@ -24,9 +25,11 @@ namespace NikeClientApp.ViewModels
         public ICommand _SatelliteMapView => new Command(async () => await SatelliteMapView());
         public ICommand _HybridMapView => new Command(async () => await HybridMapView());
 
-        public ICommand _ShowEntriesForPOI => new Command(async () => await ShowEntriesForPOI());
+        public ICommand _BackArrowClicked => new Command(async () => await BackArrowClicked());
 
-      
+        public ICommand _EntryButton_Clicked => new Command(async () => await EntryButton_Clicked());
+
+     
 
         HttpService<Models.Entry> httpClient = new HttpService<Models.Entry>();
         HttpService<Forecast> weatherClient = new HttpService<Forecast>();
@@ -73,16 +76,55 @@ namespace NikeClientApp.ViewModels
 
         private bool _addPoiModalIsVisible;
         public bool addPoiModalIsVisible { get { return _addPoiModalIsVisible; } set { SetProperty(ref _addPoiModalIsVisible, value); } }
-        #endregion;
+
+        private bool _addEntryModalIsVisible = false;
+        public bool addEntryModalIsVisible { get => _addEntryModalIsVisible; set { SetProperty(ref _addEntryModalIsVisible, value); } }
+
+        private bool _pOIListIsVisible;
+
+        public bool POIListIsVisible { get => _pOIListIsVisible; set { SetProperty(ref _pOIListIsVisible, value); } }
+
+        private bool _entryListIsVisible;
+        public bool EntryListIsVisible { get => _entryListIsVisible; set { SetProperty(ref _entryListIsVisible, value); } }
+
+        private bool _entryButtonIsVisible;
+        public bool EntryButtonIsVisible { get => _entryButtonIsVisible; set { SetProperty(ref _entryButtonIsVisible, value); } }
+
+        private bool _backArrowIsVisible;
+        public bool BackArrowIsVisible { get => _backArrowIsVisible; set { SetProperty(ref _backArrowIsVisible, value); } }
+
+
+        POI _selectedPOI;
+        public POI SelectedPOI { get => _selectedPOI; set { SetProperty(ref _selectedPOI, value); ShowEntriesForPOI(); } }
+
+        int _currentWeather;
+
+        public int CurrentWeather { get => _currentWeather; set { SetProperty(ref _currentWeather, value); } }
+
 
         string _searchBarText;
         public string SearchBarText { get => _searchBarText; set { SetProperty(ref _searchBarText, value); } }
 
-        string _cityResult = "Location";
-        public string CityResult { get => _cityResult; set { SetProperty(ref _cityResult, value); } }
+        string _titleResult = "Location";
+        public string TitleResult { get => _titleResult; set { SetProperty(ref _titleResult, value); } }
+
+        string _avgRating;
+
+        public string AvgRating { get => _avgRating; set { SetProperty(ref _avgRating, value); } }
+
+
 
         private PaginationResponse<ObservableCollection<POI>> _listOfPOI;
         public PaginationResponse<ObservableCollection<POI>> ListOfPOI { get => _listOfPOI; set { SetProperty(ref _listOfPOI, value); } }
+
+        private ObservableCollection<Entry> _listOfEntries;
+        public ObservableCollection<Entry> ListOfEntries { get => _listOfEntries; set { SetProperty(ref _listOfEntries, value); } }
+
+
+
+        #endregion;
+
+
 
         //Methods
         #region Methods
@@ -102,7 +144,15 @@ namespace NikeClientApp.ViewModels
                     await App.Current.MainPage.DisplayAlert("Error!", ex.Message, "OK");
                     map.Pins.Remove(map.Pins.Last()); 
                 }
-                addPoiModalIsVisible = false; 
+                if (addEntryModalIsVisible)
+                {
+                    addEntryModalIsVisible = false;
+                    await GetPOIList(SelectedPOI.Country, SelectedPOI.City);
+                    SelectedPOI = ListOfPOI.Data.FirstOrDefault(x => x.Name == SelectedPOI.Name && x.City == SelectedPOI.City);
+                    ListOfEntries = SelectedPOI.Entries;
+                }
+               
+                addPoiModalIsVisible = false;
                 return true;
             }
             else
@@ -113,10 +163,13 @@ namespace NikeClientApp.ViewModels
         }
 
         private async Task SearchButton_Clicked()
-        { 
-            CityResult = SearchBarText;
-            
-            if(_cityResult == "Location")
+        {
+            AvgRating = null;
+
+
+            TitleResult = SearchBarText;
+            POIListIsVisible = true;
+            if (_titleResult == "Location")
             {
                 return; 
             }
@@ -134,11 +187,16 @@ namespace NikeClientApp.ViewModels
             var response = await weatherClient.Get("forecast", $"?longitude={position.Longitude}&latitude={position.Latitude}");
             var city = response.Data.City;
 
+
+            CurrentWeather = (int)Math.Round(response.Data.WeatherList.FirstOrDefault().Temperature);
             MapSpan maps = new MapSpan(position, 1.10, 0.10);
             map.MoveToRegion(maps);
             
-            var test = await GetPOIList(country, city);
+           await GetPOIList(country, city);
+          
         }
+
+
 
         private async Task PinIcon_Clicked()
         {
@@ -215,7 +273,6 @@ namespace NikeClientApp.ViewModels
         {
             entryToAdd.POI = poiToAdd;
             entryToAdd.Rating = EntryRating;
-            entryToAdd.UserName = "admin";
         }
 
         public async Task<PaginationResponse<ObservableCollection<POI>>> GetPOIList(string country, string city)
@@ -225,15 +282,42 @@ namespace NikeClientApp.ViewModels
         }
 
 
-        private Task ShowEntriesForPOI()
+        private async Task<ObservableCollection<Entry>> ShowEntriesForPOI()
         {
             //TODO: Get entries from selected POI
+            if(SelectedPOI != null)
+            {
+                POIListIsVisible = false;
+                AvgRating = SelectedPOI.AvgRating.ToString();
+                ListOfEntries = SelectedPOI.Entries;
+                EntryListIsVisible = true;
+                BackArrowIsVisible = true;
+                EntryButtonIsVisible = true;
+                poiToAdd.Name = SelectedPOI.Name;
+                TitleResult = SelectedPOI.Name;
+                return ListOfEntries;
+            }
+            return null;
+    
+        }
+        private async Task BackArrowClicked()
+        {
+            EntryListIsVisible = false;
+            POIListIsVisible= true;
+            BackArrowIsVisible = false;
+            TitleResult = SelectedPOI.City;
+            AvgRating = null;
 
-
-
-            throw new NotImplementedException();
         }
 
+
+        private async Task EntryButton_Clicked()
+        {
+            addEntryModalIsVisible = true;
+            Position position = new Position(SelectedPOI.Latitude, SelectedPOI.Longitude); 
+            await PopulatePOI(position);
+        
+        }
 
 
         #endregion;

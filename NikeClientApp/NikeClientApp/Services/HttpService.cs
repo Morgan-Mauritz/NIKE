@@ -23,7 +23,7 @@ namespace NikeClientApp.Services
             var request = new RestRequest(endPoint);
             request.Method = Method.Post;
             request.AddBody(obj);
-            request.AddHeader("apiKey", "b987c270-e582-4664-bea3-36f47f17dc43"); //TODO: Change back to UserApi.ApiKey
+            request.AddHeader("apiKey", "7f3913e7-9191-4154-947b-532d737f93d2"); //TODO: Change back to UserApi.ApiKey
              
             return await _restClient.PostAsync<Response<T>>(request);
         }

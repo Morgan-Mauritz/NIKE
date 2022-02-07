@@ -104,7 +104,7 @@
     </AppxManifest>
   </ItemGroup>
   <ItemGroup>
-
+    <Content Include="Assets\backarrow.png" />
     <Content Include="Assets\halvkarta.png" />
     <Content Include="Assets\gg.png" />
     <Content Include="Assets\glas.png" />
