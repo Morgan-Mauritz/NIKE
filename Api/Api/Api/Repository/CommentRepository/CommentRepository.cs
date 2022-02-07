@@ -24,6 +24,10 @@ namespace Api.Repository.CommentRepository
         public async Task<Comment> GetComment(long id)
         {
             return await _context.Comments.FirstOrDefaultAsync(x => x.Id == id);
+        } 
+        public async Task<Comment> UpdateComment()
+        {
+             await _context.SaveChangesAsync();
         }
 
         public Task<Comment> GetComments(BaseFilter filter, long userID)
