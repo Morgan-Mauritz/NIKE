@@ -84,6 +84,30 @@ namespace NikeClientApp.ViewModels
             set { SetProperty(ref _userReadOnly, value); }
         }
 
+        private bool _commentReadOnly;
+
+        public bool CommentReadOnly
+        {
+            get { return _commentReadOnly; }
+            set { SetProperty(ref _commentReadOnly, value); }
+        }
+        private bool _entryReadOnly = true;
+
+        public bool EntryReadOnly
+        {
+            get { return _entryReadOnly; }
+            set { SetProperty(ref _entryReadOnly, value); }
+        }
+
+        private bool _ratingReadOnly = true;
+
+        public bool RatingReadOnly
+        {
+            get { return _ratingReadOnly; }
+            set { SetProperty(ref _ratingReadOnly, value); }
+        }
+
+
         private void OnEdit(string param)
         {
             switch (param)
@@ -102,6 +126,16 @@ namespace NikeClientApp.ViewModels
                     break;
                 case "password":
                     UserReadOnly.Password = false;
+                    
+                    break;
+                case "text":
+                    CommentReadOnly = !CommentReadOnly;
+                    break;
+                case "entry":
+                    EntryReadOnly = !EntryReadOnly;
+                    break;
+                case "rating":
+                    RatingReadOnly = !RatingReadOnly;
                     break;
 
             }
@@ -110,6 +144,7 @@ namespace NikeClientApp.ViewModels
 
         public async Task OnSave(object obj)
         {
+            
             await userClient.Update("user", User);
         }
 
@@ -134,5 +169,7 @@ namespace NikeClientApp.ViewModels
         {
             await OnShow();
         }
+
+
     }
 }

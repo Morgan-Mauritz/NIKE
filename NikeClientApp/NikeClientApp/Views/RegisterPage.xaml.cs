@@ -72,7 +72,9 @@ namespace NikeClientApp.Views
                 Email = TBEmail.Text,
                 Username = TBUsername.Text,
                 Password = TBPassword.Text
-            });
+
+            }, false);
+
 
             await DisplayAlert("Grattis", "Du har nu registrerat dig hos NikeApp.\nLogga in för att fortsätta", "OK"  );
             await Navigation.PushAsync(new MainPage());
