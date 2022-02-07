@@ -110,18 +110,18 @@
 
                                             <StackLayout Orientation="Horizontal">
                                                 <Label FontAttributes="Bold" Text="Sevärdheten:"></Label>
-                                                <Label Text="{Binding Entry.POI}"></Label>
+                                                <Label Text="{Binding POI}"></Label>
                                             </StackLayout>
 
                                             <StackLayout Orientation="Horizontal">
                                                 <Label FontAttributes="Bold" Text="Inlägg:"></Label>
-                                                <Entry Text="{Binding Entry.Description}" IsReadOnly="{Binding EntryReadOnly}"></Entry>
+                                                <Entry Text="{Binding Description}" IsReadOnly="{Binding EntryReadOnly}"></Entry>
                                                 <ImageButton Source="Assets/roundicon.png" HeightRequest="30"  Command="{Binding Edit}" CommandParameter="entry"></ImageButton>
 
                                             </StackLayout>
                                             <StackLayout Orientation="Horizontal">
                                                 <Label FontAttributes="Bold" Text="Betyg:"></Label>
-                                                <Label Text="{Binding Entry.StarRating}" FontSize="Micro" x:Name="star1" StyleId="star1"/>
+                                                <Label Text="{Binding StarRating}" FontSize="Micro" x:Name="star1" StyleId="star1"/>
                                                 <Entry IsReadOnly="{Binding RatingReadOnly}" ></Entry>
                                                 <ImageButton Source="Assets/roundicon.png" Command="{Binding Edit}" CommandParameter="rating" HeightRequest="30"></ImageButton>
                                                 <Button Text="Spara" Command="{Binding Save}"/>
@@ -206,7 +206,7 @@
                             <ListView.ItemTemplate>
                                 <DataTemplate>
                                     <ViewCell>
-                                        <StackLayout BindingContext="{Binding Entry}">
+                                        <StackLayout>
                                             <StackLayout Orientation="Vertical">
 
                                                 <StackLayout Orientation="Horizontal">
@@ -231,7 +231,7 @@
                                                 </StackLayout>
 
                                                 <StackLayout Orientation="Horizontal">
-                                                    <Button Text="Sluta gilla" BackgroundColor="DarkRed" Command="{Binding Delete}" CommandParameter="{Binding Endpoint}"/>
+                                                    <Button Text="Radera" BackgroundColor="DarkRed" Command="{Binding Path=BindingContext.Delete, Source={x:Reference Name=Root}}" CommandParameter="{Binding Endpoint}"/>
                                                 </StackLayout>
 
 

@@ -10,7 +10,7 @@ namespace NikeClientApp.Models
         public Entry Entry { get; set; }
         public string User { get; set; }
         public int Like { get; set; }
-        public string Endpoint { get => $"comments/{Id}"; }
+        public string Endpoint { get => $"entry/reaction/{Id}"; }
 
     }
 }

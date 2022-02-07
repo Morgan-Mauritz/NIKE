@@ -72,9 +72,9 @@ namespace NikeClientApp.ViewModels
             if (comments != null)
                 LoadedComments = new ObservableCollection<Comment>(comments.Data);
             if (reactions != null)
-                Reactions = new ObservableCollection<Reaction>(reactions.Data);
+                LoadedReactions = new ObservableCollection<Reaction>(reactions.Data);
             if (entries != null)
-                Entries = new ObservableCollection<Models.Entry>(entries.Data);
+                LoadedEntries = new ObservableCollection<Models.Entry>(entries.Data);
             User = user.Data;
         }
 
@@ -255,7 +255,7 @@ namespace NikeClientApp.ViewModels
                 var entry = Entries.First(x => x.Id == response.Data.Id);
                 Entries.Remove(entry);
             }
-            else if (endpoint.Contains("like"))
+            else if (endpoint.Contains("reaction"))
             {
                 var response = await reactionClient.Delete(endpoint);
                 var reaction = Reactions.First(x => x.Id == response.Data.Id);
