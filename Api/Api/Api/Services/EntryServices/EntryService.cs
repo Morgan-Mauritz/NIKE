@@ -55,10 +55,10 @@ namespace Api.Services.EntryServices
            return new EntryDto() { POI = POI.Name, Username = userToCheck.Username, Description = entryDto.Description, Rating = entryDto.Rating };
         }
 
-        public async Task<EntryDto> UpdateEntry(UpdateEntry updateEntry, string apiKey, long id)
+        public async Task<EntryDto> UpdateEntry(UpdateEntry updateEntry, string apiKey)
         {
 
-            var entry = await _entryRepository.GetWithTracking(id);
+            var entry = await _entryRepository.GetWithTracking(updateEntry.Id);
             if (entry == null)
             {
                 throw new NotFoundException("Kunde inte hitta inlägget");

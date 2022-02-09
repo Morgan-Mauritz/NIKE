@@ -82,13 +82,13 @@ namespace Api.Controllers
         ///         }    
         ///     }
         /// </remarks>
-        [HttpPut(":id")]
+        [HttpPut]
         [ProducesResponseType(typeof(Response<EntryDto>), 200)]
-        public async Task<IActionResult> UpdateEntry([FromBody] UpdateEntry updateDto, [FromHeader] string apiKey, long id)
+        public async Task<IActionResult> UpdateEntry([FromHeader] string apiKey, [FromBody] UpdateEntry updateDto)
         {
             try
             {
-                return Ok(new Response<EntryDto>(await _service.UpdateEntry(updateDto, apiKey, id)));
+                return Ok(new Response<EntryDto>(await _service.UpdateEntry(updateDto, apiKey)));
             }
             catch (UnauthorizedAccessException ex)
             {

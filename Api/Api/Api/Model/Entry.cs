@@ -38,6 +38,7 @@ namespace Api.Model
 
     public class UpdateEntry
     {
+        public long Id { get; set; }
         public string Description { get; set; }
         public long? Rating { get; set; }
     }

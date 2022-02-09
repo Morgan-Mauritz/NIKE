@@ -14,7 +14,7 @@ namespace NikeClientApp
             InitializeComponent();
             var theme = Preferences.Get("OSAppTheme", Enum.GetName(typeof(OSAppTheme), OSAppTheme.Unspecified));
             App.Current.UserAppTheme = (OSAppTheme)Enum.Parse(typeof(OSAppTheme), theme);
-            MainPage = new NavigationPage(new Settings());
+            MainPage = new NavigationPage(new MainPage());
            
             var navService = DependencyService.Get<INaviService>() as NaviService;
             navService.Navigation = MainPage.Navigation;

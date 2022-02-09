@@ -122,7 +122,7 @@
                                             <StackLayout Orientation="Horizontal">
                                                 <Label FontAttributes="Bold" Text="Betyg:"></Label>
                                                 <Label Text="{Binding StarRating}" FontSize="Micro" x:Name="star1" StyleId="star1"/>
-                                                <Entry IsReadOnly="{Binding RatingReadOnly}" ></Entry>
+                                                <Entry IsReadOnly="{Binding RatingReadOnly}" Text="{Binding Rating}"></Entry>
                                                 <ImageButton Source="Assets/roundicon.png" Command="{Binding Edit}" CommandParameter="rating" HeightRequest="30"></ImageButton>
                                                 <Button Text="Spara" Command="{Binding Save}"/>
                                                 <Button Text="Radera" BackgroundColor="DarkRed" Command="{Binding Delete}" CommandParameter="{Binding Endpoint}"/>

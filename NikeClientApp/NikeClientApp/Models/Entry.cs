@@ -63,7 +63,7 @@ namespace NikeClientApp.Models
 
         public async Task OnSave()
         {
-            await HttpService.Update($"entry/{Id}", this);
+            await HttpService.Update($"entry", this);
         }
 
     }
