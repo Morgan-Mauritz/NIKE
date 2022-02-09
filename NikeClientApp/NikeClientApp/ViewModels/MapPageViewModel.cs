@@ -15,7 +15,7 @@ namespace NikeClientApp.ViewModels
     public class MapPageViewModel : BaseViewModel
     {
         public Command NextPage => new Command(async () => await NavigationService.NavigateTo<MainPageViewModel>());
-       
+
         public ICommand _AddPOI_Clicked => new Command(async () => await AddPOI_Clicked());
         public ICommand _PinIcon_Clicked => new Command(async () => await PinIcon_Clicked());
         public ICommand _RatingAmount => new Command((object sender) => RatingAmount(sender));
@@ -29,7 +29,7 @@ namespace NikeClientApp.ViewModels
 
         public ICommand _EntryButton_Clicked => new Command(async () => await EntryButton_Clicked());
 
-     
+
 
         HttpService<Models.Entry> httpClient = new HttpService<Models.Entry>();
         HttpService<Forecast> weatherClient = new HttpService<Forecast>();
@@ -67,6 +67,8 @@ namespace NikeClientApp.ViewModels
 
         Map _map = new Map();
         public Map map { get => _map; set { SetProperty(ref _map, value); } }
+
+
 
         POI _poi = new POI();
         public POI poiToAdd { get => _poi; set { SetProperty(ref _poi, value); } }
@@ -130,8 +132,8 @@ namespace NikeClientApp.ViewModels
         #region Methods
         async Task<bool> AddPOI_Clicked()
         {
-            if (!string.IsNullOrEmpty(poiToAdd.Name) && _entryRating > 0 && !string.IsNullOrEmpty(entryToAdd.Description)) 
-            { 
+            if (!string.IsNullOrEmpty(poiToAdd.Name) && _entryRating > 0 && !string.IsNullOrEmpty(entryToAdd.Description))
+            {
                 await PopulateEntry();
                 poiToAdd.Category = "";
 
@@ -139,10 +141,10 @@ namespace NikeClientApp.ViewModels
                 {
                     await httpClient.Post("entry", entryToAdd);
                 }
-                catch(Exception ex)
+                catch (Exception ex)
                 {
                     await App.Current.MainPage.DisplayAlert("Error!", ex.Message, "OK");
-                    map.Pins.Remove(map.Pins.Last()); 
+                    map.Pins.Remove(map.Pins.Last());
                 }
                 if (addEntryModalIsVisible)
                 {
@@ -151,15 +153,15 @@ namespace NikeClientApp.ViewModels
                     SelectedPOI = ListOfPOI.Data.FirstOrDefault(x => x.Name == SelectedPOI.Name && x.City == SelectedPOI.City);
                     ListOfEntries = SelectedPOI.Entries;
                 }
-               
+
                 addPoiModalIsVisible = false;
                 return true;
             }
             else
             {
-                await App.Current.MainPage.DisplayAlert("Fel", "Du måste fylla i samtliga fält för att kunna lägga till en sevärdhet!", "OK"); 
+                await App.Current.MainPage.DisplayAlert("Fel", "Du måste fylla i samtliga fält för att kunna lägga till en sevärdhet!", "OK");
             }
-                return false;
+            return false;
         }
 
         private async Task SearchButton_Clicked()
@@ -171,10 +173,10 @@ namespace NikeClientApp.ViewModels
             POIListIsVisible = true;
             if (_titleResult == "Location")
             {
-                return; 
+                return;
             }
 
-            Geocoder geoCoder = new Geocoder(); 
+            Geocoder geoCoder = new Geocoder();
 
             IEnumerable<Position> approximateLocations = await geoCoder.GetPositionsForAddressAsync(SearchBarText);
 
@@ -191,9 +193,9 @@ namespace NikeClientApp.ViewModels
             CurrentWeather = (int)Math.Round(response.Data.WeatherList.FirstOrDefault().Temperature);
             MapSpan maps = new MapSpan(position, 1.10, 0.10);
             map.MoveToRegion(maps);
-            
-           await GetPOIList(country, city);
-          
+
+         var test = await GetPOIList(country, city);
+            PinStay(test);
         }
 
 
@@ -226,9 +228,12 @@ namespace NikeClientApp.ViewModels
                     addPoiModalIsVisible = true;
                     await PopulatePOI(e.Position);
                     ListOfPins.Add(pinner);
+                    map.Pins.Add(pinner);
+
                     pinner = null;
                 }
             }
+
         }
 
         public void RatingAmount(object sender)
@@ -249,8 +254,8 @@ namespace NikeClientApp.ViewModels
         }
 
         public string GetCountryFromDataString(string dataString)
-        {   
-            string[] separator = {"\r\n"};
+        {
+            string[] separator = { "\r\n" };
             string[] countryFromDataString = dataString.Split(separator, StringSplitOptions.RemoveEmptyEntries);
             return countryFromDataString[2];
         }
@@ -258,7 +263,7 @@ namespace NikeClientApp.ViewModels
         public async Task PopulatePOI(Position position)
         {
             var geoCoder = new Geocoder();
-            var Address = await geoCoder.GetAddressesForPositionAsync(position); 
+            var Address = await geoCoder.GetAddressesForPositionAsync(position);
 
             poiToAdd.Country = GetCountryFromDataString(Address.First());
             poiToAdd.Longitude = position.Longitude;
@@ -277,15 +282,29 @@ namespace NikeClientApp.ViewModels
 
         public async Task<PaginationResponse<ObservableCollection<POI>>> GetPOIList(string country, string city)
         {
+
+
             return ListOfPOI = await poiListClient.GetList("poi/list", $"?Country={country}&City={city}");
-           
+            
         }
 
+        public void PinStay(PaginationResponse<ObservableCollection<POI>> ListOfPOI)
+        {
+            foreach (var item in ListOfPOI.Data)
+            {
+                
+                map.Pins.Add(pinner = new Pin
+                {
+                    Position = new Position(item.Latitude, item.Longitude),
+                    Label = item.Name
+                });
 
+            }
+        }
         private async Task<ObservableCollection<Entry>> ShowEntriesForPOI()
         {
             //TODO: Get entries from selected POI
-            if(SelectedPOI != null)
+            if (SelectedPOI != null)
             {
                 POIListIsVisible = false;
                 AvgRating = SelectedPOI.AvgRating.ToString();
@@ -298,12 +317,12 @@ namespace NikeClientApp.ViewModels
                 return ListOfEntries;
             }
             return null;
-    
+
         }
         private async Task BackArrowClicked()
         {
             EntryListIsVisible = false;
-            POIListIsVisible= true;
+            POIListIsVisible = true;
             BackArrowIsVisible = false;
             TitleResult = SelectedPOI.City;
             AvgRating = null;
@@ -314,9 +333,9 @@ namespace NikeClientApp.ViewModels
         private async Task EntryButton_Clicked()
         {
             addEntryModalIsVisible = true;
-            Position position = new Position(SelectedPOI.Latitude, SelectedPOI.Longitude); 
+            Position position = new Position(SelectedPOI.Latitude, SelectedPOI.Longitude);
             await PopulatePOI(position);
-        
+
         }
 
 
