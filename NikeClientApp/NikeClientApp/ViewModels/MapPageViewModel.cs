@@ -28,8 +28,8 @@ namespace NikeClientApp.ViewModels
         public ICommand _BackArrowClicked => new Command(async () => await BackArrowClicked());
 
         public ICommand _EntryButton_Clicked => new Command(async () => await EntryButton_Clicked());
+        public ICommand _LikeButton_Clicked => new Command(async () => await LikeButton_Clicked());
 
-     
 
         HttpService<Models.Entry> httpClient = new HttpService<Models.Entry>();
         HttpService<Forecast> weatherClient = new HttpService<Forecast>();
@@ -317,6 +317,11 @@ namespace NikeClientApp.ViewModels
             Position position = new Position(SelectedPOI.Latitude, SelectedPOI.Longitude); 
             await PopulatePOI(position);
         
+        }
+
+        private async Task LikeButton_Clicked()
+        {
+
         }
 
 

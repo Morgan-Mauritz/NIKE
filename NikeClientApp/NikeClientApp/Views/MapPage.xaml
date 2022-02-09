@@ -42,26 +42,25 @@
                 </StackLayout>
             </Frame>
 
-            <Frame Margin="0,0,600,0" Opacity="0.9" HorizontalOptions="Start" WidthRequest="270" BackgroundColor="Black" >
+            <Frame Margin="0,0,600,0" Opacity="0.9" HorizontalOptions="Start" WidthRequest="270" BackgroundColor="LightSlateGray" >
                 <StackLayout>
                     <ImageButton Source="Assets/backarrow.png" Command="{Binding _BackArrowClicked }" IsVisible="{Binding BackArrowIsVisible }" HeightRequest="50" HorizontalOptions="Start" Margin="0,0,0,0" />
                     <Frame BorderColor="Black" CornerRadius="15" HeightRequest="100">
-                        <StackLayout>
-                            <Grid>
-                                <Grid.ColumnDefinitions>
-                                    <ColumnDefinition/>
-                                    <ColumnDefinition/>
-                                </Grid.ColumnDefinitions>
-                                <Label x:Name="TitleResult" Text="{Binding TitleResult}" TextColor="White" FontSize="Medium"  HorizontalOptions="CenterAndExpand" HeightRequest="30" Grid.Column="0"/>
-                                <Label x:Name="currentWeather" Text="{Binding CurrentWeather, StringFormat='{0} c'}" TextColor="White" Grid.Column="1"/>
-                            </Grid>
-                            
-                            <Label x:Name="avgRating" Text="{Binding AvgRating}" TextColor="White"  HorizontalOptions="CenterAndExpand" HeightRequest="30" />
-                           
-                        </StackLayout>
-                    </Frame>
 
-                    
+                        <Grid>
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="4*"/>
+                                <ColumnDefinition Width="1*"/>
+                            </Grid.ColumnDefinitions>
+                            <StackLayout Grid.Column="0">
+                                <Label x:Name="TitleResult" Text="{Binding TitleResult}" TextColor="White" FontSize="Medium"  HorizontalOptions="CenterAndExpand" HeightRequest="30" />
+                                <Label x:Name="avgRating" Text="{Binding AvgRating}" TextColor="White"  HorizontalOptions="CenterAndExpand" HeightRequest="30" Grid.ColumnSpan="2" />
+                            </StackLayout>
+                            <StackLayout Grid.Column="1" HorizontalOptions="End">
+                                <Label x:Name="currentWeather" Text="{Binding CurrentWeather, StringFormat='{0} c'}" TextColor="White"/>
+                            </StackLayout>
+                        </Grid>
+                    </Frame>
                     
                     <ListView ItemsSource="{Binding ListOfPOI.Data}"  SelectedItem="{Binding SelectedPOI, Mode=TwoWay}" IsVisible="{Binding POIListIsVisible}">
 
@@ -79,22 +78,30 @@
                         <ListView.Header>
                             <Button x:Name="AddEntry" Text="Lägg till en recension" Command="{Binding _EntryButton_Clicked}" BackgroundColor="White" TextColor="Black" />
                         </ListView.Header>
-                            <ListView.ItemTemplate>
-
-                                <DataTemplate>
-
-                                    <ViewCell>
-
-                                        <StackLayout>
-
-                                            <Label Text="{Binding UserName}" TextColor="White" ></Label>
-                                            <Label Text="{Binding Description}" TextColor="White" ></Label>
+                        <ListView.ItemTemplate>
+                            <DataTemplate>
+                                <ViewCell>
+                                    <Frame Margin="0, 2">
+                                    <Grid>
+                                        <Grid.ColumnDefinitions>
+                                            <ColumnDefinition Width="3*"/>
+                                            <ColumnDefinition Width="1*"/>
+                                        </Grid.ColumnDefinitions>
+                                        <StackLayout  Grid.Column="0">
+                                            <Label Text="{Binding UserName}" TextColor="White"></Label>
+                                            <Label Text="{Binding Description}" TextColor="White"></Label>
                                             <Label Text="{Binding Rating}" TextColor="White"></Label>
                                         </StackLayout>
-                                    </ViewCell>
-                                </DataTemplate>
-                            </ListView.ItemTemplate>
-                        </ListView>
+                                        <StackLayout Grid.Column="1">
+                                            <!--<ImageButton Command="{Binding Path=_LikeButton_Clicked, Source={x:Reference }}" Margin="0, 10, 0, 0" HeightRequest="40" HorizontalOptions="End" Source=".\Assets\likes.png"></ImageButton>-->
+                                                <ImageButton Command="{Binding Source={x:Reference MapPageViewModel}, Path=_LikeButton_Clicked}" CommandParameter="{Binding}" Margin="0, 10, 0, 0" HeightRequest="40" HorizontalOptions="End" Source=".\Assets\likes.png"></ImageButton>
+                                        </StackLayout>
+                                    </Grid>
+                                    </Frame>
+                                </ViewCell>
+                            </DataTemplate>
+                        </ListView.ItemTemplate>
+                    </ListView>
                     
                 </StackLayout>
                 
