@@ -284,12 +284,14 @@ namespace NikeClientApp.ViewModels
         {
 
 
-            return ListOfPOI = await poiListClient.GetList("poi/list", $"?Country={country}&City={city}");
+            return ListOfPOI = await poiListClient.GetList("poi/list", $"?Country={country}&City={city}&amount=50");
             
         }
 
         public void PinStay(PaginationResponse<ObservableCollection<POI>> ListOfPOI)
         {
+            map.Pins.Clear();
+
             foreach (var item in ListOfPOI.Data)
             {
                 
