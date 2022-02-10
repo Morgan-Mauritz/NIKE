@@ -3,6 +3,7 @@ using NikeClientApp.Services;
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
+using System.ComponentModel;
 using System.Linq;
 using System.Threading.Tasks;
 using System.Windows.Input;
@@ -26,6 +27,7 @@ namespace NikeClientApp.ViewModels
         public ICommand _HybridMapView => new Command(async () => await HybridMapView());
 
         public ICommand _BackArrowClicked => new Command(async () => await BackArrowClicked());
+        public ICommand _FoldFrameClicked => new Command(async (object sender) => await FoldFrameClicked((Frame)sender));
 
         public ICommand _EntryButton_Clicked => new Command(async () => await EntryButton_Clicked());
 
@@ -95,6 +97,12 @@ namespace NikeClientApp.ViewModels
 
         private bool _backArrowIsVisible;
         public bool BackArrowIsVisible { get => _backArrowIsVisible; set { SetProperty(ref _backArrowIsVisible, value); } }
+
+        private bool _foldButtonIsVisible;
+        public bool FoldButtonIsVisible { get => _foldButtonIsVisible; set { SetProperty(ref _foldButtonIsVisible, value); } }
+
+        private bool _foldInFrameIsVisible = true;
+        public bool FoldInFrameIsVisible { get => _foldInFrameIsVisible; set { SetProperty(ref _foldInFrameIsVisible, value); } }
 
 
         POI _selectedPOI;
@@ -303,6 +311,7 @@ namespace NikeClientApp.ViewModels
                 ListOfEntries = SelectedPOI.Entries;
                 EntryListIsVisible = true;
                 BackArrowIsVisible = true;
+                FoldButtonIsVisible = false;
                 EntryButtonIsVisible = true;
                 poiToAdd.Name = SelectedPOI.Name;
                 TitleResult = SelectedPOI.Name;
@@ -316,12 +325,29 @@ namespace NikeClientApp.ViewModels
             EntryListIsVisible = false;
             POIListIsVisible= true;
             BackArrowIsVisible = false;
+            FoldButtonIsVisible = true;
             TitleResult = SelectedPOI.City;
             AvgRating = null;
 
         }
 
-
+        private async Task FoldFrameClicked(Frame sender)
+        {
+            if (sender.IsVisible)
+            {
+                await sender.FadeTo(0, 500, Easing.SpringOut);
+                FoldButtonIsVisible = false;
+                FoldInFrameIsVisible = true;
+                sender.IsVisible = false;
+            }
+            else if (!sender.IsVisible)
+            {
+                FoldButtonIsVisible = true;
+                FoldInFrameIsVisible = false;
+                sender.IsVisible = true;
+                await sender.FadeTo(1, 500, Easing.SpringIn);
+            }
+        }
         private async Task EntryButton_Clicked()
         {
             addEntryModalIsVisible = true;
@@ -329,7 +355,6 @@ namespace NikeClientApp.ViewModels
             await PopulatePOI(position);
         
         }
-
         private async Task LikeButton_Clicked(object sender)
         {
            var selectedEntry = sender as Entry;
@@ -345,8 +370,6 @@ namespace NikeClientApp.ViewModels
             }
           
         }
-
-
         #endregion;
     }
 }
