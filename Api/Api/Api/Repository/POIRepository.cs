@@ -17,17 +17,16 @@ namespace Api.Repository
         }
         public async Task<POI> Get(double longitude, double latitude, string name)
         {
-            var se = new System.Globalization.CultureInfo("sv-SE"); 
             var thingToLookat = await _context.POI
-                .AsNoTracking().Include(x => x.Entries).Include(x => x.City).ThenInclude(c => c.Country)
-                .FirstOrDefaultAsync(POI => (POI.Longitude >= longitude - 0.03 && POI.Longitude <= longitude + 0.03)
-                && (POI.Latitude >= latitude - 0.03 && POI.Latitude <= latitude + 0.03) && se.CompareInfo.Equals(POI.Name.ToLower() == name.ToLower()));
+                .AsNoTracking().Include(x => x.Entries).ThenInclude(x=> x.LikeDislikeEntries).Include(x => x.City).ThenInclude(c => c.Country)
+                .FirstOrDefaultAsync(POI => (POI.Longitude >= longitude - 0.01 && POI.Longitude <= longitude + 0.01)
+                && (POI.Latitude >= latitude - 0.01 && POI.Latitude <= latitude + 0.01) && POI.Name.ToLower() == name.ToLower());
             return thingToLookat;
         }
 
         public async Task<(List<POI> poiList, int total)> GetFiltered(FilterPOI filterPOI)
         {
-            var query = _context.POI.AsNoTracking().Include(c => c.City).ThenInclude(c => c.Country)
+            var query = _context.POI.AsNoTracking().Include(c=> c.Entries).ThenInclude(c => c.User).Include(c => c.Entries).ThenInclude(c => c.LikeDislikeEntries).Include(c => c.City).ThenInclude(c => c.Country)
                 .Where(x => (string.IsNullOrEmpty(filterPOI.Country) || x.City.Country.Name.ToLower().Contains(filterPOI.Country.ToLower()))
                 && (string.IsNullOrEmpty(filterPOI.City) || x.City.Name.ToLower().Contains(filterPOI.City.ToLower()))
                 && (string.IsNullOrEmpty(filterPOI.Name) || x.Name.ToLower().Contains(filterPOI.Name.ToLower()))

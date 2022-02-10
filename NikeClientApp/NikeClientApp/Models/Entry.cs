@@ -26,6 +26,10 @@ namespace NikeClientApp.Models
         public string Description { get; set; }
         public string POI { get; set; }
 
+        private string _likeButtonImageSource = @".\Assets\LikeButtonNotFilled.png";
+        public string LikeButtonImageSource { get => _likeButtonImageSource; set { SetProperty(ref _likeButtonImageSource, value); } }
+        public ObservableCollection<LikeDislikeEntry> LikeDislikeEntries { get; set; }
+
         private int _rating;
         public int Rating 
         {

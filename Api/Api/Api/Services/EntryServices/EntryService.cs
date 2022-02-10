@@ -52,7 +52,7 @@ namespace Api.Services.EntryServices
 
            await _entryRepository.Set(entry);
 
-           return new EntryDto() { POI = POI.Name, Username = userToCheck.Username, Description = entryDto.Description, Rating = entryDto.Rating };
+           return new EntryDto() { POIString = POI.Name, UserName = userToCheck.Username, Description = entryDto.Description, Rating = entryDto.Rating };
         }
 
         public async Task<EntryDto> UpdateEntry(UpdateEntry updateEntry, string apiKey)

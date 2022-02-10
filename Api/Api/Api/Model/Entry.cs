@@ -34,8 +34,6 @@ namespace Api.Model
         public long? Rating { get; set; }
         public POIDto POI { get; set; }
     }
-
-
     public class UpdateEntry
     {
         public long Id { get; set; }
@@ -50,7 +48,8 @@ namespace Api.Model
         public string Username { get; set; }
         public long? Likes { get; set; }
         public long? Rating { get; set; }
-        public string POI { get; set; }
+        public string POIString { get; set; }
+        public List<LikeDislikeEntryDto> LikeDislikeEntries { get; set; } 
     }
 
     public class LikeDislikeEntry

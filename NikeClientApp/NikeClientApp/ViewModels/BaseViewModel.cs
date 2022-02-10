@@ -7,7 +7,6 @@ using System.Threading.Tasks;
 
 namespace NikeClientApp.ViewModels
 {
-
     public class BaseViewModel : INotifyPropertyChanged
     {
         public event PropertyChangedEventHandler PropertyChanged;
@@ -40,8 +39,6 @@ namespace NikeClientApp.ViewModels
             OnPropertyChanged(propertyName);
             return true;
         }
-
-
     }
 
     public class BaseViewModel<TParameter> : BaseViewModel

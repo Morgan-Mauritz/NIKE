@@ -44,13 +44,13 @@ namespace Api.Controllers
         /// </remarks>
         [HttpPost]
         [ProducesResponseType(typeof(Response<EntryDto>), 200)]
-        public async Task<IActionResult> SetEntry([FromBody] AddEntry entryDto, [FromHeader] string apiKey)
+        public async Task<IActionResult> SetEntry([FromBody] AddEntry addEntry, [FromHeader] string apiKey)
         {
             try
             {
-                return Ok(new Response<EntryDto>(await _service.SetEntry(entryDto, apiKey)));
+                return Ok(new Response<EntryDto>(await _service.SetEntry(addEntry, apiKey)));
             }
-            catch (Exception)
+            catch (Exception ex)
             {
                 //TODO: dont catch exception instead catch a specified exception
                 return StatusCode((int)HttpStatusCode.BadRequest, new Response<Exception>(Status.Fail, "Something went wrong"));
@@ -129,12 +129,12 @@ namespace Api.Controllers
             }
         }
 
-        [HttpPost("like/:entryId")]
-        public async Task<IActionResult> AddLike(long entryId, [FromHeader] string apiKey)
+        [HttpPost("like/{id}")]
+        public async Task<IActionResult> AddLike(long id, [FromHeader] string ApiKey)
         {
             try
             {
-                return Ok(new Response<LikeDislikeEntryDto>(await _service.AddLike(entryId, apiKey)));
+                return Ok(new Response<LikeDislikeEntryDto>(await _service.AddLike(id, ApiKey)));
             }
             catch (NotFoundException ex)
             {

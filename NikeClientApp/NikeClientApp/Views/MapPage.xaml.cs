@@ -22,7 +22,7 @@ namespace NikeClientApp.Views
 
             BindingContext = new MapPageViewModel(DependencyService.Get<INaviService>());
 
-            Reset();
+            ResetStarColor();
         }
 
         protected override void OnAppearing()
@@ -33,16 +33,12 @@ namespace NikeClientApp.Views
             ViewModel?.Init();
         }
 
-
-        List<Pin> ListOfPins = new List<Pin>();
-        public Pin pinner { get; set; }
-
-        void Reset() // reset rating
+        void ResetStarColor() // reset rating
         {
-            ChangeTextColor(5, Color.Gray);
+            ChangeStarColor(5, Color.Gray);
         }
 
-        void ChangeTextColor(int starcount, Color color)
+        void ChangeStarColor(int starcount, Color color)
         {
             for (int i = 1; i <= starcount; i++)
             {
@@ -52,107 +48,17 @@ namespace NikeClientApp.Views
 
         private void TapGestureRecognizer_Tapped(object sender, EventArgs e) //rating
         {
-            Reset();
+            ResetStarColor();
             Label clicked = sender as Label;
-            ChangeTextColor(Convert.ToInt32(clicked.StyleId.Substring(4, 1)), Color.Yellow);
+            ChangeStarColor(Convert.ToInt32(clicked.StyleId.Substring(4, 1)), Color.Yellow);
         }
 
-        private async void SearchButt_Clicked(object sender, EventArgs e) //sök på plats
+        private void Searchbar_Focused(object sender, FocusEventArgs e)
         {
-            Geocoder geoCoder = new Geocoder();
+            Searchbar.Text = ""; 
 
-            IEnumerable<Position> approximateLocations = await geoCoder.GetPositionsForAddressAsync(TBSearchbar.Text);
-           
-            Position position = approximateLocations.FirstOrDefault();
-            string coordinates = $"{position.Latitude}, {position.Longitude}";
-            CityName.Text = TBSearchbar.Text;
-
-            MapSpan maps = new MapSpan(position, 1.10, 0.10);
-            //Mapsample.MoveToRegion(maps);
         }
 
-        //private void PinButt_Clicked(object sender, EventArgs e)
-        //{
-        //    pinner = new Pin()
-        //    {
-        //        Label = "BlaBla",
-        //        Address = "BlaStreet",
-        //        Type = PinType.Place
-        //    };
-
-        //    //pinner.MarkerClicked += Pin_MarkerClicked;
-        //}
-
-        private async void Mapsample_MapClicked(object sender, MapClickedEventArgs e)
-        {
-            
-        }
-        private void Remove_Click(Pin pinn)
-        {
-            //Mapsample.Pins.Remove(pinn);
-        }
-
-        //private async void Pin_MarkerClicked(object sender, PinClickedEventArgs e) //när man klickar på pinnen
-        //{
-        //    var ans = await DisplayAlert("Ta bort pin", "Vill du ta bort den valda pin?", "Ja", "Nej"); 
-        //    if (ans == true)
-        //    {
-        //        var pin = sender as Pin;
-        //        //Mapsample.Pins.Remove(ListOfPins.Where(x => x.Position == pin.Position).FirstOrDefault());
-        //        ListOfPins.Remove(pin);
-        //        AddPoiModal.IsVisible = false;
-        //    }
-        //}
-
-        //private async void AddLoc_Clicked(object sender, EventArgs e) //lägg till sevärdhet
-        //{
-        //    if (EntryPoi.Text == null || EntryCommentPoi.Text == null || star1.TextColor == Color.Gray)
-        //    {
-        //        await DisplayAlert("Fel", "Du måste fylla alla fält och betygsätta. ", "OK");
-        //        return;
-        //    }
-
-
-        //    //if (star1.TextColor == Color.Gray)
-        //    //{
-        //    //    await DisplayAlert("Fel", "Du måste betygsätta.", "OK");
-        //    //    return;
-        //    //}
-
-        //    Reset();
-
-        //    AddPoiModal.IsVisible = false;
-        //    await DisplayAlert("Grattis", "Du har nu lagt till en sevärdhet", "OK");
-        //}
-
-
-
-        private void streetcommand()
-        {
-            //Mapsample.MapType = MapType.Street;
-        }
-        private void Satellitecommand()
-        {
-            //Mapsample.MapType = MapType.Satellite;
-        }
-        private void Hybridcommand()
-        {
-            //Mapsample.MapType = MapType.Hybrid;
-        }
-
-        private void btn1_Clicked(object sender, EventArgs e)
-        {
-            streetcommand();
-        }
-
-        private void btn2_Clicked(object sender, EventArgs e)
-        {
-            Satellitecommand();
-        }
-
-        private void btn3_Clicked(object sender, EventArgs e)
-        {
-            Hybridcommand();
-        }
+       
     }
 }

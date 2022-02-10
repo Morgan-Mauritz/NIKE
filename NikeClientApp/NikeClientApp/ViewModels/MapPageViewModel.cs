@@ -1,96 +1,227 @@
 ﻿using NikeClientApp.Models;
 using NikeClientApp.Services;
-using NikeClientApp.Views;
 using System;
 using System.Collections.Generic;
-
+using System.Collections.ObjectModel;
+using System.ComponentModel;
 using System.Linq;
-using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Input;
 using Xamarin.Forms;
 using Xamarin.Forms.Maps;
+using Entry = NikeClientApp.Models.Entry;
 
 namespace NikeClientApp.ViewModels
 {
     public class MapPageViewModel : BaseViewModel
     {
         public Command NextPage => new Command(async () => await NavigationService.NavigateTo<MainPageViewModel>());
-        public Command BackPage; // => new Command(async () => await NavigationService.GoBack());
+
         public ICommand _AddPOI_Clicked => new Command(async () => await AddPOI_Clicked());
         public ICommand _PinIcon_Clicked => new Command(async () => await PinIcon_Clicked());
-        //public ICommand _ratingAmount => new Command(async () => await );
+        public ICommand _RatingAmount => new Command((object sender) => RatingAmount(sender));
+        public ICommand _SearchButton_Clicked => new Command(async () => await SearchButton_Clicked());
 
-        //public ICommand ShowAddPoiModal => new Command(async () => await ShowModalWhenClicked());
+        public ICommand _StandardMapView => new Command(async () => await StandardMapView());
+        public ICommand _SatelliteMapView => new Command(async () => await SatelliteMapView());
+        public ICommand _HybridMapView => new Command(async () => await HybridMapView());
 
-        HttpService<POI> httpClient = new HttpService<POI>();
-        HttpService<Forecast> weatherClient = new HttpService<Forecast>(); 
+        public ICommand _BackArrowClicked => new Command(async () => await BackArrowClicked());
+        public ICommand _FoldFrameClicked => new Command(async (object sender) => await FoldFrameClicked((Frame)sender));
 
-        List<Pin> ListOfPins = new List<Pin>();
-        public Pin pinner { get; set; }
+        public ICommand _EntryButton_Clicked => new Command(async () => await EntryButton_Clicked());
+
+        public ICommand LikeButtonClicked => new Command(async (object sender) => await LikeButton_Clicked(sender));
 
 
+
+        HttpService<Models.Entry> httpClient = new HttpService<Models.Entry>();
+        HttpService<Forecast> weatherClient = new HttpService<Forecast>();
+        HttpService<POI> poiListClient = new HttpService<POI>();
+        HttpService<LikeDislikeEntry> httpClientLike = new HttpService<LikeDislikeEntry>();
+
+        //Constructor
+        #region Constructor
         public MapPageViewModel(INaviService naviService) : base(naviService)
         {
             map.MapClicked += MapClicked;
         }
+        #endregion; 
+
+        public async Task StandardMapView()
+        {
+            map.MapType = MapType.Street;
+        }
+        public async Task SatelliteMapView()
+        {
+            map.MapType = MapType.Satellite;
+        }
+        public async Task HybridMapView()
+        {
+            map.MapType = MapType.Hybrid;
+        }
+
+        //Properties 
+        #region Properties
+
+        List<Pin> ListOfPins = new List<Pin>();
+        public Pin pinner { get; set; }
+
+        int _entryRating = 0;
+        public int EntryRating { get => _entryRating; set { SetProperty(ref _entryRating, value); } }
 
         Map _map = new Map();
-        public Map map
-        {
-            get => _map;
-
-            set
-            {
-                SetProperty(ref _map, value);
-            }
-        }
+        public Map map { get => _map; set { SetProperty(ref _map, value); } }
 
         POI _poi = new POI();
-        public POI poiToAdd
-        {
-            get => _poi;
+        public POI poiToAdd { get => _poi; set { SetProperty(ref _poi, value); } }
 
-            set
+        Models.Entry _entry = new Models.Entry();
+        public Models.Entry entryToAdd { get => _entry; set { SetProperty(ref _entry, value); } }
+
+        private bool _addPoiModalIsVisible;
+        public bool addPoiModalIsVisible { get { return _addPoiModalIsVisible; } set { SetProperty(ref _addPoiModalIsVisible, value); } }
+
+        private bool _addEntryModalIsVisible = false;
+        public bool addEntryModalIsVisible { get => _addEntryModalIsVisible; set { SetProperty(ref _addEntryModalIsVisible, value); } }
+
+        private bool _pOIListIsVisible;
+
+        public bool POIListIsVisible { get => _pOIListIsVisible; set { SetProperty(ref _pOIListIsVisible, value); } }
+
+        private bool _entryListIsVisible;
+        public bool EntryListIsVisible { get => _entryListIsVisible; set { SetProperty(ref _entryListIsVisible, value); } }
+
+        private bool _entryButtonIsVisible;
+        public bool EntryButtonIsVisible { get => _entryButtonIsVisible; set { SetProperty(ref _entryButtonIsVisible, value); } }
+
+        private bool _backArrowIsVisible;
+        public bool BackArrowIsVisible { get => _backArrowIsVisible; set { SetProperty(ref _backArrowIsVisible, value); } }
+
+        private bool _foldButtonIsVisible;
+        public bool FoldButtonIsVisible { get => _foldButtonIsVisible; set { SetProperty(ref _foldButtonIsVisible, value); } }
+
+        private bool _foldInFrameIsVisible = true;
+        public bool FoldInFrameIsVisible { get => _foldInFrameIsVisible; set { SetProperty(ref _foldInFrameIsVisible, value); } }
+
+
+        POI _selectedPOI;
+        public POI SelectedPOI
+        {
+            get => _selectedPOI; set
             {
-                SetProperty(ref _poi, value);
+                SetProperty(ref _selectedPOI, value);
+                ShowEntriesForPOI();
             }
         }
 
+        Entry _selectedEntry;
+
+        public Entry SelectedEntry { get => _selectedEntry; set { SetProperty(ref _selectedEntry, value); } }
+
+        int _currentWeather;
+
+        public int CurrentWeather { get => _currentWeather; set { SetProperty(ref _currentWeather, value); } }
+
+
+        string _searchBarText;
+        public string SearchBarText { get => _searchBarText; set { SetProperty(ref _searchBarText, value); } }
+
+        string _titleResult = "Location";
+        public string TitleResult { get => _titleResult; set { SetProperty(ref _titleResult, value); } }
+
+        string _avgRating;
+
+        public string AvgRating { get => _avgRating; set { SetProperty(ref _avgRating, value); } }
+
+        public string LikeButtonNotFilled = @".\Assets\LikeButtonNotFilled.png";
+
+        public string LikeButtonFilled = @".\Assets\LikeButtonFilled.png";
+
+        private PaginationResponse<ObservableCollection<POI>> _listOfPOI;
+        public PaginationResponse<ObservableCollection<POI>> ListOfPOI { get => _listOfPOI; set { SetProperty(ref _listOfPOI, value); } }
+
+        private ObservableCollection<Entry> _listOfEntries;
+        public ObservableCollection<Entry> ListOfEntries { get => _listOfEntries; set { SetProperty(ref _listOfEntries, value); } }
+
+
+
+        #endregion;
+
+
+
+        //Methods
+        #region Methods
         async Task<bool> AddPOI_Clicked()
         {
-            if (poiToAdd.Name != null || poiToAdd.Comment != null )
+            if (!string.IsNullOrEmpty(poiToAdd.Name) && _entryRating > 0 && !string.IsNullOrEmpty(entryToAdd.Description))
             {
-               
+                await PopulateEntry();
                 poiToAdd.Category = "";
 
                 try
                 {
-                    await httpClient.Post("poi", poiToAdd);
+                    await httpClient.Post("entry", entryToAdd);
                 }
-                catch(Exception ex)
+                catch (Exception ex)
                 {
                     await App.Current.MainPage.DisplayAlert("Error!", ex.Message, "OK");
-                    map.Pins.Remove(map.Pins.Last()); 
+                    map.Pins.Remove(map.Pins.Last());
                 }
-                addPoiModalIsVisible = false; 
+                if (addEntryModalIsVisible)
+                {
+                    addEntryModalIsVisible = false;
+                    await GetPOIList(SelectedPOI.Country, SelectedPOI.City);
+                    SelectedPOI = ListOfPOI.Data.FirstOrDefault(x => x.Name == SelectedPOI.Name && x.City == SelectedPOI.City);
+                    ListOfEntries = SelectedPOI.Entries;
+                }
+
+                addPoiModalIsVisible = false;
                 return true;
             }
             else
-                return false;
-        }
-
-        private bool _addPoiModalIsVisible;
-        public bool addPoiModalIsVisible
-        {
-            get { return _addPoiModalIsVisible; }
-
-            set 
             {
-                SetProperty(ref _addPoiModalIsVisible, value);
+                await App.Current.MainPage.DisplayAlert("Fel", "Du måste fylla i samtliga fält för att kunna lägga till en sevärdhet!", "OK");
             }
+            return false;
         }
-        
+
+        private async Task SearchButton_Clicked()
+        {
+            AvgRating = null;
+
+
+            TitleResult = SearchBarText;
+            POIListIsVisible = true;
+            if (_titleResult == "Location")
+            {
+                return;
+            }
+
+            Geocoder geoCoder = new Geocoder();
+
+            IEnumerable<Position> approximateLocations = await geoCoder.GetPositionsForAddressAsync(SearchBarText);
+
+            Position position = approximateLocations.FirstOrDefault();
+
+            string coordinates = $"{position.Latitude}, {position.Longitude}";
+
+            var Address = await geoCoder.GetAddressesForPositionAsync(position);
+            var country = GetCountryFromDataString(Address.FirstOrDefault());
+            var response = await weatherClient.Get("forecast", $"?longitude={position.Longitude}&latitude={position.Latitude}");
+            var city = response.Data.City;
+
+
+            CurrentWeather = (int)Math.Round(response.Data.WeatherList.FirstOrDefault().Temperature);
+            MapSpan maps = new MapSpan(position, 1.10, 0.10);
+            map.MoveToRegion(maps);
+
+            await GetPOIList(country, city);
+
+        }
+
+
+
         private async Task PinIcon_Clicked()
         {
             pinner = new Pin()
@@ -99,14 +230,10 @@ namespace NikeClientApp.ViewModels
                 Address = "",
                 Type = PinType.Place
             };
-
-            //pinner.MarkerClicked += Pin_MarkerClicked;
         }
 
         public async void MapClicked(object sender, MapClickedEventArgs e)
         {
-            var geoCoder = new Geocoder();
-
             if (pinner != null)
             {
                 pinner.Position = e.Position;
@@ -121,20 +248,18 @@ namespace NikeClientApp.ViewModels
                 else
                 {
                     addPoiModalIsVisible = true;
-                    var Address = await geoCoder.GetAddressesForPositionAsync(e.Position); // TODO: Separate adress/City/Country in method, post to db
-                    //setting the country prop for the PointOfInterest
-                    poiToAdd.Country = GetCountryFromDataString(Address.First());
-                    poiToAdd.Longitude = e.Position.Longitude;
-                    poiToAdd.Latitude = e.Position.Latitude;
-                    //Fetch city from weatherApi
-                    var response = await weatherClient.Get("forecast", $"?longitude={poiToAdd.Longitude}&latitude={poiToAdd.Latitude}");
-                    poiToAdd.City = response.Data.City;  
+                    await PopulatePOI(e.Position);
                     ListOfPins.Add(pinner);
                     pinner = null;
-
                 }
             }
         }
+
+        public void RatingAmount(object sender)
+        {
+            EntryRating = int.Parse(sender.ToString());
+        }
+
         private async void Pin_MarkerClicked(object sender, PinClickedEventArgs e) //när man klickar på pinnen
         {
             var ans = await App.Current.MainPage.DisplayAlert("Ta bort pin", "Vill du ta bort den valda pin?", "Ja", "Nej");
@@ -149,14 +274,139 @@ namespace NikeClientApp.ViewModels
 
         public string GetCountryFromDataString(string dataString)
         {
-            string country;
-            string streetAddress;
-            string[] separator = {"\r\n"};
-            string[] splitStrings = dataString.Split(separator, StringSplitOptions.RemoveEmptyEntries);
-            country = splitStrings[2];
-            streetAddress = splitStrings[0]; 
-
-            return country;
+            string[] separator = { "\r\n" };
+            string[] countryFromDataString = dataString.Split(separator, StringSplitOptions.RemoveEmptyEntries);
+            return countryFromDataString[2];
         }
+
+        public async Task PopulatePOI(Position position)
+        {
+            var geoCoder = new Geocoder();
+            var Address = await geoCoder.GetAddressesForPositionAsync(position);
+
+            poiToAdd.Country = GetCountryFromDataString(Address.First());
+            poiToAdd.Longitude = position.Longitude;
+            poiToAdd.Latitude = position.Latitude;
+
+            //Fetch city from weatherApi ((hack!)the geocoder doesn't provide a city properly)
+            var response = await weatherClient.Get("forecast", $"?longitude={poiToAdd.Longitude}&latitude={poiToAdd.Latitude}");
+            poiToAdd.City = response.Data.City;
+        }
+
+        public async Task PopulateEntry()
+        {
+            entryToAdd.POI = poiToAdd;
+            entryToAdd.Rating = EntryRating;
+        }
+
+        public async Task<PaginationResponse<ObservableCollection<POI>>> GetPOIList(string country, string city)
+        {
+            return ListOfPOI = await poiListClient.GetList("poi/list", $"?Country={country}&City={city}");
+
+        }
+
+
+        private async Task<ObservableCollection<Entry>> ShowEntriesForPOI()
+        {
+            //TODO: Get entries from selected POI
+            if (SelectedPOI != null)
+            {
+                POIListIsVisible = false;
+                AvgRating = SelectedPOI.AvgRating.ToString();
+                ListOfEntries = SelectedPOI.Entries;
+                EntryListIsVisible = true;
+                BackArrowIsVisible = true;
+                FoldButtonIsVisible = false;
+                EntryButtonIsVisible = true;
+                poiToAdd.Name = SelectedPOI.Name;
+                TitleResult = SelectedPOI.Name;
+
+                ShowUserLikes();
+
+
+                return ListOfEntries;
+            }
+            return null;
+
+        }
+
+        private async Task ShowUserLikes()
+        {
+            ///TODO : implementera fetchUser metoden som finns i MAIN för att sätta x.UserId == UserId.
+            var listOfLikesFromUser = SelectedPOI.Entries.SelectMany(x => x.LikeDislikeEntries).Where(x => x.UserId == 7).ToList();
+            if (listOfLikesFromUser != null)
+            {
+                foreach (var itemEntry in ListOfEntries)
+                {
+                    foreach (var itemLike in listOfLikesFromUser)
+                    {
+                        if (itemEntry.Id == itemLike.EntryId)
+                        {
+                            itemEntry.LikeButtonImageSource = @"File:.\Assets\LikeButtonFilled.png";
+                        }
+                    }
+                }
+            }
+        }
+
+        private async Task BackArrowClicked()
+        {
+            EntryListIsVisible = false;
+            POIListIsVisible = true;
+            BackArrowIsVisible = false;
+            FoldButtonIsVisible = true;
+            TitleResult = SelectedPOI.City;
+            AvgRating = null;
+
+        }
+
+        private async Task FoldFrameClicked(Frame sender)
+        {
+            if (sender.IsVisible)
+            {
+                await sender.FadeTo(0, 500, Easing.SpringOut);
+                FoldButtonIsVisible = false;
+                FoldInFrameIsVisible = true;
+                sender.IsVisible = false;
+            }
+            else if (!sender.IsVisible)
+            {
+                FoldButtonIsVisible = true;
+                FoldInFrameIsVisible = false;
+                sender.IsVisible = true;
+                await sender.FadeTo(1, 500, Easing.SpringIn);
+            }
+        }
+        private async Task EntryButton_Clicked()
+        {
+            addEntryModalIsVisible = true;
+            Position position = new Position(SelectedPOI.Latitude, SelectedPOI.Longitude);
+            await PopulatePOI(position);
+
+        }
+        private async Task LikeButton_Clicked(object sender)
+        {
+            var selectedEntry = sender as Entry;
+            try
+            {
+                await httpClientLike.Post($"entry/like/{selectedEntry.Id}");
+
+                if (selectedEntry.LikeButtonImageSource == @"File:.\Assets\LikeButtonFilled.png")
+                {
+                    selectedEntry.LikeButtonImageSource = @"File:.\Assets\LikeButtonNotFilled.png";
+                }
+                else
+                {
+                    selectedEntry.LikeButtonImageSource = @"File:.\Assets\LikeButtonFilled.png";
+                }
+            }
+            catch (Exception ex)
+            {
+
+                throw new Exception(ex.Message);
+            }
+
+        }
+        #endregion;
     }
 }
