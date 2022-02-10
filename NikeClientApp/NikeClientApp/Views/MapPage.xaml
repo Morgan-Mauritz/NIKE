@@ -5,7 +5,11 @@
              >
     <ContentPage.Content>
         <Grid>
+
             <ContentView Content="{Binding map}"></ContentView>
+            <Frame WidthRequest="40" HorizontalOptions="Start" VerticalOptions="Start" IsVisible="{Binding _FoldInFrameIsVisible}">
+                <ImageButton Source="./Assets/frontarrow.png" Command="{Binding _FoldFrameClicked }" CommandParameter="{x:Reference poiFrame}"></ImageButton>
+            </Frame>
 
             <Frame Margin="530,0,0,0" HorizontalOptions="End">
                 <StackLayout Spacing="50" Margin="0,0,0,0" >
@@ -42,26 +46,26 @@
                 </StackLayout>
             </Frame>
 
-            <Frame Margin="0,0,600,0" Opacity="0.9" HorizontalOptions="Start" WidthRequest="270" BackgroundColor="LightSlateGray" >
+            <Frame x:Name="poiFrame" Margin="0,0,600,0" Opacity="0.9" HorizontalOptions="Start" WidthRequest="270" BackgroundColor="SlateGray" IsVisible="False">
                 <StackLayout>
+                    <ImageButton Source=".\Assets\x_button.png" Command="{Binding _FoldFrameClicked }" IsVisible="{Binding FoldButtonIsVisible}" CommandParameter="{x:Reference poiFrame}" HeightRequest="40" HorizontalOptions="End"/>
+
                     <ImageButton Source="Assets/backarrow.png" Command="{Binding _BackArrowClicked }" IsVisible="{Binding BackArrowIsVisible }" HeightRequest="50" HorizontalOptions="Start" Margin="0,0,0,0" />
                     <Frame BorderColor="Black" CornerRadius="15" HeightRequest="100">
+                        <StackLayout>
+                            <Grid>
+                                <Grid.ColumnDefinitions>
+                                    <ColumnDefinition/>
+                                    <ColumnDefinition/>
+                                </Grid.ColumnDefinitions>
+                                <Label x:Name="TitleResult" Text="{Binding TitleResult}" TextColor="White" FontSize="Medium"  HorizontalOptions="CenterAndExpand" HeightRequest="30" Grid.Column="0"/>
+                                <Label x:Name="currentWeather" Text="{Binding CurrentWeather, StringFormat='{0} c'}" TextColor="White" Grid.Column="1"/>
+                            </Grid>
 
-                        <Grid>
-                            <Grid.ColumnDefinitions>
-                                <ColumnDefinition Width="4*"/>
-                                <ColumnDefinition Width="1*"/>
-                            </Grid.ColumnDefinitions>
-                            <StackLayout Grid.Column="0">
-                                <Label x:Name="TitleResult" Text="{Binding TitleResult}" TextColor="White" FontSize="Medium"  HorizontalOptions="CenterAndExpand" HeightRequest="30" />
-                                <Label x:Name="avgRating" Text="{Binding AvgRating}" TextColor="White"  HorizontalOptions="CenterAndExpand" HeightRequest="30" Grid.ColumnSpan="2" />
-                            </StackLayout>
-                            <StackLayout Grid.Column="1" HorizontalOptions="End">
-                                <Label x:Name="currentWeather" Text="{Binding CurrentWeather, StringFormat='{0} c'}" TextColor="White"/>
-                            </StackLayout>
-                        </Grid>
+                            <Label x:Name="avgRating" Text="{Binding AvgRating}" TextColor="White"  HorizontalOptions="CenterAndExpand" HeightRequest="30" />
+
+                        </StackLayout>
                     </Frame>
-
                     <ListView ItemsSource="{Binding ListOfPOI.Data}"  SelectedItem="{Binding SelectedPOI, Mode=TwoWay}" IsVisible="{Binding POIListIsVisible}">
 
                         <ListView.ItemTemplate>
