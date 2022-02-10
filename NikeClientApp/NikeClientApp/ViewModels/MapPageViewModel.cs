@@ -243,14 +243,27 @@ namespace NikeClientApp.ViewModels
 
         private async void Pin_MarkerClicked(object sender, PinClickedEventArgs e) //när man klickar på pinnen
         {
-            var ans = await App.Current.MainPage.DisplayAlert("Ta bort pin", "Vill du ta bort den valda pin?", "Ja", "Nej");
-            if (ans == true)
-            {
-                var pin = sender as Pin;
-                //Mapsample.Pins.Remove(ListOfPins.Where(x => x.Position == pin.Position).FirstOrDefault());
-                ListOfPins.Remove(pin);
-                addPoiModalIsVisible = false;
-            }
+
+
+            var pin = sender as Pin;
+            var address = (string)pin.Address;
+            var name = pin.Label;
+            await App.Current.MainPage.DisplayAlert("Inforuta", $"Namn: {name} \nAdress: {address}", "Ok");
+
+
+            //var ans = await App.Current.MainPage.DisplayAlert("Ta bort pin", "Vill du ta bort den valda pin?", "Ja", "Nej");
+            
+            //if (ans == true)
+            //{
+            //    var pin = sender as Pin;
+
+                
+
+            //    //Mapsample.Pins.Remove(ListOfPins.Where(x => x.Position == pin.Position).FirstOrDefault());
+            //    ListOfPins.Remove(pin);
+            //    map.Pins.Remove(pin);
+            //    addPoiModalIsVisible = false;
+            //}
         }
 
         public string GetCountryFromDataString(string dataString)
@@ -258,6 +271,12 @@ namespace NikeClientApp.ViewModels
             string[] separator = { "\r\n" };
             string[] countryFromDataString = dataString.Split(separator, StringSplitOptions.RemoveEmptyEntries);
             return countryFromDataString[2];
+        }
+        public string GetAddressFromDataString(string dataString)
+        {
+            string[] separator = { "\r\n" };
+            string[] countryFromDataString = dataString.Split(separator, StringSplitOptions.RemoveEmptyEntries);
+            return countryFromDataString[0];
         }
 
         public async Task PopulatePOI(Position position)
@@ -282,27 +301,34 @@ namespace NikeClientApp.ViewModels
 
         public async Task<PaginationResponse<ObservableCollection<POI>>> GetPOIList(string country, string city)
         {
-
-
             return ListOfPOI = await poiListClient.GetList("poi/list", $"?Country={country}&City={city}&amount=50");
-            
         }
 
-        public void PinStay(PaginationResponse<ObservableCollection<POI>> ListOfPOI)
+        public async void PinStay(PaginationResponse<ObservableCollection<POI>> ListOfPOI)
         {
             map.Pins.Clear();
 
             foreach (var item in ListOfPOI.Data)
             {
-                
-                map.Pins.Add(pinner = new Pin
+                var geoCoder = new Geocoder();
+
+                Position Position = new Position(item.Latitude, item.Longitude);
+                var fullgeoIEnumerable = await geoCoder.GetAddressesForPositionAsync(Position);
+                var _fullgeoList = fullgeoIEnumerable.ToList();
+                var _geoString = _fullgeoList[0].ToString();
+                var address = GetAddressFromDataString(_geoString);
+
+                pinner = new Pin
                 {
                     Position = new Position(item.Latitude, item.Longitude),
-                    Label = item.Name
-                });
-
+                    Address = address+", "+item.City,
+                    Label = item.Name,
+                };
+                pinner.MarkerClicked += Pin_MarkerClicked;
+                map.Pins.Add(pinner);
             }
         }
+
         private async Task<ObservableCollection<Entry>> ShowEntriesForPOI()
         {
             //TODO: Get entries from selected POI
