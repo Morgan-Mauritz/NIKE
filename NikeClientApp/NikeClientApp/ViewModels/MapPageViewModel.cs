@@ -31,11 +31,14 @@ namespace NikeClientApp.ViewModels
 
         public ICommand _EntryButton_Clicked => new Command(async () => await EntryButton_Clicked());
 
-     
+        public ICommand LikeButtonClicked => new Command(async (object sender) => await LikeButton_Clicked(sender));
+
+
 
         HttpService<Models.Entry> httpClient = new HttpService<Models.Entry>();
         HttpService<Forecast> weatherClient = new HttpService<Forecast>();
         HttpService<POI> poiListClient = new HttpService<POI>();
+        HttpService<LikeDislikeEntry> httpClientLike = new HttpService<LikeDislikeEntry>();
 
         //Constructor
         #region Constructor
@@ -105,6 +108,10 @@ namespace NikeClientApp.ViewModels
         POI _selectedPOI;
         public POI SelectedPOI { get => _selectedPOI; set { SetProperty(ref _selectedPOI, value); ShowEntriesForPOI(); } }
 
+        Entry _selectedEntry;
+
+        public Entry SelectedEntry { get => _selectedEntry; set { SetProperty(ref _selectedEntry, value); } }
+
         int _currentWeather;
 
         public int CurrentWeather { get => _currentWeather; set { SetProperty(ref _currentWeather, value); } }
@@ -121,6 +128,10 @@ namespace NikeClientApp.ViewModels
         public string AvgRating { get => _avgRating; set { SetProperty(ref _avgRating, value); } }
 
 
+        string _likeButtonImageSource = @".\Assets\LikeButtonNotFilled.png";
+        public string LikeButtonImageSource { get => _likeButtonImageSource; set { SetProperty(ref _likeButtonImageSource, value); } }
+
+            
 
         private PaginationResponse<ObservableCollection<POI>> _listOfPOI;
         public PaginationResponse<ObservableCollection<POI>> ListOfPOI { get => _listOfPOI; set { SetProperty(ref _listOfPOI, value); } }
@@ -343,6 +354,21 @@ namespace NikeClientApp.ViewModels
             Position position = new Position(SelectedPOI.Latitude, SelectedPOI.Longitude); 
             await PopulatePOI(position);
         
+        }
+        private async Task LikeButton_Clicked(object sender)
+        {
+           var selectedEntry = sender as Entry;
+            try
+            {
+                var test = await httpClientLike.Post($"entry/like/{selectedEntry.Id}");
+              
+            }
+            catch (Exception ex)
+            {
+
+                throw new Exception(ex.Message);
+            }
+          
         }
         #endregion;
     }

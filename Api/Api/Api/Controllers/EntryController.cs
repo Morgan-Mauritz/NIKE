@@ -128,12 +128,12 @@ namespace Api.Controllers
             }
         }
 
-        [HttpPost("like/:entryId")]
-        public async Task<IActionResult> AddLike(long entryId, [FromHeader] string ApiKey)
+        [HttpPost("like/{id}")]
+        public async Task<IActionResult> AddLike(long id, [FromHeader] string ApiKey)
         {
             try
             {
-                return Ok(new Response<LikeDislikeEntryDto>(await _service.AddLike(entryId, ApiKey)));
+                return Ok(new Response<LikeDislikeEntryDto>(await _service.AddLike(id, ApiKey)));
             }
             catch (NotFoundException ex)
             {

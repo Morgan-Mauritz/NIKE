@@ -113,6 +113,9 @@
     <Content Include="Assets\LargeTile.scale-100.png" />
     <Content Include="Assets\LargeTile.scale-200.png" />
     <Content Include="Assets\LargeTile.scale-400.png" />
+    <Content Include="Assets\LikeButtonFilled.png" />
+    <Content Include="Assets\LikeButtonNotFilled.png" />
+    <Content Include="Assets\likes.png" />
     <Content Include="Assets\optic.jpg" />
     <Content Include="Assets\SmallTile.scale-100.png" />
     <Content Include="Assets\SmallTile.scale-200.png" />
