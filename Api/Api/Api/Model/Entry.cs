@@ -48,6 +48,7 @@ namespace Api.Model
         public long? Likes { get; set; }
         public long? Rating { get; set; }
         public string POIString { get; set; }
+        public List<LikeDislikeEntryDto> LikeDislikeEntries { get; set; } 
     }
 
     public class LikeDislikeEntry

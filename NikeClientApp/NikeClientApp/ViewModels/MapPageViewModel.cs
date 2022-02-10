@@ -15,7 +15,7 @@ namespace NikeClientApp.ViewModels
     public class MapPageViewModel : BaseViewModel
     {
         public Command NextPage => new Command(async () => await NavigationService.NavigateTo<MainPageViewModel>());
-       
+
         public ICommand _AddPOI_Clicked => new Command(async () => await AddPOI_Clicked());
         public ICommand _PinIcon_Clicked => new Command(async () => await PinIcon_Clicked());
         public ICommand _RatingAmount => new Command((object sender) => RatingAmount(sender));
@@ -98,7 +98,14 @@ namespace NikeClientApp.ViewModels
 
 
         POI _selectedPOI;
-        public POI SelectedPOI { get => _selectedPOI; set { SetProperty(ref _selectedPOI, value); ShowEntriesForPOI(); } }
+        public POI SelectedPOI
+        {
+            get => _selectedPOI; set
+            {
+                SetProperty(ref _selectedPOI, value);
+                ShowEntriesForPOI();
+            }
+        }
 
         Entry _selectedEntry;
 
@@ -119,11 +126,9 @@ namespace NikeClientApp.ViewModels
 
         public string AvgRating { get => _avgRating; set { SetProperty(ref _avgRating, value); } }
 
+        public string LikeButtonNotFilled = @".\Assets\LikeButtonNotFilled.png";
 
-        string _likeButtonImageSource = @".\Assets\LikeButtonNotFilled.png";
-        public string LikeButtonImageSource { get => _likeButtonImageSource; set { SetProperty(ref _likeButtonImageSource, value); } }
-
-            
+        public string LikeButtonFilled = @".\Assets\LikeButtonFilled.png";
 
         private PaginationResponse<ObservableCollection<POI>> _listOfPOI;
         public PaginationResponse<ObservableCollection<POI>> ListOfPOI { get => _listOfPOI; set { SetProperty(ref _listOfPOI, value); } }
@@ -141,8 +146,8 @@ namespace NikeClientApp.ViewModels
         #region Methods
         async Task<bool> AddPOI_Clicked()
         {
-            if (!string.IsNullOrEmpty(poiToAdd.Name) && _entryRating > 0 && !string.IsNullOrEmpty(entryToAdd.Description)) 
-            { 
+            if (!string.IsNullOrEmpty(poiToAdd.Name) && _entryRating > 0 && !string.IsNullOrEmpty(entryToAdd.Description))
+            {
                 await PopulateEntry();
                 poiToAdd.Category = "";
 
@@ -150,10 +155,10 @@ namespace NikeClientApp.ViewModels
                 {
                     await httpClient.Post("entry", entryToAdd);
                 }
-                catch(Exception ex)
+                catch (Exception ex)
                 {
                     await App.Current.MainPage.DisplayAlert("Error!", ex.Message, "OK");
-                    map.Pins.Remove(map.Pins.Last()); 
+                    map.Pins.Remove(map.Pins.Last());
                 }
                 if (addEntryModalIsVisible)
                 {
@@ -162,15 +167,15 @@ namespace NikeClientApp.ViewModels
                     SelectedPOI = ListOfPOI.Data.FirstOrDefault(x => x.Name == SelectedPOI.Name && x.City == SelectedPOI.City);
                     ListOfEntries = SelectedPOI.Entries;
                 }
-               
+
                 addPoiModalIsVisible = false;
                 return true;
             }
             else
             {
-                await App.Current.MainPage.DisplayAlert("Fel", "Du måste fylla i samtliga fält för att kunna lägga till en sevärdhet!", "OK"); 
+                await App.Current.MainPage.DisplayAlert("Fel", "Du måste fylla i samtliga fält för att kunna lägga till en sevärdhet!", "OK");
             }
-                return false;
+            return false;
         }
 
         private async Task SearchButton_Clicked()
@@ -182,10 +187,10 @@ namespace NikeClientApp.ViewModels
             POIListIsVisible = true;
             if (_titleResult == "Location")
             {
-                return; 
+                return;
             }
 
-            Geocoder geoCoder = new Geocoder(); 
+            Geocoder geoCoder = new Geocoder();
 
             IEnumerable<Position> approximateLocations = await geoCoder.GetPositionsForAddressAsync(SearchBarText);
 
@@ -202,9 +207,9 @@ namespace NikeClientApp.ViewModels
             CurrentWeather = (int)Math.Round(response.Data.WeatherList.FirstOrDefault().Temperature);
             MapSpan maps = new MapSpan(position, 1.10, 0.10);
             map.MoveToRegion(maps);
-            
-           await GetPOIList(country, city);
-          
+
+            await GetPOIList(country, city);
+
         }
 
 
@@ -260,8 +265,8 @@ namespace NikeClientApp.ViewModels
         }
 
         public string GetCountryFromDataString(string dataString)
-        {   
-            string[] separator = {"\r\n"};
+        {
+            string[] separator = { "\r\n" };
             string[] countryFromDataString = dataString.Split(separator, StringSplitOptions.RemoveEmptyEntries);
             return countryFromDataString[2];
         }
@@ -269,7 +274,7 @@ namespace NikeClientApp.ViewModels
         public async Task PopulatePOI(Position position)
         {
             var geoCoder = new Geocoder();
-            var Address = await geoCoder.GetAddressesForPositionAsync(position); 
+            var Address = await geoCoder.GetAddressesForPositionAsync(position);
 
             poiToAdd.Country = GetCountryFromDataString(Address.First());
             poiToAdd.Longitude = position.Longitude;
@@ -289,14 +294,14 @@ namespace NikeClientApp.ViewModels
         public async Task<PaginationResponse<ObservableCollection<POI>>> GetPOIList(string country, string city)
         {
             return ListOfPOI = await poiListClient.GetList("poi/list", $"?Country={country}&City={city}");
-           
+
         }
 
 
         private async Task<ObservableCollection<Entry>> ShowEntriesForPOI()
         {
             //TODO: Get entries from selected POI
-            if(SelectedPOI != null)
+            if (SelectedPOI != null)
             {
                 POIListIsVisible = false;
                 AvgRating = SelectedPOI.AvgRating.ToString();
@@ -306,15 +311,39 @@ namespace NikeClientApp.ViewModels
                 EntryButtonIsVisible = true;
                 poiToAdd.Name = SelectedPOI.Name;
                 TitleResult = SelectedPOI.Name;
+
+                ShowUserLikes();
+
+
                 return ListOfEntries;
             }
             return null;
-    
+
         }
+
+        private async Task ShowUserLikes()
+        {
+            ///TODO : implementera fetchUser metoden som finns i MAIN för att sätta x.UserId == UserId.
+            var listOfLikesFromUser = SelectedPOI.Entries.SelectMany(x => x.LikeDislikeEntries).Where(x => x.UserId == 7).ToList();
+            if (listOfLikesFromUser != null)
+            {
+                foreach (var itemEntry in ListOfEntries)
+                {
+                    foreach (var itemLike in listOfLikesFromUser)
+                    {
+                        if (itemEntry.Id == itemLike.EntryId)
+                        {
+                            itemEntry.LikeButtonImageSource = @"File:.\Assets\LikeButtonFilled.png";
+                        }
+                    }
+                }
+            }
+        }
+
         private async Task BackArrowClicked()
         {
             EntryListIsVisible = false;
-            POIListIsVisible= true;
+            POIListIsVisible = true;
             BackArrowIsVisible = false;
             TitleResult = SelectedPOI.City;
             AvgRating = null;
@@ -325,25 +354,33 @@ namespace NikeClientApp.ViewModels
         private async Task EntryButton_Clicked()
         {
             addEntryModalIsVisible = true;
-            Position position = new Position(SelectedPOI.Latitude, SelectedPOI.Longitude); 
+            Position position = new Position(SelectedPOI.Latitude, SelectedPOI.Longitude);
             await PopulatePOI(position);
-        
+
         }
 
         private async Task LikeButton_Clicked(object sender)
         {
-           var selectedEntry = sender as Entry;
+            var selectedEntry = sender as Entry;
             try
             {
-                var test = await httpClientLike.Post($"entry/like/{selectedEntry.Id}");
-              
+                await httpClientLike.Post($"entry/like/{selectedEntry.Id}");
+
+                if (selectedEntry.LikeButtonImageSource == @"File:.\Assets\LikeButtonFilled.png")
+                {
+                    selectedEntry.LikeButtonImageSource = @"File:.\Assets\LikeButtonNotFilled.png";
+                }
+                else
+                {
+                    selectedEntry.LikeButtonImageSource = @"File:.\Assets\LikeButtonFilled.png";
+                }
             }
             catch (Exception ex)
             {
 
                 throw new Exception(ex.Message);
             }
-          
+
         }
 
 
