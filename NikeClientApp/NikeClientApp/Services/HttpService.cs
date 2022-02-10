@@ -5,18 +5,21 @@ using RestSharp;
 using System.Threading;
 using System.Threading.Tasks;
 using NikeClientApp.Models;
+using System.Net;
+using System.Linq;
+using System.Net.Http;
 
 namespace NikeClientApp.Services
 {
     public class HttpService<T> where T : class
     {
-        private readonly RestSharp.RestClient _restClient; 
+        private readonly RestClient _restClient;
 
         public HttpService()
         {
             _restClient = new RestClient("https://localhost:44393/");
         }
-        
+
         public async Task<Response<T>> Post(string endPoint, T obj, bool useApiKey = true)
         {
             var request = new RestRequest(endPoint);
@@ -25,7 +28,7 @@ namespace NikeClientApp.Services
             if (useApiKey) request.AddHeader("apiKey", UserApi.ApiKey);
             return await _restClient.PostAsync<Response<T>>(request);
         }
-        
+
         public async Task<PaginationResponse<List<T>>> GetList(string endPoint, string query)
         {
             var request = new RestRequest(endPoint + query);
@@ -48,7 +51,18 @@ namespace NikeClientApp.Services
             request.Method = Method.Put;
             request.AddBody(obj);
             request.AddHeader("apiKey", UserApi.ApiKey);
-            return await _restClient.PutAsync<Response<T>>(request);
+
+            var result = await _restClient.PutAsync(request);
+
+
+            if (result.StatusCode == HttpStatusCode.Unauthorized)
+            {
+                throw new UnauthorizedAccessException("Du har ej tillgång till denna åtgärd");
+            }
+
+
+            return result as Response<T>;
+
         }
 
         public async Task<Response<T>> Delete(string endPoint)
@@ -58,5 +72,7 @@ namespace NikeClientApp.Services
             request.AddHeader("apiKey", UserApi.ApiKey);
             return await _restClient.DeleteAsync<Response<T>>(request);
         }
+
+
     }
 }

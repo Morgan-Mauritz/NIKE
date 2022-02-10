@@ -18,8 +18,7 @@ namespace Api.Services.AuthorizationServices
         }
         public async Task<UserApiDto> SignIn(LogInModel loginModel)
         {
-            var passwordHash = loginModel.Password.GenerateEncryption();
-            var user = await _repository.GetByLogin(loginModel.Email, passwordHash); 
+            var user = await _repository.GetByLogin(loginModel.Email, loginModel.Password); 
             
             if(user == null)
             {

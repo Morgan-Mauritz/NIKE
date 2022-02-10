@@ -61,6 +61,7 @@ namespace Api.Controllers
         [ProducesResponseType(typeof(Response<UserDto>), 200)]
         public async Task<IActionResult> UpdateUser([FromBody] UpdateUserDto updateUserDto, [FromHeader] string apiKey)
         {
+
             try
             {
                 return Ok(new Response<UserDto>(await _userService.UpdateUser(updateUserDto, apiKey)));
@@ -72,6 +73,7 @@ namespace Api.Controllers
 #endif
                 return StatusCode((int)HttpStatusCode.Unauthorized, new Response<UnauthorizedAccessException>(Status.Fail, ex.Message, ex));
             }
+       
         }
         /// <summary>
         /// Deletes a user from the database

@@ -50,7 +50,7 @@ namespace Api.Model
         public string Email { get; set; }
         [Required]
         //[RegularExpression(@"^(?=.[a-z])(?=.[A-Z])(?=.\d)[A-Za-z\d@$!%#?&]{8,255}$")]
-        public string Password { get; set; }
+        public byte[] Password { get; set; }
         [Required]
         public string Username { get; set; }
         [Required]
@@ -69,7 +69,7 @@ namespace Api.Model
         public string Email { get; set; }
         [Required]
         //[RegularExpression(@"^(?=.[a-z])(?=.[A-Z])(?=.\d)[A-Za-z\d@$!%#?&]{8,255}$")]
-        public string Password { get; set; }
+        public byte[] Password { get; set; }
         [Required]
         public string Username { get; set; }
     }
@@ -81,21 +81,26 @@ namespace Api.Model
         public string Email { get; set; }
         [Required]
         //[RegularExpression(@"^(?=.[a-z])(?=.[A-Z])(?=.\d)[A-Za-z\d@$!%#?&]{8,255}$")]
-        public string Password { get; set; }
+        public byte[] Password { get; set; }
     }
 
     public class UpdateUserDto
     {
+        [MinLength(2, ErrorMessage = "{0} Must be at least 2 characters")]
         public string Firstname { get; set; }
-       
+
+        [MinLength(2, ErrorMessage = "{0} Must be at least 2 characters")]
         public string Lastname { get; set; }
-     
+
+        [MinLength(2, ErrorMessage = "{0} Must be at least 2 characters")]
         public string Email { get; set; }
-      
-        public string Password { get; set; }
-        
+
+        [MinLength(8, ErrorMessage = "{0} Must be at least 8 characters")]
+        public byte[] Password { get; set; }
+
+        [MinLength(2, ErrorMessage = "{0} Must be at least 2 characters")]
         public string Username { get; set; }
 
-        public string PasswordValidation { get; set; }
+        public byte[] PasswordValidation { get; set; }
     }
 }

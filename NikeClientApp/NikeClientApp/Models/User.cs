@@ -12,12 +12,13 @@ namespace NikeClientApp.Models
        
         public string Email { get; set; }
         
-        public string Password { get; set; }
+        public byte[] Password { get; set; }
+        public string PasswordText { get; set; }
         
         public string Username { get; set; }
         public string ApiKey { get; set; }
 
-        public string PasswordValidation { get; set; }
+        public byte[] PasswordValidation { get; set; }
     }
     public class EditUser : NotifyModel
     {

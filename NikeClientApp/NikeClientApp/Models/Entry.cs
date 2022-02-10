@@ -7,6 +7,7 @@ using System.Threading.Tasks;
 using System.Windows.Input;
 using Xamarin.Forms;
 
+
 namespace NikeClientApp.Models
 {
     public class Entry : NotifyModel
@@ -24,7 +25,20 @@ namespace NikeClientApp.Models
         public long Id { get; set; }
         public string Description { get; set; }
         public string POI { get; set; }
-        public int Rating { get; set; }
+
+        private int _rating;
+        public int Rating 
+        {
+           get => _rating;
+           set 
+            {
+                if (value > 5) _rating = 5;
+                else if (value < 1) _rating = 1;
+                else _rating = value;
+
+                OnPropertyChanged("StarRating");
+            } 
+        }
         public string Username { get; set; }
 
         public string StarRating { get 

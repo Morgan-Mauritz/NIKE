@@ -18,7 +18,7 @@
                        HeightRequest="50"
                        HorizontalTextAlignment="Center"></Entry>
 
-                <Entry Text="{Binding User.Password}" 
+                <Entry Text="{Binding User.PasswordText}" 
                        Placeholder="Lösenord" 
                        x:Name="entryPassword"
                        IsPassword="True"

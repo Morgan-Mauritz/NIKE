@@ -12,8 +12,9 @@ namespace NikeClientApp.Encryption
 
         private const string password = "nyckel";
 
-        public static string EncryptMessage(string plainMessage)
+        public static byte[] EncryptMessage(string plainMessage)
         {
+            if (plainMessage == null) return null;
             TripleDESCryptoServiceProvider des = new TripleDESCryptoServiceProvider();
             des.IV = new byte[8];
             PasswordDeriveBytes pdb = new PasswordDeriveBytes(password, new byte[0]);
@@ -28,7 +29,7 @@ namespace NikeClientApp.Encryption
             ms.Position = 0;
             ms.Read(encryptedBytes, 0, (int)ms.Length);
             encStream.Close();
-            return Convert.ToBase64String(encryptedBytes);
+            return encryptedBytes;
         }
 
         public static string DecryptMessage(string encryptedBase64)

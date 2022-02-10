@@ -31,13 +31,12 @@ namespace Api.Services.UserServices
         public async Task<UserDto> UpdateUser(UpdateUserDto updateUserDto, string apiKey)
         {
             var user = await _repository.GetByApiKey(apiKey);
-            var hash = updateUserDto.PasswordValidation.GenerateEncryption();
-            if (user.Password != hash)
+            if (Convert.ToBase64String(updateUserDto.PasswordValidation) != Convert.ToBase64String(user.Password))
             {
                 throw new UnauthorizedAccessException("Fel lösenord");
             }
 
-            if(user == null)
+            if (user == null)
             {
                 throw new UnauthorizedAccessException("Finns ingen användare");
             }

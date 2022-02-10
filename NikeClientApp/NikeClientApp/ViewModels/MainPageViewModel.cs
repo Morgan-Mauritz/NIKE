@@ -1,4 +1,5 @@
-﻿using NikeClientApp.Models;
+﻿using NikeClientApp.Encryption;
+using NikeClientApp.Models;
 using NikeClientApp.Services;
 using System;
 using System.Collections.Generic;
@@ -30,7 +31,7 @@ namespace NikeClientApp.ViewModels
         {
             try
             {
-            if (string.IsNullOrEmpty(User.Email) || string.IsNullOrEmpty(User.Password))
+            if (string.IsNullOrEmpty(User.Email))
             {
                 await Application.Current.MainPage.DisplayAlert("Felmeddelande", "Du måste fylla i alla fält", "OK");
                 return;
@@ -40,6 +41,7 @@ namespace NikeClientApp.ViewModels
                 await Application.Current.MainPage.DisplayAlert("Felmeddelande", "Ej korrekt email", "OK");
                 return;
             }
+                User.Password = Encrypt.EncryptMessage(User.PasswordText);
             var responseData = await userClient.Post("authorization/login", User, false);
             UserApi.ApiKey = responseData.Data.ApiKey;
             }

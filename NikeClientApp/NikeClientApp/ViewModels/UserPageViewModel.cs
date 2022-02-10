@@ -8,6 +8,7 @@ using NikeClientApp.Services;
 using NikeClientApp.Models;
 using System.Collections.ObjectModel;
 using System.Linq;
+using NikeClientApp.Encryption;
 
 namespace NikeClientApp.ViewModels
 {
@@ -135,9 +136,18 @@ namespace NikeClientApp.ViewModels
 
         public async Task OnSave(string endpoint)
         {
-            User.PasswordValidation = await Application.Current.MainPage.DisplayPromptAsync("Uppdatera uppgifter", "För att kunna spara nya ändringar måste \ndu skriva in det gamla lösenordet", initialValue: "");
-            await userClient.Update("user", User);
 
+            try
+            {
+
+                User.PasswordValidation = Encrypt.EncryptMessage(await Application.Current.MainPage.DisplayPromptAsync("Uppdatera uppgifter", "För att kunna spara nya ändringar måste \ndu skriva in det gamla lösenordet", initialValue: ""));
+                await userClient.Update("user", User);
+
+            }
+            catch (UnauthorizedAccessException ex)
+            {
+                await Application.Current.MainPage.DisplayAlert("felmeddelande", ex.Message, "OK");
+            }
         }
 
         #region OnLoad Props

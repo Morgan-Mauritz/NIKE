@@ -9,7 +9,8 @@ using Xamarin.Forms;
 using Xamarin.Forms.Xaml;
 using System.Text.RegularExpressions;
 using NikeClientApp.Services;
-using NikeClientApp.Models; 
+using NikeClientApp.Models;
+using NikeClientApp.Encryption;
 
 namespace NikeClientApp.Views
 {
@@ -71,7 +72,7 @@ namespace NikeClientApp.Views
                 Lastname = TBLastname.Text,
                 Email = TBEmail.Text,
                 Username = TBUsername.Text,
-                Password = TBPassword.Text
+                Password = Encrypt.EncryptMessage(TBPassword.Text)
             }, false);
 
             await DisplayAlert("Grattis", "Du har nu registrerat dig hos NikeApp.\nLogga in för att fortsätta", "OK"  );
