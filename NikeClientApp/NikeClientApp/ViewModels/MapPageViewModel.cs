@@ -139,6 +139,19 @@ namespace NikeClientApp.ViewModels
 
                 try
                 {
+
+                    //För att får fram Namn och Adress på pinnen man precis skapade
+                    var geoCoder = new Geocoder();
+
+                    var fullgeoIEnumerable = await geoCoder.GetAddressesForPositionAsync(ListOfPins.Last().Position);
+                    var _fullgeoList = fullgeoIEnumerable.ToList();
+                    var _geoString = _fullgeoList[0].ToString();
+                    var address = GetAddressFromDataString(_geoString);
+
+                    ListOfPins.Last().Address = address;
+                    ListOfPins.Last().Label = poiToAdd.Name;
+                    //
+
                     await httpClient.Post("entry", entryToAdd);
                 }
                 catch (Exception ex)
@@ -194,7 +207,7 @@ namespace NikeClientApp.ViewModels
             MapSpan maps = new MapSpan(position, 1.10, 0.10);
             map.MoveToRegion(maps);
 
-         var test = await GetPOIList(country, city);
+            var test = await GetPOIList(country, city);
             PinStay(test);
         }
 
@@ -208,6 +221,8 @@ namespace NikeClientApp.ViewModels
                 Address = "",
                 Type = PinType.Place
             };
+
+            pinner.MarkerClicked += Pin_MarkerClicked;
         }
 
         public async void MapClicked(object sender, MapClickedEventArgs e)
