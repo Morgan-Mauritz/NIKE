@@ -5,7 +5,11 @@
              >
     <ContentPage.Content>
         <Grid>
+
             <ContentView Content="{Binding map}"></ContentView>
+            <Frame WidthRequest="40" HorizontalOptions="Start" VerticalOptions="Start" IsVisible="{Binding _FoldInFrameIsVisible}">
+                <ImageButton Source="./Assets/frontarrow.png" Command="{Binding _FoldFrameClicked }" CommandParameter="{x:Reference poiFrame}"></ImageButton>
+            </Frame>
 
             <Frame Margin="530,0,0,0" HorizontalOptions="End">
                 <StackLayout Spacing="50" Margin="0,0,0,0" >
@@ -42,8 +46,10 @@
                 </StackLayout>
             </Frame>
 
-            <Frame Margin="0,0,600,0" Opacity="0.9" HorizontalOptions="Start" WidthRequest="270" BackgroundColor="Black" >
+            <Frame x:Name="poiFrame" Margin="0,0,600,0" Opacity="0.9" HorizontalOptions="Start" WidthRequest="270" BackgroundColor="SlateGray" IsVisible="False">
                 <StackLayout>
+                    <ImageButton Source=".\Assets\x_button.png" Command="{Binding _FoldFrameClicked }" IsVisible="{Binding FoldButtonIsVisible}" CommandParameter="{x:Reference poiFrame}" HeightRequest="40" HorizontalOptions="End"/>
+
                     <ImageButton Source="Assets/backarrow.png" Command="{Binding _BackArrowClicked }" IsVisible="{Binding BackArrowIsVisible }" HeightRequest="50" HorizontalOptions="Start" Margin="0,0,0,0" />
                     <Frame BorderColor="Black" CornerRadius="15" HeightRequest="100">
                         <StackLayout>
@@ -55,14 +61,14 @@
                                 <Label x:Name="TitleResult" Text="{Binding TitleResult}" TextColor="White" FontSize="Medium"  HorizontalOptions="CenterAndExpand" HeightRequest="30" Grid.Column="0"/>
                                 <Label x:Name="currentWeather" Text="{Binding CurrentWeather, StringFormat='{0} c'}" TextColor="White" Grid.Column="1"/>
                             </Grid>
-                            
+
                             <Label x:Name="avgRating" Text="{Binding AvgRating}" TextColor="White"  HorizontalOptions="CenterAndExpand" HeightRequest="30" />
-                           
+
                         </StackLayout>
                     </Frame>
 
-                    
-                    
+
+
                     <ListView ItemsSource="{Binding ListOfPOI.Data}"  SelectedItem="{Binding SelectedPOI, Mode=TwoWay}" IsVisible="{Binding POIListIsVisible}">
 
                         <ListView.ItemTemplate>
@@ -74,30 +80,30 @@
                         </ListView.ItemTemplate>
                     </ListView>
 
-               
+
                     <ListView x:Name="ListViewForEntryOnPOI" ItemsSource="{Binding ListOfEntries}" IsVisible="{Binding EntryListIsVisible}">
                         <ListView.Header>
                             <Button x:Name="AddEntry" Text="Lägg till en recension" Command="{Binding _EntryButton_Clicked}" BackgroundColor="White" TextColor="Black" />
                         </ListView.Header>
-                            <ListView.ItemTemplate>
+                        <ListView.ItemTemplate>
 
-                                <DataTemplate>
+                            <DataTemplate>
 
-                                    <ViewCell>
+                                <ViewCell>
 
-                                        <StackLayout>
+                                    <StackLayout>
 
-                                            <Label Text="{Binding UserName}" TextColor="White" ></Label>
-                                            <Label Text="{Binding Description}" TextColor="White" ></Label>
-                                            <Label Text="{Binding Rating}" TextColor="White"></Label>
-                                        </StackLayout>
-                                    </ViewCell>
-                                </DataTemplate>
-                            </ListView.ItemTemplate>
-                        </ListView>
-                    
+                                        <Label Text="{Binding UserName}" TextColor="White" ></Label>
+                                        <Label Text="{Binding Description}" TextColor="White" ></Label>
+                                        <Label Text="{Binding Rating}" TextColor="White"></Label>
+                                    </StackLayout>
+                                </ViewCell>
+                            </DataTemplate>
+                        </ListView.ItemTemplate>
+                    </ListView>
+
                 </StackLayout>
-                
+
             </Frame>
             <StackLayout x:Name="AddEntryModal" IsVisible="{Binding addEntryModalIsVisible}" BackgroundColor="Pink" Opacity="0.7" Margin="900,400,100,70">
                 <Label x:Name="LabelPoiExistingPoi"  Text="Lägg till en kommentar" HorizontalOptions="Center" FontSize="20" HeightRequest="40" Margin="0,10,0,0" TextColor="Black"></Label>

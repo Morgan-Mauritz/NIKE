@@ -105,6 +105,7 @@
   </ItemGroup>
   <ItemGroup>
     <Content Include="Assets\backarrow.png" />
+    <Content Include="Assets\frontarrow.png" />
     <Content Include="Assets\halvkarta.png" />
     <Content Include="Assets\gg.png" />
     <Content Include="Assets\glas.png" />
@@ -138,6 +139,7 @@
     <Content Include="Assets\Wide310x150Logo.scale-100.png" />
     <Content Include="Assets\Wide310x150Logo.scale-200.png" />
     <Content Include="Assets\Wide310x150Logo.scale-400.png" />
+    <Content Include="Assets\x_button.png" />
     <Content Include="Properties\Default.rd.xml" />
   </ItemGroup>
   <ItemGroup>
