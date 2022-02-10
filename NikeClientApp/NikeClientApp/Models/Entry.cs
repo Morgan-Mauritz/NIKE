@@ -13,7 +13,6 @@ namespace NikeClientApp.Models
         public POI POI { get; set; }
         public string POIString { get; set; }
 
-
     }
 
 }

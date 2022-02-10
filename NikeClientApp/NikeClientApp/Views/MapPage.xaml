@@ -61,7 +61,7 @@
                             </StackLayout>
                         </Grid>
                     </Frame>
-                    
+
                     <ListView ItemsSource="{Binding ListOfPOI.Data}"  SelectedItem="{Binding SelectedPOI, Mode=TwoWay}" IsVisible="{Binding POIListIsVisible}">
 
                         <ListView.ItemTemplate>
@@ -73,7 +73,6 @@
                         </ListView.ItemTemplate>
                     </ListView>
 
-               
                     <ListView x:Name="ListViewForEntryOnPOI" ItemsSource="{Binding ListOfEntries}" IsVisible="{Binding EntryListIsVisible}">
                         <ListView.Header>
                             <Button x:Name="AddEntry" Text="Lägg till en recension" Command="{Binding _EntryButton_Clicked}" BackgroundColor="White" TextColor="Black" />
@@ -82,29 +81,28 @@
                             <DataTemplate>
                                 <ViewCell>
                                     <Frame Margin="0, 2">
-                                    <Grid>
-                                        <Grid.ColumnDefinitions>
-                                            <ColumnDefinition Width="3*"/>
-                                            <ColumnDefinition Width="1*"/>
-                                        </Grid.ColumnDefinitions>
-                                        <StackLayout  Grid.Column="0">
-                                            <Label Text="{Binding UserName}" TextColor="White"></Label>
-                                            <Label Text="{Binding Description}" TextColor="White"></Label>
-                                            <Label Text="{Binding Rating}" TextColor="White"></Label>
-                                        </StackLayout>
-                                        <StackLayout Grid.Column="1">
-                                            <ImageButton Command="{Binding Path=_LikeButton_Clicked, Source={x:Reference }}" Margin="0, 10, 0, 0" HeightRequest="40" HorizontalOptions="End" Source=".\Assets\likes.png"></ImageButton>
-                                        </StackLayout>
-                                    </Grid>
+                                        <Grid>
+                                            <Grid.ColumnDefinitions>
+                                                <ColumnDefinition Width="3*"/>
+                                                <ColumnDefinition Width="1*"/>
+                                            </Grid.ColumnDefinitions>
+                                            <StackLayout  Grid.Column="0">
+                                                <Label Text="{Binding UserName}" TextColor="White"></Label>
+                                                <Label Text="{Binding Description}" TextColor="White"></Label>
+                                                <Label Text="{Binding Rating}" TextColor="White"></Label>
+                                            </StackLayout>
+                                            <StackLayout Grid.Column="1">
+                                                <ImageButton  Command="{Binding Path=BindingContext.LikeButtonClicked,Source={x:Reference ListViewForEntryOnPOI}}" CommandParameter="{Binding .}" Margin="0, 10, 0, 0" HeightRequest="40" HorizontalOptions="End" Source=".\Assets\LikeButtonNotFilled.png" Clicked="ImageButton_Clicked"></ImageButton>
+                                            </StackLayout>
+                                        </Grid>
                                     </Frame>
                                 </ViewCell>
                             </DataTemplate>
                         </ListView.ItemTemplate>
                     </ListView>
-                    
                 </StackLayout>
-                
             </Frame>
+            
             <StackLayout x:Name="AddEntryModal" IsVisible="{Binding addEntryModalIsVisible}" BackgroundColor="Pink" Opacity="0.7" Margin="900,400,100,70">
                 <Label x:Name="LabelPoiExistingPoi"  Text="Lägg till en kommentar" HorizontalOptions="Center" FontSize="20" HeightRequest="40" Margin="0,10,0,0" TextColor="Black"></Label>
                 <Label x:Name="EntryPoiExistingPoi" Text="{Binding TitleResult}" Margin="30,0,30,0"></Label>
