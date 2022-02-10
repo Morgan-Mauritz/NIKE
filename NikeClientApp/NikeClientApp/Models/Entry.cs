@@ -2,6 +2,7 @@
 using NikeClientApp.Services;
 using System;
 using System.Collections.Generic;
+using System.Collections.ObjectModel;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Input;
@@ -24,7 +25,8 @@ namespace NikeClientApp.Models
 
         public long Id { get; set; }
         public string Description { get; set; }
-        public string POI { get; set; }
+        public POI POI { get; set; }
+        public string POIstring { get; set; }
 
         private string _likeButtonImageSource = @".\Assets\LikeButtonNotFilled.png";
         public string LikeButtonImageSource { get => _likeButtonImageSource; set { SetProperty(ref _likeButtonImageSource, value); } }
