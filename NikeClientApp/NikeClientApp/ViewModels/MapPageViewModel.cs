@@ -33,9 +33,12 @@ namespace NikeClientApp.ViewModels
 
         public ICommand LikeButtonClicked => new Command(async (object sender) => await LikeButton_Clicked(sender));
 
+        public ICommand GetNextEntries => new Command(async () => await OnGetNextEntries());
+        public ICommand GetPreviousEntries => new Command(async () => await OnGetPreviousEntries());
 
 
-        HttpService<Models.Entry> httpClient = new HttpService<Models.Entry>();
+
+        HttpService<Models.Entry> _entryClient = new HttpService<Models.Entry>();
         HttpService<Forecast> weatherClient = new HttpService<Forecast>();
         HttpService<POI> poiListClient = new HttpService<POI>();
         HttpService<LikeDislikeEntry> httpClientLike = new HttpService<LikeDislikeEntry>();
@@ -104,6 +107,11 @@ namespace NikeClientApp.ViewModels
         private bool _foldInFrameIsVisible = true;
         public bool FoldInFrameIsVisible { get => _foldInFrameIsVisible; set { SetProperty(ref _foldInFrameIsVisible, value); } }
 
+        private bool _previousEntriesVisible = true;
+        public bool PreviousEntriesVisible { get => _previousEntriesVisible; set { SetProperty(ref _previousEntriesVisible, value); } }
+
+        private bool _nextEntriesVisible = true;
+        public bool NextEntriesVisible { get => _nextEntriesVisible; set { SetProperty(ref _nextEntriesVisible, value); } }
 
         POI _selectedPOI;
         public POI SelectedPOI
@@ -138,6 +146,7 @@ namespace NikeClientApp.ViewModels
 
         public string LikeButtonFilled = @".\Assets\LikeButtonFilled.png";
 
+
         private PaginationResponse<ObservableCollection<POI>> _listOfPOI;
         public PaginationResponse<ObservableCollection<POI>> ListOfPOI { get => _listOfPOI; set { SetProperty(ref _listOfPOI, value); } }
 
@@ -161,7 +170,7 @@ namespace NikeClientApp.ViewModels
 
                 try
                 {
-                    await httpClient.Post("entry", entryToAdd);
+                    await _entryClient.Post("entry", entryToAdd);
                 }
                 catch (Exception ex)
                 {
@@ -308,22 +317,30 @@ namespace NikeClientApp.ViewModels
 
         private async Task<ObservableCollection<Entry>> ShowEntriesForPOI()
         {
-            //TODO: Get entries from selected POI
+
             if (SelectedPOI != null)
             {
                 POIListIsVisible = false;
                 AvgRating = SelectedPOI.AvgRating.ToString();
-                ListOfEntries = SelectedPOI.Entries;
                 EntryListIsVisible = true;
                 BackArrowIsVisible = true;
                 FoldButtonIsVisible = false;
                 EntryButtonIsVisible = true;
                 poiToAdd.Name = SelectedPOI.Name;
                 TitleResult = SelectedPOI.Name;
-
                 ShowUserLikes();
-
-
+                EntryPagination = await _entryClient.GetList("entry", $"?amount=6&poi={SelectedPOI.Name.Replace(" ", "+")}");
+                PreviousEntriesVisible = true;
+                NextEntriesVisible = true;
+                if (EntryPagination.PrevPage == null)
+                {
+                    PreviousEntriesVisible = false;
+                }
+                if (EntryPagination.NextPage == null)
+                {
+                    NextEntriesVisible = false;
+                }
+                ListOfEntries = EntryPagination.Data;
                 return ListOfEntries;
             }
             return null;
@@ -404,6 +421,39 @@ namespace NikeClientApp.ViewModels
             {
 
                 throw new Exception(ex.Message);
+            }
+        }
+
+        public PaginationResponse<ObservableCollection<Models.Entry>> EntryPagination { get; set; }
+
+        private async Task OnGetPreviousEntries()
+        {
+            EntryPagination = await _entryClient.GetList("entry", "?" + EntryPagination.PrevPage.Split('?')[1]);
+            ListOfEntries = EntryPagination.Data;
+            PreviousEntriesVisible = true;
+            NextEntriesVisible = true;
+            if (EntryPagination.PrevPage == null)
+            {
+                PreviousEntriesVisible = false;
+            }
+            if (EntryPagination.NextPage == null)
+            {
+                NextEntriesVisible = false;
+            }
+        }
+        private async Task OnGetNextEntries()
+        {
+            EntryPagination = await _entryClient.GetList("entry", "?" + EntryPagination.NextPage.Split('?')[1]);
+            ListOfEntries = EntryPagination.Data;
+            PreviousEntriesVisible = true;
+            NextEntriesVisible = true;
+            if (EntryPagination.PrevPage == null)
+            {
+                PreviousEntriesVisible = false;
+            }
+            if (EntryPagination.NextPage == null)
+            {
+                NextEntriesVisible = false;
             }
 
         }

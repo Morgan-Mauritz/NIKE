@@ -14,9 +14,10 @@ namespace Api.Repository
         Task RemoveLike(LikeDislikeEntry entryLike);
         Task<LikeDislikeEntry> GetLike(long userId, long entryId);
         Task RemoveEntry(Entry entry);
-        Task<(List<Comment>  comments, int total)> GetComments(long userID, BaseFilter filter);
-        Task<(List<Entry>  entries, int total)> GetEntries(long userID, BaseFilter filter);
-        Task<(List<LikeDislikeEntry>  likes, int total)> GetLikes(long userID, BaseFilter filter);
+        Task<(List<Comment>  comments, int total)> GetUserComments(long userID, BaseFilter filter);
+        Task<(List<Entry>  entries, int total)> GetUserEntries(long userID, BaseFilter filter);
+        Task<(List<LikeDislikeEntry>  likes, int total)> GetUserLikes(long userID, BaseFilter filter);
+        Task<(List<Entry> list, int total)> GetEntries(FilterEntry filter);
 
     }
 }

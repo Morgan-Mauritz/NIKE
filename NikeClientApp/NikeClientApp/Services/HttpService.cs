@@ -37,6 +37,7 @@ namespace NikeClientApp.Services
         {
             var request = new RestRequest(endPoint + query);
             request.Method = Method.Get;
+            request.AddHeader("apiKey", string.IsNullOrEmpty(UserApi.ApiKey) ? "" : UserApi.ApiKey);
             return await _restClient.GetAsync<PaginationResponse<ObservableCollection<T>>>(request);
         }
 
@@ -44,7 +45,7 @@ namespace NikeClientApp.Services
         {
             var request = new RestRequest(endPoint + query);
             request.Method = Method.Get;
-            request.AddHeader("apiKey", UserApi.ApiKey);
+            request.AddHeader("apiKey", string.IsNullOrEmpty(UserApi.ApiKey) ? "" : UserApi.ApiKey);
             return await _restClient.GetAsync<Response<T>>(request);
         }
 
@@ -53,7 +54,7 @@ namespace NikeClientApp.Services
             var request = new RestRequest(endPoint);
             request.Method = Method.Put;
             request.AddBody(obj);
-            request.AddHeader("apiKey", UserApi.ApiKey);
+            request.AddHeader("apiKey", string.IsNullOrEmpty(UserApi.ApiKey) ? "" : UserApi.ApiKey);
 
             var result = await _restClient.PutAsync(request);
 
@@ -72,7 +73,7 @@ namespace NikeClientApp.Services
         {
             var request = new RestRequest(endPoint);
             request.Method = Method.Delete;
-            request.AddHeader("apiKey", UserApi.ApiKey);
+            request.AddHeader("apiKey", string.IsNullOrEmpty(UserApi.ApiKey) ? "" : UserApi.ApiKey);
             return await _restClient.DeleteAsync<Response<T>>(request);
         }
 

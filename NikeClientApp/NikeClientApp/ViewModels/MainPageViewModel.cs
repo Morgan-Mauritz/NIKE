@@ -53,7 +53,7 @@ namespace NikeClientApp.ViewModels
 
 
             //TODO: Change to mappage
-            await NavigationService.NavigateTo<UserPageViewModel>();
+            await NavigationService.NavigateTo<MapPageViewModel>();
 
         }
 

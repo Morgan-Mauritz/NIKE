@@ -79,7 +79,13 @@
 
                     <ListView x:Name="ListViewForEntryOnPOI" ItemsSource="{Binding ListOfEntries}" IsVisible="{Binding EntryListIsVisible}">
                         <ListView.Header>
+                            <StackLayout>
                             <Button x:Name="AddEntry" Text="Lägg till en recension" Command="{Binding _EntryButton_Clicked}" BackgroundColor="White" TextColor="Black" />
+                                <StackLayout Orientation="Horizontal" HorizontalOptions="FillAndExpand">
+                                    <Button Text="Föregående" HorizontalOptions="FillAndExpand" Command="{Binding GetPreviousEntries}" IsVisible="{Binding PreviousEntriesVisible}" IsEnabled="{Binding PreviousEntriesVisible}"/>
+                                    <Button Text="Nästa" HorizontalOptions="FillAndExpand" Command="{Binding GetNextEntries}" IsVisible="{Binding NextEntriesVisible}" IsEnabled="{Binding NextEntriesVisible}"/>
+                                </StackLayout>
+                            </StackLayout>
                         </ListView.Header>
                         <ListView.ItemTemplate>
                             <DataTemplate>
@@ -103,6 +109,7 @@
                                 </ViewCell>
                             </DataTemplate>
                         </ListView.ItemTemplate>
+                   
                     </ListView>
                 </StackLayout>
             </Frame>

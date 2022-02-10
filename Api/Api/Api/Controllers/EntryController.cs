@@ -129,6 +129,40 @@ namespace Api.Controllers
             }
         }
 
+        [HttpGet]
+        [ProducesResponseType(typeof(PaginationResponse<List<EntryDto>>), 200)]
+        public async Task<IActionResult> GetEntries([FromQuery] FilterEntry filter)
+        {
+
+            var nextOffset = filter.Offset + filter.Amount;
+            var prevOffset = filter.Offset - filter.Amount;
+            var httpString = HttpContext.Request.Scheme + "://" + HttpContext.Request.Host;
+
+            if (prevOffset < 0)
+            {
+                prevOffset = 0;
+            }
+
+
+            var result = await _service.GetEntries(filter);
+            var nextPage = httpString + $"?offset={nextOffset}&amount={filter.Amount}&poi={filter.POI}";
+            var prevPage = httpString + $"?offset={prevOffset}&amount={filter.Amount}&poi={filter.POI}";
+
+            if (filter.Offset == 0)
+            {
+                prevPage = null;
+            }
+
+            if (nextOffset >= result.total)
+            {
+                nextPage = null;
+            }
+
+            return Ok(new PaginationResponse<List<EntryDto>>(result.list, filter.Offset, filter.Amount, nextPage, prevPage, result.total));
+
+
+        }
+
         [HttpPost("like/{id}")]
         public async Task<IActionResult> AddLike(long id, [FromHeader] string ApiKey)
         {
@@ -146,7 +180,7 @@ namespace Api.Controllers
         }
 
        [HttpGet("comments")]
-       public async Task<IActionResult> GetComments([FromHeader] string apiKey, [FromQuery] BaseFilter filter)
+       public async Task<IActionResult> GetUserComments([FromHeader] string apiKey, [FromQuery] BaseFilter filter)
        {
 
             var nextOffset = filter.Offset + filter.Amount;
@@ -158,7 +192,7 @@ namespace Api.Controllers
                 prevOffset = 0;
             }
 
-            var result = await _service.GetComments(apiKey,filter);
+            var result = await _service.GetUserComments(apiKey,filter);
             var nextPage = httpString + $"/poi/list?offset={nextOffset}&amount={filter.Amount}";
             var prevPage = httpString + $"/poi/list?offset={prevOffset}&amount={filter.Amount}";
 
@@ -177,7 +211,7 @@ namespace Api.Controllers
             return Ok(new PaginationResponse<List<CommentDTO>>(result.comments, filter.Offset, filter.Amount, nextPage, prevPage, result.total));
         }
         [HttpGet("reactions")]
-       public async Task<IActionResult> GetReactions([FromHeader] string apiKey, [FromQuery] BaseFilter filter) 
+       public async Task<IActionResult> GetUserReactions([FromHeader] string apiKey, [FromQuery] BaseFilter filter) 
        {
             var nextOffset = filter.Offset + filter.Amount;
             var prevOffset = filter.Offset - filter.Amount;
@@ -188,7 +222,7 @@ namespace Api.Controllers
                 prevOffset = 0;
             }
 
-            var result = await _service.GetLikes(apiKey, filter);
+            var result = await _service.GetUserLikes(apiKey, filter);
             var nextPage = httpString + $"/poi/list?offset={nextOffset}&amount={filter.Amount}";
             var prevPage = httpString + $"/poi/list?offset={prevOffset}&amount={filter.Amount}";
 
@@ -207,7 +241,7 @@ namespace Api.Controllers
             return Ok(new PaginationResponse<List<LikeDislikeEntryDto>>(result.likes, filter.Offset, filter.Amount, nextPage, prevPage, result.total));
         }
        [HttpGet("list")]
-       public async Task<IActionResult> GetEntries([FromHeader] string apiKey, [FromQuery] BaseFilter filter)
+       public async Task<IActionResult>  GetUserEntries([FromHeader] string apiKey, [FromQuery] BaseFilter filter)
        {
             var nextOffset = filter.Offset + filter.Amount;
             var prevOffset = filter.Offset - filter.Amount;
@@ -218,7 +252,7 @@ namespace Api.Controllers
                 prevOffset = 0;
             }
 
-            var result = await _service.GetEntries(apiKey, filter);
+            var result = await _service.GetUserEntries(apiKey, filter);
             var nextPage = httpString + $"/poi/list?offset={nextOffset}&amount={filter.Amount}";
             var prevPage = httpString + $"/poi/list?offset={prevOffset}&amount={filter.Amount}";
 

@@ -11,10 +11,9 @@ namespace Api.Services.EntryServices
         Task<EntryDto> UpdateEntry(UpdateEntry updateEntry, string apiKey);
         Task<LikeDislikeEntryDto> AddLike(long entryId, string ApiKey);
         Task<EntryDto> RemoveEntry(long id, string apiKey);
-        Task<(List<CommentDTO> comments, int total)> GetComments(string apiKey, BaseFilter filter);
-        Task<(List<EntryDto> entries, int total)> GetEntries(string apiKey, BaseFilter filter);
-        Task<(List<LikeDislikeEntryDto> likes, int total)> GetLikes(string apiKey, BaseFilter filter);
-
-
+        Task<(List<CommentDTO> comments, int total)> GetUserComments(string apiKey, BaseFilter filter);
+        Task<(List<EntryDto> entries, int total)> GetUserEntries(string apiKey, BaseFilter filter);
+        Task<(List<LikeDislikeEntryDto> likes, int total)> GetUserLikes(string apiKey, BaseFilter filter);
+        Task<(List<EntryDto> list, int total)> GetEntries(FilterEntry filter);
     }
 }

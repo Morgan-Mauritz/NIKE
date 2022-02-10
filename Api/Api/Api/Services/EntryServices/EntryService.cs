@@ -128,7 +128,7 @@ namespace Api.Services.EntryServices
             }
         }
 
-        public async Task<(List<CommentDTO> comments, int total)> GetComments(string apiKey, BaseFilter filter)
+        public async Task<(List<CommentDTO> comments, int total)> GetUserComments(string apiKey, BaseFilter filter)
         {
             var user = await _userRepository.GetByApiKey(apiKey);
             if (user == null) 
@@ -136,12 +136,12 @@ namespace Api.Services.EntryServices
                 throw new UnauthorizedAccessException("Du har inte behörighet att visa detta."); 
             }
 
-            var result = await _entryRepository.GetComments(user.Id, filter);
+            var result = await _entryRepository.GetUserComments(user.Id, filter);
 
             return (_mapper.Map<List<CommentDTO>>(result.comments), result.total);
         }
 
-        public async Task<(List<LikeDislikeEntryDto> likes, int total)> GetLikes(string apiKey, BaseFilter filter)
+        public async Task<(List<LikeDislikeEntryDto> likes, int total)> GetUserLikes(string apiKey, BaseFilter filter)
         {
             var user = await _userRepository.GetByApiKey(apiKey);
             if (user == null)
@@ -149,12 +149,12 @@ namespace Api.Services.EntryServices
                 throw new UnauthorizedAccessException("Du har inte behörighet att visa detta.");
             }
 
-            var result = await _entryRepository.GetLikes(user.Id, filter);
+            var result = await _entryRepository.GetUserLikes(user.Id, filter);
 
             return (_mapper.Map<List<LikeDislikeEntryDto>>(result.likes), result.total);
         }
 
-        public async Task<(List<EntryDto> entries, int total)> GetEntries(string apiKey, BaseFilter filter)
+        public async Task<(List<EntryDto> entries, int total)> GetUserEntries(string apiKey, BaseFilter filter)
         {
             var user = await _userRepository.GetByApiKey(apiKey);
             if (user == null)
@@ -162,9 +162,15 @@ namespace Api.Services.EntryServices
                 throw new UnauthorizedAccessException("Du har inte behörighet att visa detta.");
             }
 
-            var result = await _entryRepository.GetEntries(user.Id, filter);
+            var result = await _entryRepository.GetUserEntries(user.Id, filter);
 
             return (_mapper.Map<List<EntryDto>>(result.entries), result.total);
+        }
+
+        public async Task<(List<EntryDto> list, int total)> GetEntries(FilterEntry filter)
+        {
+            var result = await _entryRepository.GetEntries(filter);
+            return (_mapper.Map<List<EntryDto>>(result.list), result.total);
         }
     }
 }
