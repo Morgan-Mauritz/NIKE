@@ -82,8 +82,8 @@
                             <StackLayout>
                             <Button x:Name="AddEntry" Text="Lägg till en recension" Command="{Binding _EntryButton_Clicked}" BackgroundColor="White" TextColor="Black" />
                                 <StackLayout Orientation="Horizontal" HorizontalOptions="FillAndExpand">
-                                    <Button Text="Nästa" HorizontalOptions="FillAndExpand" Command="{Binding GetNextEntries}" IsVisible="{Binding NextEntriesVisible}" IsEnabled="{Binding NextEntriesVisible}"/>
                                     <Button Text="Föregående" HorizontalOptions="FillAndExpand" Command="{Binding GetPreviousEntries}" IsVisible="{Binding PreviousEntriesVisible}" IsEnabled="{Binding PreviousEntriesVisible}"/>
+                                    <Button Text="Nästa" HorizontalOptions="FillAndExpand" Command="{Binding GetNextEntries}" IsVisible="{Binding NextEntriesVisible}" IsEnabled="{Binding NextEntriesVisible}"/>
                                 </StackLayout>
                             </StackLayout>
                         </ListView.Header>
