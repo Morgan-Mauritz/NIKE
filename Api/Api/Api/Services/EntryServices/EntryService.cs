@@ -5,7 +5,7 @@ using AutoMapper;
 using System.Threading.Tasks;
 using System;
 using Api.Helpers;
-
+using System.Collections.Generic;
 
 namespace Api.Services.EntryServices
 {
@@ -126,6 +126,12 @@ namespace Api.Services.EntryServices
                 await _entryRepository.RemoveLike(like);
                 return _mapper.Map<LikeDislikeEntryDto>(like);
             }
+        }
+
+        public async Task<(List<EntryDto> list, int total)> GetEntries(FilterEntry filter)
+        {
+            var result = await _entryRepository.GetEntries(filter);
+            return (_mapper.Map<List<EntryDto>>(result.list), result.total);
         }
     }
 }

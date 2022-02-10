@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Net;
 using System.Threading.Tasks;
 using Api.Exceptions;
@@ -126,6 +127,40 @@ namespace Api.Controllers
 #endif
                 return StatusCode((int)HttpStatusCode.NotFound, new Response<NotFoundException>(Status.Fail, ex.Message, ex));
             }
+        }
+
+        [HttpGet]
+        [ProducesResponseType(typeof(PaginationResponse<List<EntryDto>>), 200)]
+        public async Task<IActionResult> GetEntries([FromQuery] FilterEntry filter)
+        {
+
+            var nextOffset = filter.Offset + filter.Amount;
+            var prevOffset = filter.Offset - filter.Amount;
+            var httpString = HttpContext.Request.Scheme + "://" + HttpContext.Request.Host;
+
+            if (prevOffset < 0)
+            {
+                prevOffset = 0;
+            }
+
+
+            var result = await _service.GetEntries(filter);
+            var nextPage = httpString + $"?offset={nextOffset}&amount={filter.Amount}&poi={filter.POI}";
+            var prevPage = httpString + $"?offset={prevOffset}&amount={filter.Amount}&poi={filter.POI}";
+
+            if (filter.Offset == 0)
+            {
+                prevPage = null;
+            }
+
+            if (nextOffset >= result.total)
+            {
+                nextPage = null;
+            }
+
+            return Ok(new PaginationResponse<List<EntryDto>>(result.list, filter.Offset, filter.Amount, nextPage, prevPage, result.total));
+
+
         }
 
         [HttpPost("like/{id}")]

@@ -27,6 +27,10 @@ namespace Api.Model
         }
     }
 
+    public class FilterEntry : BaseFilter
+    {
+        public string POI { get; set; }
+    }
     public class AddEntry
     {
         public string Description { get; set; } 

@@ -1,4 +1,5 @@
 ﻿using Api.Model;
+using System.Collections.Generic;
 using System.Threading.Tasks;
 
 namespace Api.Services.EntryServices
@@ -10,5 +11,6 @@ namespace Api.Services.EntryServices
         Task<EntryDto> UpdateEntry(UpdateEntry updateEntry, string apiKey, long id);
         Task<LikeDislikeEntryDto> AddLike(long entryId, string ApiKey);
         Task<EntryDto> RemoveEntry(long id, string apiKey);
+        Task<(List<EntryDto> list, int total)> GetEntries(FilterEntry filter);
     }
 }

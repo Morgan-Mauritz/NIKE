@@ -1,4 +1,5 @@
 ﻿using Api.Model;
+using System.Collections.Generic;
 using System.Threading.Tasks;
 
 namespace Api.Repository
@@ -13,5 +14,6 @@ namespace Api.Repository
         Task RemoveLike(LikeDislikeEntry entryLike);
         Task<LikeDislikeEntry> GetLike(long userId, long entryId);
         Task RemoveEntry(Entry entry);
+        Task<(List<Entry> list, int total)> GetEntries(FilterEntry filter);
     }
 }

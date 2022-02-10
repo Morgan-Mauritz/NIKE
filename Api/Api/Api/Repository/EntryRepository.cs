@@ -1,5 +1,7 @@
 ﻿using Api.Model;
 using Microsoft.EntityFrameworkCore;
+using System.Collections.Generic;
+using System.Linq;
 using System.Threading.Tasks;
 
 namespace Api.Repository
@@ -57,6 +59,14 @@ namespace Api.Repository
             await _context.SaveChangesAsync();
         }
 
+        public async Task<(List<Entry> list, int total)> GetEntries(FilterEntry filter)
+        {
+            var query = _context.Entries.Where(x => x.POI.Name.ToLower() == filter.POI.Replace("+", " ").ToLower());
+
+            var total = query.Count();
+
+            return (await query.Skip(filter.Offset).Take(filter.Amount).ToListAsync(), total);
+        }
         public async Task<LikeDislikeEntry> GetLike(long userId, long entryId)
         {
             return await _context.LikeDislikeEntry.FirstOrDefaultAsync(x => x.EntryId == entryId && x.UserId == userId);
