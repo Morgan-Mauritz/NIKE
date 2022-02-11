@@ -15,13 +15,14 @@ namespace NikeClientApp.Views
     public partial class MapPage : ContentPage
     {
         MapPageViewModel ViewModel => BindingContext as MapPageViewModel;
+        public static MapPageViewModel CustomMap { get; private set; }
         public MapPage()
         {
             InitializeComponent();
             BackgroundColor = Color.Black;
 
             BindingContext = new MapPageViewModel(DependencyService.Get<INaviService>());
-
+            CustomMap = customMap;
             ResetStarColor();
         }
 

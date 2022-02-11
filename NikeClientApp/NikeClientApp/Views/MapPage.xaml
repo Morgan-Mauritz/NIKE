@@ -1,12 +1,13 @@
 ﻿<?xml version="1.0" encoding="utf-8" ?>
 <ContentPage xmlns="http://xamarin.com/schemas/2014/forms"
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml" 
+             xmlns:local="clr-namespace:NikeClientApp.ViewModels"
              x:Class="NikeClientApp.Views.MapPage"
              >
     <ContentPage.Content>
         <Grid>
-
-            <ContentView Content="{Binding map}"></ContentView>
+            <local:MapPageViewModel x:Name="customMap"/>
+            <!--<ContentView Content="{Binding map}"></ContentView>-->
             <Frame WidthRequest="40" HorizontalOptions="Start" VerticalOptions="Start" IsVisible="{Binding _FoldInFrameIsVisible}">
                 <ImageButton Source="./Assets/frontarrow.png" Command="{Binding _FoldFrameClicked }" CommandParameter="{x:Reference poiFrame}"></ImageButton>
             </Frame>
@@ -16,7 +17,7 @@
                     <StackLayout Orientation="Horizontal" Style="{StaticResource ContainerBackgroundColor}">
                         <Frame Padding="0.1" CornerRadius="15" BorderColor="Black"  IsClippedToBounds="True">
                             <Entry x:Name="Searchbar" Text="{Binding SearchBarText}" 
-                                   Focused="Searchbar_Focused" 
+                                    Focused="Searchbar_Focused" 
                                    Opacity="0.4"  Margin="0,0,0,0"  WidthRequest="160" />
                         </Frame>
                         <ImageButton Source="Assets/gg.png" HeightRequest="40" VerticalOptions="EndAndExpand" Command="{Binding _SearchButton_Clicked}" />
