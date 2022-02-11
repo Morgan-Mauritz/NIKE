@@ -1,9 +1,12 @@
-﻿using NikeClientApp.Models;
+﻿using Newtonsoft.Json;
+using Newtonsoft.Json.Linq;
+using NikeClientApp.Models;
 using NikeClientApp.Services;
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.ComponentModel;
+using System.IO;
 using System.Linq;
 using System.Threading.Tasks;
 using System.Windows.Input;
@@ -49,6 +52,8 @@ namespace NikeClientApp.ViewModels
         public MapPageViewModel(INaviService naviService) : base(naviService)
         {
             map.MapClicked += MapClicked;
+
+
         }
         #endregion; 
 
@@ -64,6 +69,7 @@ namespace NikeClientApp.ViewModels
         {
             map.MapType = MapType.Hybrid;
         }
+
 
         //Properties 
         #region Properties
@@ -204,7 +210,7 @@ namespace NikeClientApp.ViewModels
             AvgRating = null;
 
 
-            TitleResult = SearchBarText;
+            TitleResult = SearchBarText[0].ToString().ToUpper() + SearchBarText.Substring(1);
             POIListIsVisible = true;
             if (_titleResult == "Location")
             {
@@ -287,7 +293,7 @@ namespace NikeClientApp.ViewModels
         {
             string[] separator = { "\r\n" };
             string[] countryFromDataString = dataString.Split(separator, StringSplitOptions.RemoveEmptyEntries);
-            return countryFromDataString[2];
+            return countryFromDataString.Last();
         }
 
         public async Task PopulatePOI(Position position)
@@ -360,6 +366,7 @@ namespace NikeClientApp.ViewModels
 
         private async Task ShowUserLikes()
         {
+
             var currentUser = await userClient.Get(@"user", $"?ApiKey={UserApi.ApiKey}");
             var listOfLikesFromUser = SelectedPOI.Entries.SelectMany(x => x.LikeDislikeEntries).Where(x => x.UserId == currentUser.Data.Id).ToList();
             if (listOfLikesFromUser.Count != 0)
