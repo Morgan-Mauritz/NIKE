@@ -45,6 +45,7 @@ namespace NikeClientApp.ViewModels
         HttpService<Forecast> weatherClient = new HttpService<Forecast>();
         HttpService<POI> poiListClient = new HttpService<POI>();
         HttpService<LikeDislikeEntry> httpClientLike = new HttpService<LikeDislikeEntry>();
+        HttpService<User> userClient = new HttpService<User>(); 
 
         //Constructor
         #region Constructor
@@ -158,11 +159,7 @@ namespace NikeClientApp.ViewModels
 
         private ObservableCollection<Entry> _listOfEntries;
         public ObservableCollection<Entry> ListOfEntries { get => _listOfEntries; set { SetProperty(ref _listOfEntries, value); } }
-
-
-
         #endregion;
-
 
 
         //Methods
@@ -185,12 +182,19 @@ namespace NikeClientApp.ViewModels
                 }
                 if (addEntryModalIsVisible)
                 {
-                    addEntryModalIsVisible = false;
-                    await GetPOIList(SelectedPOI.Country, SelectedPOI.City);
-                    SelectedPOI = ListOfPOI.Data.FirstOrDefault(x => x.Name == SelectedPOI.Name && x.City == SelectedPOI.City);
-                    ListOfEntries = SelectedPOI.Entries;
+                    try
+                    {
+                        addEntryModalIsVisible = false;
+                        await GetPOIList(SelectedPOI.Country, SelectedPOI.City);
+                        SelectedPOI = ListOfPOI.Data.FirstOrDefault(x => x.Name == SelectedPOI.Name && x.City == SelectedPOI.City);
+                        ListOfEntries = SelectedPOI.Entries;
+                    }
+                    catch(Exception ex)
+                    {
+                        await App.Current.MainPage.DisplayAlert("Du har redan lagt en kommentar på den här sevärdheten!", "", "OK");
+                        
+                    }
                 }
-
                 addPoiModalIsVisible = false;
                 return true;
             }
@@ -234,8 +238,6 @@ namespace NikeClientApp.ViewModels
             await GetPOIList(country, city);
 
         }
-
-
 
         private async Task PinIcon_Clicked()
         {
@@ -323,6 +325,7 @@ namespace NikeClientApp.ViewModels
 
         private async Task<ObservableCollection<Entry>> ShowEntriesForPOI()
         {
+            var currentUser = await userClient.Get(@"user", $"?ApiKey={UserApi.ApiKey}"); 
 
             if (SelectedPOI != null)
             {
@@ -331,7 +334,15 @@ namespace NikeClientApp.ViewModels
                 EntryListIsVisible = true;
                 BackArrowIsVisible = true;
                 FoldButtonIsVisible = false;
-                EntryButtonIsVisible = true;
+                if (SelectedPOI.Entries.FirstOrDefault(x => x.Username == currentUser.Data.Username) != null)
+                {
+                    EntryButtonIsVisible = false;
+                }
+                else 
+                { 
+                    EntryButtonIsVisible = true; 
+                }
+                currentUser = null; 
                 poiToAdd.Name = SelectedPOI.Name;
                 TitleResult = SelectedPOI.Name;
                 ShowUserLikes();
@@ -355,9 +366,10 @@ namespace NikeClientApp.ViewModels
 
         private async Task ShowUserLikes()
         {
-            ///TODO : implementera fetchUser metoden som finns i MAIN för att sätta x.UserId == UserId.
-            var listOfLikesFromUser = ListOfEntries.SelectMany(x => x.LikeDislikeEntries).Where(x => x.UserId == 7).ToList();
-            if (listOfLikesFromUser != null)
+
+            var currentUser = await userClient.Get(@"user", $"?ApiKey={UserApi.ApiKey}");
+            var listOfLikesFromUser = SelectedPOI.Entries.SelectMany(x => x.LikeDislikeEntries).Where(x => x.UserId == currentUser.Data.Id).ToList();
+            if (listOfLikesFromUser.Count != 0)
             {
                 foreach (var itemEntry in ListOfEntries)
                 {

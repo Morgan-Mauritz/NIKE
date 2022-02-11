@@ -39,6 +39,8 @@ namespace Api.Model
 
     public class UserDto
     {
+        public long Id { get; set; }
+
         [Required]
         [StringValidator(InvalidCharacters = " ~!@#$%^&*()[]{}/;'\"|\\", MinLength = 2, MaxLength = 255)]
         public string Firstname { get; set; }

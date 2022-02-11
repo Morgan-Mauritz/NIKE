@@ -22,5 +22,11 @@
             <Setter Property = "TextColor"
         Value= "{AppThemeBinding Dark ={StaticResource TextDark}, Light={StaticResource TextLight}}"/>
         </Style>
+
+        <Style x:Key = "EntryColor" TargetType ="Entry">
+            <Setter Property = "TextColor"
+        Value= "{AppThemeBinding Dark ={StaticResource TextDark}, Light={StaticResource TextLight}}"/>
+        </Style>
+
     </Application.Resources>
 </Application>

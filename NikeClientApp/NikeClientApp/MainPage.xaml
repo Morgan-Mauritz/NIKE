@@ -50,7 +50,7 @@
                    
 
                 </StackLayout>
-                <Button x:Name="ToMaps" Text="Till Kartan" WidthRequest="100" HeightRequest="30" BackgroundColor="#1A4541" TextColor="Black" CornerRadius="10" Opacity="20" Command="{Binding NextPage}" ></Button>
+                <Button x:Name="ToMaps" Text="Till Kartan" WidthRequest="100" HeightRequest="30" BackgroundColor="#1A4541" TextColor="Black" CornerRadius="10" Opacity="20" Command="{Binding MapPage}" ></Button>
 
             </StackLayout>
 
