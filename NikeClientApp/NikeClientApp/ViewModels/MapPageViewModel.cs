@@ -350,7 +350,7 @@ namespace NikeClientApp.ViewModels
         private async Task ShowUserLikes()
         {
             ///TODO : implementera fetchUser metoden som finns i MAIN för att sätta x.UserId == UserId.
-            var listOfLikesFromUser = SelectedPOI.Entries.SelectMany(x => x.LikeDislikeEntries).Where(x => x.UserId == 7).ToList();
+            var listOfLikesFromUser = ListOfEntries.SelectMany(x => x.LikeDislikeEntries).Where(x => x.UserId == 7).ToList();
             if (listOfLikesFromUser != null)
             {
                 foreach (var itemEntry in ListOfEntries)

@@ -16,7 +16,7 @@
                     <StackLayout Orientation="Horizontal" Style="{StaticResource ContainerBackgroundColor}">
                         <Frame Padding="0.1" CornerRadius="15" BorderColor="Black"  IsClippedToBounds="True">
                             <Entry x:Name="Searchbar" Text="{Binding SearchBarText}" 
-                                   Style="{StaticResource EntryColor}" Focused="Searchbar_Focused" 
+                                   Focused="Searchbar_Focused" 
                                    Opacity="0.4"  Margin="0,0,0,0"  WidthRequest="160" />
                         </Frame>
                         <ImageButton Source="Assets/gg.png" HeightRequest="40" VerticalOptions="EndAndExpand" Command="{Binding _SearchButton_Clicked}" />
