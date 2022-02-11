@@ -1,9 +1,12 @@
-﻿using NikeClientApp.Models;
+﻿using Newtonsoft.Json;
+using Newtonsoft.Json.Linq;
+using NikeClientApp.Models;
 using NikeClientApp.Services;
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.ComponentModel;
+using System.IO;
 using System.Linq;
 using System.Threading.Tasks;
 using System.Windows.Input;
@@ -48,6 +51,8 @@ namespace NikeClientApp.ViewModels
         public MapPageViewModel(INaviService naviService) : base(naviService)
         {
             map.MapClicked += MapClicked;
+
+
         }
         #endregion; 
 
@@ -63,6 +68,7 @@ namespace NikeClientApp.ViewModels
         {
             map.MapType = MapType.Hybrid;
         }
+
 
         //Properties 
         #region Properties
@@ -285,7 +291,7 @@ namespace NikeClientApp.ViewModels
         {
             string[] separator = { "\r\n" };
             string[] countryFromDataString = dataString.Split(separator, StringSplitOptions.RemoveEmptyEntries);
-            return countryFromDataString[2];
+            return countryFromDataString.Last();
         }
 
         public async Task PopulatePOI(Position position)
