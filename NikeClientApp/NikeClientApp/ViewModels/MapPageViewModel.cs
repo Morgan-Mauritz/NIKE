@@ -206,7 +206,7 @@ namespace NikeClientApp.ViewModels
             AvgRating = null;
 
 
-            TitleResult = SearchBarText;
+            TitleResult = SearchBarText[0].ToString().ToUpper() + SearchBarText.Substring(1);
             POIListIsVisible = true;
             if (_titleResult == "Location")
             {
