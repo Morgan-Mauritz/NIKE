@@ -351,7 +351,7 @@ namespace NikeClientApp.ViewModels
         {
             ///TODO : implementera fetchUser metoden som finns i MAIN för att sätta x.UserId == UserId.
             var listOfLikesFromUser = SelectedPOI.Entries.SelectMany(x => x.LikeDislikeEntries).Where(x => x.UserId == 7).ToList();
-            if (listOfLikesFromUser != null)
+            if (listOfLikesFromUser.Count != 0)
             {
                 foreach (var itemEntry in ListOfEntries)
                 {

@@ -26,7 +26,7 @@ namespace NikeClientApp.ViewModels
 
         public Command LogIn => new Command(async () => await OnLogIn());
         public Command RegisterPage => new Command(async () => await NavigationService.NavigateTo<RegisterPageViewModel>());
-
+        public Command MapPage => new Command(async () => await NavigationService.NavigateTo<MapPageViewModel>());
         public async Task OnLogIn()
         {
             try

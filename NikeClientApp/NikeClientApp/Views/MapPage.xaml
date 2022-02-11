@@ -51,27 +51,45 @@
                     <ImageButton Source=".\Assets\x_button.png" Command="{Binding _FoldFrameClicked }" IsVisible="{Binding FoldButtonIsVisible}" CommandParameter="{x:Reference poiFrame}" HeightRequest="40" HorizontalOptions="End"/>
 
                     <ImageButton Source="Assets/backarrow.png" Command="{Binding _BackArrowClicked }" IsVisible="{Binding BackArrowIsVisible }" HeightRequest="50" HorizontalOptions="Start" Margin="0,0,0,0" />
-                    <Frame BorderColor="Black" CornerRadius="15" HeightRequest="100">
+                    <Frame BorderColor="Black" CornerRadius="15" HeightRequest="120">
+                        <!--<Grid>
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="3*"/>
+                                <ColumnDefinition Width="1*"/>
+                            </Grid.ColumnDefinitions>
+                            
+                            <StackLayout Grid.Column="0">
+                                <Label x:Name="TitleResult" Text="{Binding TitleResult}" TextColor="White" FontSize="Medium"  HorizontalOptions="CenterAndExpand" HeightRequest="30" Grid.Column="0"/>
+                            </StackLayout>
+                            <StackLayout Grid.Column="1">
+                                <Label x:Name="currentWeather" Text="{Binding CurrentWeather, StringFormat='{0} c'}" TextColor="White" Grid.Column="1" HorizontalTextAlignment="End"/>
+                         </StackLayout>
+                            <StackLayout Grid.Column="0" Grid.ColumnSpan="2" BackgroundColor="GreenYellow" HorizontalOptions="Start" WidthRequest="1*">
+                                <Label x:Name="avgRating" Text="{Binding AvgRating}" TextColor="White"  HorizontalOptions="CenterAndExpand" HeightRequest="30" BackgroundColor="HotPink"/>
+                            </StackLayout>
+                         
+                        </Grid>-->
                         <StackLayout>
                             <Grid>
                                 <Grid.ColumnDefinitions>
-                                    <ColumnDefinition/>
-                                    <ColumnDefinition/>
+                                    <ColumnDefinition Width="4*"/>
+                                    <ColumnDefinition Width="1*"/>
                                 </Grid.ColumnDefinitions>
-                                <Label x:Name="TitleResult" Text="{Binding TitleResult}" TextColor="White" FontSize="Medium"  HorizontalOptions="CenterAndExpand" HeightRequest="30" Grid.Column="0"/>
-                                <Label x:Name="currentWeather" Text="{Binding CurrentWeather, StringFormat='{0} c'}" TextColor="White" Grid.Column="1"/>
+                                <Label x:Name="TitleResult" Text="{Binding TitleResult}" TextColor="White" FontSize="18"  HorizontalOptions="Start" Grid.Column="0" />
+                                <Label x:Name="currentWeather" Text="{Binding CurrentWeather, StringFormat='{0} c'}" TextColor="White" Grid.Column="1" HorizontalOptions="End"/>
                             </Grid>
 
-                            <Label x:Name="avgRating" Text="{Binding AvgRating}" TextColor="White"  HorizontalOptions="CenterAndExpand" HeightRequest="30" />
+                            <Label x:Name="avgRating" Text="{Binding AvgRating}" TextColor="White"  HorizontalOptions="CenterAndExpand"/>
 
                         </StackLayout>
+
                     </Frame>
                     <ListView ItemsSource="{Binding ListOfPOI.Data}"  SelectedItem="{Binding SelectedPOI, Mode=TwoWay}" IsVisible="{Binding POIListIsVisible}">
 
                         <ListView.ItemTemplate>
                             <DataTemplate>
                                 <ViewCell>
-                                    <Label Text="{Binding Name}" TextColor="White"/>
+                                    <Label Text="{Binding Name}" TextColor="White" Padding="20,0,0,5"/>
                                 </ViewCell>
                             </DataTemplate>
                         </ListView.ItemTemplate>
