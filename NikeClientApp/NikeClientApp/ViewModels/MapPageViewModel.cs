@@ -6,6 +6,7 @@ using System.Collections.ObjectModel;
 using System.Linq;
 using System.Threading.Tasks;
 using System.Windows.Input;
+using Xamarin.Essentials;
 using Xamarin.Forms;
 using Xamarin.Forms.Maps;
 using Entry = NikeClientApp.Models.Entry;
@@ -29,6 +30,9 @@ namespace NikeClientApp.ViewModels
 
         public ICommand _EntryButton_Clicked => new Command(async () => await EntryButton_Clicked());
 
+        public ICommand _CenterOnUser => new Command(async () => await CenterOnUser());
+
+        public ICommand _SwitchWeatherEntry => new Command(() => SwitchWeatherEntry());
 
 
         HttpService<Models.Entry> httpClient = new HttpService<Models.Entry>();
@@ -42,6 +46,13 @@ namespace NikeClientApp.ViewModels
             map.MapClicked += MapClicked;
         }
         #endregion; 
+
+
+        public async override Task InitAsync()
+        {
+            await CenterOnUser();
+            SwitchWeatherTxt = "Visa väder";
+        }
 
         public async Task StandardMapView()
         {
@@ -65,8 +76,8 @@ namespace NikeClientApp.ViewModels
         int _entryRating = 0;
         public int EntryRating { get => _entryRating; set { SetProperty(ref _entryRating, value); } }
 
-        Map _map = new Map();
-        public Map map { get => _map; set { SetProperty(ref _map, value); } }
+        Xamarin.Forms.Maps.Map _map = new Xamarin.Forms.Maps.Map();
+        public Xamarin.Forms.Maps.Map map { get => _map; set { SetProperty(ref _map, value); } }
 
 
 
@@ -95,6 +106,11 @@ namespace NikeClientApp.ViewModels
         private bool _backArrowIsVisible;
         public bool BackArrowIsVisible { get => _backArrowIsVisible; set { SetProperty(ref _backArrowIsVisible, value); } }
 
+        private bool _weatherListIsVisible;
+
+        public bool WeatherListIsVisible { get => _weatherListIsVisible; set { SetProperty(ref _weatherListIsVisible, value); } }
+
+
 
         POI _selectedPOI;
         public POI SelectedPOI { get => _selectedPOI; set { SetProperty(ref _selectedPOI, value); ShowEntriesForPOI(); } }
@@ -114,6 +130,11 @@ namespace NikeClientApp.ViewModels
 
         public string AvgRating { get => _avgRating; set { SetProperty(ref _avgRating, value); } }
 
+        private string _SwitchWeatherTxt;
+
+        public string SwitchWeatherTxt { get => _SwitchWeatherTxt; set { SetProperty(ref _SwitchWeatherTxt, value); } }
+
+
 
 
         private PaginationResponse<ObservableCollection<POI>> _listOfPOI;
@@ -122,6 +143,9 @@ namespace NikeClientApp.ViewModels
         private ObservableCollection<Entry> _listOfEntries;
         public ObservableCollection<Entry> ListOfEntries { get => _listOfEntries; set { SetProperty(ref _listOfEntries, value); } }
 
+        private ObservableCollection<WeatherResultDto> _listOfWeather;
+
+        public ObservableCollection<WeatherResultDto> ListOfWeather { get => _listOfWeather; set { SetProperty(ref _listOfWeather, value); } }
 
 
         #endregion;
@@ -179,6 +203,7 @@ namespace NikeClientApp.ViewModels
 
         private async Task SearchButton_Clicked()
         {
+            map.IsShowingUser = false;
             AvgRating = null;
 
 
@@ -202,6 +227,14 @@ namespace NikeClientApp.ViewModels
             var response = await weatherClient.Get("forecast", $"?longitude={position.Longitude}&latitude={position.Latitude}");
             var city = response.Data.City;
 
+            
+            ListOfWeather = new ObservableCollection<WeatherResultDto>(response.Data.WeatherList);
+
+            var teslist = ListOfWeather.GroupBy(x => x.DateTime.Day);
+            
+
+            WeatherListIsVisible = false;
+            
 
             CurrentWeather = (int)Math.Round(response.Data.WeatherList.FirstOrDefault().Temperature);
             MapSpan maps = new MapSpan(position, 1.10, 0.10);
@@ -381,6 +414,30 @@ namespace NikeClientApp.ViewModels
 
         }
 
+        private async Task CenterOnUser()
+        {
+            map.IsShowingUser = true;
+            var position = await Geolocation.GetLocationAsync();
+
+            var response = await weatherClient.Get("forecast", $"?longitude={position.Longitude}&latitude={position.Latitude}");
+            CurrentWeather = (int)Math.Round(response.Data.WeatherList.FirstOrDefault().Temperature);
+            TitleResult = response.Data.City;
+        }
+
+        private void SwitchWeatherEntry()
+        {
+            WeatherListIsVisible = POIListIsVisible ? true : false;
+            POIListIsVisible = !POIListIsVisible;
+
+            if (WeatherListIsVisible)
+            {
+                SwitchWeatherTxt = "Visa inlägg";
+            }
+            else
+            {
+                SwitchWeatherTxt = "Visa väder";
+            }
+        }
 
         #endregion;
     }

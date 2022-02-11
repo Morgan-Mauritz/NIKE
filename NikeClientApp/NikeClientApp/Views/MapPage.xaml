@@ -2,9 +2,10 @@
 <ContentPage xmlns="http://xamarin.com/schemas/2014/forms"
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml" 
              x:Class="NikeClientApp.Views.MapPage"
-             >
+             xmlns:maps="clr-namespace:Xamarin.Forms.Maps;assembly=Xamarin.Forms.Maps">
     <ContentPage.Content>
         <Grid>
+            <!--<maps:Map x:Name="map" IsShowingUser="True"/>-->
             <ContentView Content="{Binding map}"></ContentView>
 
             <Frame Margin="530,0,0,0" HorizontalOptions="End">
@@ -21,6 +22,12 @@
                         <ImageButton Source="Assets/knapp.png" Command="{Binding _PinIcon_Clicked}" HeightRequest="50" HorizontalOptions="End" Margin="0,0,0,0" />
                     </StackLayout>
                     <StackLayout VerticalOptions="EndAndExpand">
+                        <Button
+                            x:Name="btn0"
+                            Grid.Row="1"
+                            Grid.Column="2"
+                            Command="{Binding _CenterOnUser}"
+                            Text="Hitta mig" BackgroundColor="White" BorderColor="Black" CornerRadius="15" />
                         <Button
                             x:Name="btn1"
                             Grid.Row="1"
@@ -61,8 +68,8 @@
                         </StackLayout>
                     </Frame>
 
-                    
-                    
+
+                    <Button x:Name="SwitchWeatherEntry_btn" Text="{Binding SwitchWeatherTxt}" Command="{Binding _SwitchWeatherEntry}" TextColor="White"/>
                     <ListView ItemsSource="{Binding ListOfPOI.Data}"  SelectedItem="{Binding SelectedPOI, Mode=TwoWay}" IsVisible="{Binding POIListIsVisible}">
 
                         <ListView.ItemTemplate>
@@ -74,6 +81,18 @@
                         </ListView.ItemTemplate>
                     </ListView>
 
+                    <ListView ItemsSource="{Binding ListOfWeather}" IsVisible="{Binding WeatherListIsVisible}">
+                        <ListView.ItemTemplate>
+                            <DataTemplate>
+                                <ViewCell>
+                                    <StackLayout>
+                                        <Label Text="{Binding DateTime}" TextColor="White" FontAttributes="Bold"/>
+                                        <Label Text="{Binding Temperature, StringFormat='{0}°C'}" TextColor="White"/>
+                                    </StackLayout>
+                                </ViewCell>
+                            </DataTemplate>
+                        </ListView.ItemTemplate>
+                    </ListView>
                
                     <ListView x:Name="ListViewForEntryOnPOI" ItemsSource="{Binding ListOfEntries}" IsVisible="{Binding EntryListIsVisible}">
                         <ListView.Header>

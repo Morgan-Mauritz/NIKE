@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Runtime.CompilerServices;
+using System.Threading.Tasks;
 
 namespace NikeClientApp.ViewModels
 {
@@ -17,6 +18,10 @@ namespace NikeClientApp.ViewModels
         }
 
         public virtual void Init()
+        {
+        }
+
+        public async virtual Task InitAsync()
         {
         }
 
