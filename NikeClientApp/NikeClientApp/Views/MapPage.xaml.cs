@@ -26,12 +26,13 @@ namespace NikeClientApp.Views
             ResetStarColor();
         }
 
-        protected override void OnAppearing()
+        protected async override void OnAppearing()
         {
             base.OnAppearing();
 
             // Initialize ViewModel
             ViewModel?.Init();
+            await ViewModel.InitAsync();
         }
 
         void ResetStarColor() // reset rating

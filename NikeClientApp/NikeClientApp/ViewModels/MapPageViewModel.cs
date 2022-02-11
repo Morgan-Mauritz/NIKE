@@ -11,6 +11,7 @@ using System.IO;
 using System.Linq;
 using System.Threading.Tasks;
 using System.Windows.Input;
+using Xamarin.Essentials;
 using Xamarin.Forms;
 using Xamarin.Forms.Maps;
 using Entry = NikeClientApp.Models.Entry;
@@ -35,6 +36,9 @@ namespace NikeClientApp.ViewModels
 
         public ICommand _EntryButton_Clicked => new Command(async () => await EntryButton_Clicked());
 
+        public ICommand _CenterOnUser => new Command(async () => await CenterOnUser());
+
+        public ICommand _SwitchWeatherEntry => new Command(() => SwitchWeatherEntry());
         public ICommand LikeButtonClicked => new Command(async (object sender) => await LikeButton_Clicked(sender));
 
         public ICommand GetNextEntries => new Command(async () => await OnGetNextEntries());
@@ -66,6 +70,13 @@ namespace NikeClientApp.ViewModels
 
         }
         #endregion; 
+
+
+        public async override Task InitAsync()
+        {
+            await CenterOnUser();
+            SwitchWeatherTxt = "Visa väder";
+        }
 
         public async Task StandardMapView()
         {
@@ -115,8 +126,13 @@ namespace NikeClientApp.ViewModels
         private bool _backArrowIsVisible;
         public bool BackArrowIsVisible { get => _backArrowIsVisible; set { SetProperty(ref _backArrowIsVisible, value); } }
 
+        private bool _weatherListIsVisible;
         private bool _foldButtonIsVisible;
         public bool FoldButtonIsVisible { get => _foldButtonIsVisible; set { SetProperty(ref _foldButtonIsVisible, value); } }
+
+        public bool WeatherListIsVisible { get => _weatherListIsVisible; set { SetProperty(ref _weatherListIsVisible, value); } }
+
+
 
         private bool _foldInFrameIsVisible = true;
         public bool FoldInFrameIsVisible { get => _foldInFrameIsVisible; set { SetProperty(ref _foldInFrameIsVisible, value); } }
@@ -156,9 +172,14 @@ namespace NikeClientApp.ViewModels
 
         public string AvgRating { get => _avgRating; set { SetProperty(ref _avgRating, value); } }
 
+        private string _SwitchWeatherTxt;
         public string LikeButtonNotFilled = @".\Assets\LikeButtonNotFilled.png";
 
+        public string SwitchWeatherTxt { get => _SwitchWeatherTxt; set { SetProperty(ref _SwitchWeatherTxt, value); } }
         public string LikeButtonFilled = @".\Assets\LikeButtonFilled.png";
+
+
+
 
 
         private PaginationResponse<ObservableCollection<POI>> _listOfPOI;
@@ -166,6 +187,12 @@ namespace NikeClientApp.ViewModels
 
         private ObservableCollection<Entry> _listOfEntries;
         public ObservableCollection<Entry> ListOfEntries { get => _listOfEntries; set { SetProperty(ref _listOfEntries, value); } }
+
+        private ObservableCollection<WeatherResultDto> _listOfWeather;
+
+        public ObservableCollection<WeatherResultDto> ListOfWeather { get => _listOfWeather; set { SetProperty(ref _listOfWeather, value); } }
+
+
         #endregion;
 
 
@@ -227,6 +254,7 @@ namespace NikeClientApp.ViewModels
 
         private async Task SearchButton_Clicked()
         {
+            map.IsShowingUser = false;
             AvgRating = null;
 
             TitleResult = SearchBarText[0].ToString().ToUpper() + SearchBarText.Substring(1);
@@ -249,6 +277,14 @@ namespace NikeClientApp.ViewModels
             var response = await weatherClient.Get("forecast", $"?longitude={position.Longitude}&latitude={position.Latitude}");
             var city = response.Data.City;
 
+            
+            ListOfWeather = new ObservableCollection<WeatherResultDto>(response.Data.WeatherList);
+
+            var teslist = ListOfWeather.GroupBy(x => x.DateTime.Day);
+            
+
+            WeatherListIsVisible = false;
+            
 
             CurrentWeather = (int)Math.Round(response.Data.WeatherList.FirstOrDefault().Temperature);
             MapSpan maps = new MapSpan(position, 1.10, 0.10);
@@ -289,6 +325,8 @@ namespace NikeClientApp.ViewModels
                     MPVM.addPoiModalIsVisible = true;
                     await PopulatePOI(e.Position);
                     ListOfPins.Add(pinner);
+                    map.Pins.Add(pinner);
+
                     pinner = null;
                     return true;
                 }
@@ -332,6 +370,12 @@ namespace NikeClientApp.ViewModels
             var response = await weatherClient.Get("forecast", $"?longitude={lon}&latitude={lat}");
             var City = response.Data.City;
             return City;
+        }
+        public string GetAddressFromDataString(string dataString)
+        {
+            string[] separator = { "\r\n" };
+            string[] countryFromDataString = dataString.Split(separator, StringSplitOptions.RemoveEmptyEntries);
+            return countryFromDataString[0];
         }
 
         public async Task PopulatePOI(Position position)
@@ -508,8 +552,33 @@ namespace NikeClientApp.ViewModels
 
                 throw new Exception(ex.Message);
             }
+
         }
 
+        private async Task CenterOnUser()
+        {
+            map.IsShowingUser = true;
+            var position = await Geolocation.GetLocationAsync();
+
+            var response = await weatherClient.Get("forecast", $"?longitude={position.Longitude}&latitude={position.Latitude}");
+            CurrentWeather = (int)Math.Round(response.Data.WeatherList.FirstOrDefault().Temperature);
+            TitleResult = response.Data.City;
+        }
+
+        private void SwitchWeatherEntry()
+        {
+            WeatherListIsVisible = POIListIsVisible ? true : false;
+            POIListIsVisible = !POIListIsVisible;
+
+            if (WeatherListIsVisible)
+            {
+                SwitchWeatherTxt = "Visa inlägg";
+            }
+            else
+            {
+                SwitchWeatherTxt = "Visa väder";
+            }
+        }
         public PaginationResponse<ObservableCollection<Models.Entry>> EntryPagination { get; set; }
 
         private async Task OnGetPreviousEntries()
