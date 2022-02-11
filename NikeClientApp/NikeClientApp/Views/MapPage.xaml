@@ -49,26 +49,8 @@
             <Frame x:Name="poiFrame" Margin="0,0,600,0" Opacity="0.9" HorizontalOptions="Start" WidthRequest="270" BackgroundColor="SlateGray" IsVisible="False">
                 <StackLayout>
                     <ImageButton Source=".\Assets\x_button.png" Command="{Binding _FoldFrameClicked }" IsVisible="{Binding FoldButtonIsVisible}" CommandParameter="{x:Reference poiFrame}" HeightRequest="40" HorizontalOptions="End"/>
-
                     <ImageButton Source="Assets/backarrow.png" Command="{Binding _BackArrowClicked }" IsVisible="{Binding BackArrowIsVisible }" HeightRequest="50" HorizontalOptions="Start" Margin="0,0,0,0" />
                     <Frame BorderColor="Black" CornerRadius="15" HeightRequest="120">
-                        <!--<Grid>
-                            <Grid.ColumnDefinitions>
-                                <ColumnDefinition Width="3*"/>
-                                <ColumnDefinition Width="1*"/>
-                            </Grid.ColumnDefinitions>
-                            
-                            <StackLayout Grid.Column="0">
-                                <Label x:Name="TitleResult" Text="{Binding TitleResult}" TextColor="White" FontSize="Medium"  HorizontalOptions="CenterAndExpand" HeightRequest="30" Grid.Column="0"/>
-                            </StackLayout>
-                            <StackLayout Grid.Column="1">
-                                <Label x:Name="currentWeather" Text="{Binding CurrentWeather, StringFormat='{0} c'}" TextColor="White" Grid.Column="1" HorizontalTextAlignment="End"/>
-                         </StackLayout>
-                            <StackLayout Grid.Column="0" Grid.ColumnSpan="2" BackgroundColor="GreenYellow" HorizontalOptions="Start" WidthRequest="1*">
-                                <Label x:Name="avgRating" Text="{Binding AvgRating}" TextColor="White"  HorizontalOptions="CenterAndExpand" HeightRequest="30" BackgroundColor="HotPink"/>
-                            </StackLayout>
-                         
-                        </Grid>-->
                         <StackLayout>
                             <Grid>
                                 <Grid.ColumnDefinitions>
@@ -78,14 +60,10 @@
                                 <Label x:Name="TitleResult" Text="{Binding TitleResult}" TextColor="White" FontSize="18"  HorizontalOptions="Start" Grid.Column="0" />
                                 <Label x:Name="currentWeather" Text="{Binding CurrentWeather, StringFormat='{0} c'}" TextColor="White" Grid.Column="1" HorizontalOptions="End"/>
                             </Grid>
-
                             <Label x:Name="avgRating" Text="{Binding AvgRating}" TextColor="White"  HorizontalOptions="CenterAndExpand"/>
-
                         </StackLayout>
-
                     </Frame>
                     <ListView ItemsSource="{Binding ListOfPOI.Data}"  SelectedItem="{Binding SelectedPOI, Mode=TwoWay}" IsVisible="{Binding POIListIsVisible}">
-
                         <ListView.ItemTemplate>
                             <DataTemplate>
                                 <ViewCell>
@@ -94,11 +72,10 @@
                             </DataTemplate>
                         </ListView.ItemTemplate>
                     </ListView>
-
                     <ListView x:Name="ListViewForEntryOnPOI" ItemsSource="{Binding ListOfEntries}" IsVisible="{Binding EntryListIsVisible}">
                         <ListView.Header>
                             <StackLayout>
-                            <Button x:Name="AddEntry" Text="Lägg till en recension" Command="{Binding _EntryButton_Clicked}" BackgroundColor="White" TextColor="Black" />
+                            <Button x:Name="AddEntry" Text="Lägg till en recension" Command="{Binding _EntryButton_Clicked}" BackgroundColor="White" TextColor="Black" IsVisible="{Binding EntryButtonIsVisible}" />
                                 <StackLayout Orientation="Horizontal" HorizontalOptions="FillAndExpand">
                                     <Button Text="Föregående" HorizontalOptions="FillAndExpand" Command="{Binding GetPreviousEntries}" IsVisible="{Binding PreviousEntriesVisible}" IsEnabled="{Binding PreviousEntriesVisible}"/>
                                     <Button Text="Nästa" HorizontalOptions="FillAndExpand" Command="{Binding GetNextEntries}" IsVisible="{Binding NextEntriesVisible}" IsEnabled="{Binding NextEntriesVisible}"/>

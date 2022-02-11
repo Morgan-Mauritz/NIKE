@@ -90,22 +90,22 @@
             <Frame Grid.Column="3" Grid.Row="2" Grid.RowSpan="2" BackgroundColor="DarkSlateGray">
                 <StackLayout Grid.Column="3" Grid.Row="2" Grid.RowSpan="2" BackgroundColor="Black">
 
-            <StackLayout Grid.Column="3" Grid.Row="2" Grid.RowSpan="2" >
+                    <StackLayout Grid.Column="3" Grid.Row="2" Grid.RowSpan="2" >
 
-                <Button Text="Mina inlägg" BackgroundColor="ForestGreen"  Command="{Binding Load}" CommandParameter="entries"></Button>
-                <ListView ItemsSource="{Binding Entries}" MinimumHeightRequest="0" VerticalOptions="Start" IsVisible="{Binding EntriesLoaded}" BackgroundColor="Black">
-                    <ListView.Style>
-                        <Style TargetType="ListView">
-                            <Style.Triggers>
-                                <DataTrigger TargetType="ListView" Binding="{Binding Entries.Count}" Value="0">
-                                    <Setter Property="HeightRequest" Value="0"/>
-                                </DataTrigger>
-                            </Style.Triggers>
-                        </Style>
-                    </ListView.Style>
-                        <ListView.ItemTemplate>
-                        <DataTemplate>
-                            <ViewCell>
+                        <Button Text="Mina inlägg" BackgroundColor="ForestGreen"  Command="{Binding Load}" CommandParameter="entries"></Button>
+                        <ListView ItemsSource="{Binding Entries}" MinimumHeightRequest="0" VerticalOptions="Start" IsVisible="{Binding EntriesLoaded}" BackgroundColor="Black">
+                            <ListView.Style>
+                                <Style TargetType="ListView">
+                                    <Style.Triggers>
+                                        <DataTrigger TargetType="ListView" Binding="{Binding Entries.Count}" Value="0">
+                                            <Setter Property="HeightRequest" Value="0"/>
+                                        </DataTrigger>
+                                    </Style.Triggers>
+                                </Style>
+                            </ListView.Style>
+                            <ListView.ItemTemplate>
+                                <DataTemplate>
+                                    <ViewCell>
                                         <StackLayout Orientation="Vertical">
 
                                             <StackLayout Orientation="Horizontal">
@@ -131,26 +131,26 @@
 
                                         </StackLayout>
                                     </ViewCell>
-                        </DataTemplate>
-                    </ListView.ItemTemplate>
-                </ListView>
+                                </DataTemplate>
+                            </ListView.ItemTemplate>
+                        </ListView>
 
 
 
-                <Button Text="Mina kommentarer" Command="{Binding Load}" BackgroundColor="ForestGreen" CommandParameter="comments"></Button>
-                <ListView ItemsSource="{Binding Comments}" IsVisible="{Binding CommentsLoaded}" MinimumHeightRequest="0" VerticalOptions="Start" BackgroundColor="Black">
-                    <ListView.Style>
-                        <Style TargetType="ListView">
-                            <Style.Triggers>
-                                <DataTrigger TargetType="ListView" Binding="{Binding Comments.Count}" Value="0">
-                                    <Setter Property="HeightRequest" Value="0"/>
-                                </DataTrigger>
-                            </Style.Triggers>
-                        </Style>
-                    </ListView.Style>
-                    <ListView.ItemTemplate>
-                        <DataTemplate>
-                            <ViewCell>
+                        <Button Text="Mina kommentarer" Command="{Binding Load}" BackgroundColor="ForestGreen" CommandParameter="comments"></Button>
+                        <ListView ItemsSource="{Binding Comments}" IsVisible="{Binding CommentsLoaded}" MinimumHeightRequest="0" VerticalOptions="Start" BackgroundColor="Black">
+                            <ListView.Style>
+                                <Style TargetType="ListView">
+                                    <Style.Triggers>
+                                        <DataTrigger TargetType="ListView" Binding="{Binding Comments.Count}" Value="0">
+                                            <Setter Property="HeightRequest" Value="0"/>
+                                        </DataTrigger>
+                                    </Style.Triggers>
+                                </Style>
+                            </ListView.Style>
+                            <ListView.ItemTemplate>
+                                <DataTemplate>
+                                    <ViewCell>
                                         <StackLayout Orientation="Vertical">
 
                                             <StackLayout Orientation="Horizontal">
@@ -186,23 +186,21 @@
 
 
                                         </StackLayout>
-
                                     </ViewCell>
-                        </DataTemplate>
-                    </ListView.ItemTemplate>
-                </ListView>
-
-                <Button Text="Mina gillade inlägg" BackgroundColor="ForestGreen"  Command="{Binding Load}" CommandParameter="reactions"></Button>
-                <ListView ItemsSource="{Binding Reactions}" MinimumHeightRequest="0" IsVisible="{Binding ReactionsLoaded}" VerticalOptions="Start" BackgroundColor="Black">
-                    <ListView.Style>
-                        <Style TargetType="ListView">
-                            <Style.Triggers>
-                                <DataTrigger TargetType="ListView" Binding="{Binding Reactions.Count}" Value="0">
-                                    <Setter Property="HeightRequest" Value="0"/>
-                                </DataTrigger>
-                            </Style.Triggers>
-                        </Style>
-                    </ListView.Style>
+                                </DataTemplate>
+                            </ListView.ItemTemplate>
+                        </ListView>
+                        <Button Text="Mina gillade inlägg" BackgroundColor="ForestGreen"  Command="{Binding Load}" CommandParameter="reactions"></Button>
+                        <ListView ItemsSource="{Binding Reactions}" MinimumHeightRequest="0" IsVisible="{Binding ReactionsLoaded}" VerticalOptions="Start" BackgroundColor="Black">
+                            <ListView.Style>
+                                <Style TargetType="ListView">
+                                    <Style.Triggers>
+                                        <DataTrigger TargetType="ListView" Binding="{Binding Reactions.Count}" Value="0">
+                                            <Setter Property="HeightRequest" Value="0"/>
+                                        </DataTrigger>
+                                    </Style.Triggers>
+                                </Style>
+                            </ListView.Style>
                             <ListView.ItemTemplate>
                                 <DataTemplate>
                                     <ViewCell>
@@ -212,45 +210,31 @@
                                                 <StackLayout Orientation="Horizontal">
                                                     <Label FontAttributes="Bold" Text="Användare:"></Label>
                                                     <Label Text="{Binding Entry.Username}"></Label>
-
                                                 </StackLayout>
-
                                                 <StackLayout Orientation="Horizontal">
                                                     <Label FontAttributes="Bold" Text="Sevärdheten:"></Label>
                                                     <Label Text="{Binding Entry.POI}"></Label>
                                                 </StackLayout>
-
                                                 <StackLayout Orientation="Horizontal">
                                                     <Label FontAttributes="Bold" Text="Inlägg:"></Label>
                                                     <Label Text="{Binding Entry.Description}"></Label>
                                                 </StackLayout>
-
                                                 <StackLayout Orientation="Horizontal">
                                                     <Label FontAttributes="Bold" Text="Betyg:"></Label>
                                                     <Label Text="{Binding Entry.StarRating}" FontSize="Micro" x:Name="star1" StyleId="star1"/>
                                                 </StackLayout>
-
                                                 <StackLayout Orientation="Horizontal">
                                                     <Button Text="Radera" BackgroundColor="DarkRed" Command="{Binding Path=BindingContext.Delete, Source={x:Reference Name=Root}}" CommandParameter="{Binding Endpoint}"/>
                                                 </StackLayout>
-
-
                                             </StackLayout>
-
-
-
                                         </StackLayout>
                                     </ViewCell>
                                 </DataTemplate>
                             </ListView.ItemTemplate>
                         </ListView>
-
-                </StackLayout>
                     </StackLayout>
+                </StackLayout>
             </Frame>
-
-
-
         </Grid>
     </ContentPage.Content>
 </ContentPage>
