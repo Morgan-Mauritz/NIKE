@@ -23,7 +23,6 @@ namespace NikeClientApp.Views
 
             BindingContext = new MapPageViewModel(DependencyService.Get<INaviService>());
             CustomMap = customMap;
-            //CustomMap.MapClicked += ViewModel.MapClicked;
             ResetStarColor();
         }
 

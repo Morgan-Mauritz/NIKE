@@ -40,19 +40,25 @@ namespace NikeClientApp.ViewModels
         public ICommand GetNextEntries => new Command(async () => await OnGetNextEntries());
         public ICommand GetPreviousEntries => new Command(async () => await OnGetPreviousEntries());
 
-
-
         HttpService<Models.Entry> _entryClient = new HttpService<Models.Entry>();
         HttpService<Forecast> weatherClient = new HttpService<Forecast>();
         HttpService<POI> poiListClient = new HttpService<POI>();
         HttpService<LikeDislikeEntry> httpClientLike = new HttpService<LikeDislikeEntry>();
 
+        public static MapPageViewModel MPVM { get; set; }
+
+        public static event EventHandler<PaginationResponse<ObservableCollection<POI>>> ShowPinsEventHandler;
+
+        protected virtual void OnShowPinsEventHandler(PaginationResponse<ObservableCollection<POI>> ListOfPOI)
+        {
+            ShowPinsEventHandler?.Invoke(this, ListOfPOI);
+        }
+
         //Constructor
         #region Constructor
         public MapPageViewModel(INaviService naviService) : base(naviService)
         {
-            //MapPage.CustomMap.MapClicked += MapClicked;
-            TestMPVM = this;
+            MPVM = this;
         }
         public MapPageViewModel()
         {
@@ -82,9 +88,6 @@ namespace NikeClientApp.ViewModels
 
         int _entryRating = 0;
         public int EntryRating { get => _entryRating; set { SetProperty(ref _entryRating, value); } }
-
-        //Map _map = new Map();
-        //public Map map { get => _map; set { SetProperty(ref _map, value); } }
 
         POI _poi = new POI();
         public POI poiToAdd { get => _poi; set { SetProperty(ref _poi, value); } }
@@ -168,7 +171,6 @@ namespace NikeClientApp.ViewModels
         #endregion;
 
 
-
         //Methods
         #region Methods
         async Task<bool> AddPOI_Clicked()
@@ -222,7 +224,6 @@ namespace NikeClientApp.ViewModels
         {
             AvgRating = null;
 
-
             TitleResult = SearchBarText[0].ToString().ToUpper() + SearchBarText.Substring(1);
             POIListIsVisible = true;
             if (_titleResult == "Location")
@@ -253,8 +254,6 @@ namespace NikeClientApp.ViewModels
             PinStay(test);
         }
 
-        public static MapPageViewModel TestMPVM { get; set; }
-
         private async Task PinIcon_Clicked()
         {
             pinner = new Pin()
@@ -282,7 +281,7 @@ namespace NikeClientApp.ViewModels
                 }
                 else
                 {
-                    TestMPVM.addPoiModalIsVisible = true;
+                    MPVM.addPoiModalIsVisible = true;
                     await PopulatePOI(e.Position);
                     ListOfPins.Add(pinner);
                     pinner = null;
@@ -356,13 +355,6 @@ namespace NikeClientApp.ViewModels
         public async Task<PaginationResponse<ObservableCollection<POI>>> GetPOIList(string country, string city)
         {
             return ListOfPOI = await poiListClient.GetList("poi/list", $"?Country={country}&City={city}&amount=50");
-        }
-
-        public static event EventHandler<PaginationResponse<ObservableCollection<POI>>> ShowPinsEventHandler;
-
-        protected virtual void OnShowPinsEventHandler(PaginationResponse<ObservableCollection<POI>> ListOfPOI)
-        {
-            ShowPinsEventHandler?.Invoke(this, ListOfPOI);
         }
 
         public async void PinStay(PaginationResponse<ObservableCollection<POI>> ListOfPOI)

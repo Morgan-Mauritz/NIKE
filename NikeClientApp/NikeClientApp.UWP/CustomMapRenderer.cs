@@ -42,19 +42,7 @@ namespace NikeClientApp.UWP
 
             MapPageViewModel.ShowPinsEventHandler += MapPageViewModel_ShowPins;
 
-            formsMap = MapPageViewModel.TestMPVM;
-
-            //if (customPins != null)
-            //{
-            //    //Vet inte när denna startar
-            //    if (e.OldElement != null)
-            //    {
-            //        nativeMap.MapElementClick -= OnMapElementClick;
-            //        nativeMap.Children.Clear();
-            //        mapOverlay = null;
-            //        nativeMap = null;
-            //    }
-            //}
+            formsMap = MapPageViewModel.MPVM;
         }
 
         private void MapPageViewModel_ShowPins(object sender, PaginationResponse<ObservableCollection<POI>> e)
