@@ -65,14 +65,17 @@
                                     <ColumnDefinition Width="1*"/>
                                 </Grid.ColumnDefinitions>
                                 <Label x:Name="TitleResult" Text="{Binding TitleResult}" TextColor="White" FontSize="18"  HorizontalOptions="Start" Grid.Column="0" />
-                                <Label x:Name="currentWeather" Text="{Binding CurrentWeather, StringFormat='{0} c'}" TextColor="White" Grid.Column="1" HorizontalOptions="End"/>
+                                <Label x:Name="currentWeather" Text="{Binding CurrentWeather, StringFormat='{0}°C'}" TextColor="White" Grid.Column="1" HorizontalOptions="End">
+                                    <Label.GestureRecognizers>
+                                        <TapGestureRecognizer Command="{Binding _SwitchWeatherEntry}" > </TapGestureRecognizer>
+                                    </Label.GestureRecognizers>
+                                </Label>
+                            
                             </Grid>
                             <Label x:Name="avgRating" Text="{Binding AvgRating}" TextColor="White"  HorizontalOptions="CenterAndExpand"/>
                         </StackLayout>
                     </Frame>
 
-
-                    <Button x:Name="SwitchWeatherEntry_btn" Text="{Binding SwitchWeatherTxt}" Command="{Binding _SwitchWeatherEntry}" TextColor="White"/>
                     <ListView ItemsSource="{Binding ListOfPOI.Data}"  SelectedItem="{Binding SelectedPOI, Mode=TwoWay}" IsVisible="{Binding POIListIsVisible}">
                         <ListView.ItemTemplate>
                             <DataTemplate>

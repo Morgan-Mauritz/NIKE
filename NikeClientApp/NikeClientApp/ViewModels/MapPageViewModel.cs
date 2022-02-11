@@ -74,7 +74,7 @@ namespace NikeClientApp.ViewModels
 
         public async override Task InitAsync()
         {
-            await CenterOnUser();
+            //await CenterOnUser();
             SwitchWeatherTxt = "Visa väder";
         }
 
@@ -449,7 +449,7 @@ namespace NikeClientApp.ViewModels
                 currentUser = null; 
                 poiToAdd.Name = SelectedPOI.Name;
                 TitleResult = SelectedPOI.Name;
-                ShowUserLikes();
+               
                 EntryPagination = await _entryClient.GetList("entry", $"?amount=6&poi={SelectedPOI.Name.Replace(" ", "+")}");
                 PreviousEntriesVisible = true;
                 NextEntriesVisible = true;
@@ -461,7 +461,8 @@ namespace NikeClientApp.ViewModels
                 {
                     NextEntriesVisible = false;
                 }
-                ListOfEntries = EntryPagination.Data;
+                ListOfEntries = EntryPagination.Data; 
+                ShowUserLikes();
                 return ListOfEntries;
             }
             return null;
@@ -472,7 +473,7 @@ namespace NikeClientApp.ViewModels
         {
 
             var currentUser = await userClient.Get(@"user", $"?ApiKey={UserApi.ApiKey}");
-            var listOfLikesFromUser = SelectedPOI.Entries.SelectMany(x => x.LikeDislikeEntries).Where(x => x.UserId == currentUser.Data.Id).ToList();
+            var listOfLikesFromUser = ListOfEntries.SelectMany(x => x.LikeDislikeEntries).Where(x => x.UserId == currentUser.Data.Id).ToList();
             if (listOfLikesFromUser.Count != 0)
             {
                 foreach (var itemEntry in ListOfEntries)
