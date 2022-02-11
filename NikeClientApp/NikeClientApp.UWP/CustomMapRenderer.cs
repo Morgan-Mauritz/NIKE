@@ -45,6 +45,7 @@ namespace NikeClientApp.UWP
             formsMap = MapPageViewModel.MPVM;
         }
 
+        //Ser till att alla pins som kommer från DB blir custompins
         private void MapPageViewModel_ShowPins(object sender, PaginationResponse<ObservableCollection<POI>> e)
         {
             foreach (var item in e.Data)
