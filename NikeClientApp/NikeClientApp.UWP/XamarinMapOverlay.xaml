@@ -1,0 +1,53 @@
+﻿<UserControl
+    x:Class="NikeClientApp.UWP.XamarinMapOverlay"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:local="using:NikeClientApp.UWP"
+    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    mc:Ignorable="d"
+    d:DesignHeight="300"
+    d:DesignWidth="400">
+
+
+    <Grid>
+
+        <Grid.RowDefinitions>
+            <RowDefinition Height="45" />
+            <RowDefinition Height="Auto" />
+            <RowDefinition Height="30" />
+            <!--Höj eller sänk info rutan-->
+        </Grid.RowDefinitions>
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="Auto"/>
+        </Grid.ColumnDefinitions>
+
+        <Image Source="xamarin.png" Width="100" />
+
+        <!--<Button FontWeight="Black" Margin="110,0,0,10" Background="Black" Opacity="0.7" Content="x" Click="BtnDeletePin_Click"/>-->
+
+        <StackPanel Grid.Row="1" Grid.Column="1" Orientation="Horizontal" Background="White" Opacity="0.7" Padding="20,0,20,0">
+
+            <Image Source="Assets/newton.jpg" Width="24"  />
+
+            <StackPanel Margin="20,10,20,0">
+
+                <TextBlock x:Name="Label" FontWeight="Bold" />
+                <TextBlock x:Name="Address" />
+
+            </StackPanel>
+
+            <Button Tapped="OnInfoButtonTapped">
+                <Button.Template>
+                    <ControlTemplate TargetType="Button">
+
+                        <Image Source="Assets/info.png" Width="24" />
+
+                    </ControlTemplate>
+                </Button.Template>
+            </Button>
+
+        </StackPanel>
+
+    </Grid>
+</UserControl>

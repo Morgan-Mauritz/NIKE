@@ -2,6 +2,7 @@
 using Newtonsoft.Json.Linq;
 using NikeClientApp.Models;
 using NikeClientApp.Services;
+using NikeClientApp.Views;
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
@@ -50,37 +51,40 @@ namespace NikeClientApp.ViewModels
         #region Constructor
         public MapPageViewModel(INaviService naviService) : base(naviService)
         {
-            map.MapClicked += MapClicked;
-
+            //MapPage.CustomMap.MapClicked += MapClicked;
+            TestMPVM = this;
+        }
+        public MapPageViewModel()
+        {
 
         }
         #endregion; 
 
         public async Task StandardMapView()
         {
-            map.MapType = MapType.Street;
+            MapPage.CustomMap.MapType = MapType.Street;
         }
         public async Task SatelliteMapView()
         {
-            map.MapType = MapType.Satellite;
+            MapPage.CustomMap.MapType = MapType.Satellite;
         }
         public async Task HybridMapView()
         {
-            map.MapType = MapType.Hybrid;
+            MapPage.CustomMap.MapType = MapType.Hybrid;
         }
 
 
         //Properties 
         #region Properties
 
-        List<Pin> ListOfPins = new List<Pin>();
-        public Pin pinner { get; set; }
+        public static List<Pin> ListOfPins = new List<Pin>();
+        public static Pin pinner { get; set; }
 
         int _entryRating = 0;
         public int EntryRating { get => _entryRating; set { SetProperty(ref _entryRating, value); } }
 
-        Map _map = new Map();
-        public Map map { get => _map; set { SetProperty(ref _map, value); } }
+        //Map _map = new Map();
+        //public Map map { get => _map; set { SetProperty(ref _map, value); } }
 
         POI _poi = new POI();
         public POI poiToAdd { get => _poi; set { SetProperty(ref _poi, value); } }
@@ -176,12 +180,25 @@ namespace NikeClientApp.ViewModels
 
                 try
                 {
+                    //För att får fram Namn och Adress på pinnen man precis skapade
+                    var geoCoder = new Geocoder();
+
+                    var fullgeoIEnumerable = await geoCoder.GetAddressesForPositionAsync(ListOfPins.Last().Position);
+                    var _fullgeoList = fullgeoIEnumerable.ToList();
+                    var _geoString = _fullgeoList[0].ToString();
+                    var address = GetAddressFromDataString(_geoString);
+                    var city = await GetCityFromDataString(ListOfPins.Last().Position.Longitude,
+                                                     ListOfPins.Last().Position.Latitude);
+
+                    ListOfPins.Last().Address = address + ", " + city;
+                    ListOfPins.Last().Label = poiToAdd.Name;
+
                     await _entryClient.Post("entry", entryToAdd);
                 }
                 catch (Exception ex)
                 {
                     await App.Current.MainPage.DisplayAlert("Error!", ex.Message, "OK");
-                    map.Pins.Remove(map.Pins.Last());
+                    MapPage.CustomMap.Pins.Remove(MapPage.CustomMap.Pins.Last());
                 }
                 if (addEntryModalIsVisible)
                 {
@@ -229,13 +246,14 @@ namespace NikeClientApp.ViewModels
 
             CurrentWeather = (int)Math.Round(response.Data.WeatherList.FirstOrDefault().Temperature);
             MapSpan maps = new MapSpan(position, 1.10, 0.10);
-            map.MoveToRegion(maps);
+            MapPage.CustomMap.MoveToRegion(maps);
 
-            await GetPOIList(country, city);
+            var test = await GetPOIList(country, city);
 
+            PinStay(test);
         }
 
-
+        public static MapPageViewModel TestMPVM { get; set; }
 
         private async Task PinIcon_Clicked()
         {
@@ -245,29 +263,33 @@ namespace NikeClientApp.ViewModels
                 Address = "",
                 Type = PinType.Place
             };
+
         }
 
-        public async void MapClicked(object sender, MapClickedEventArgs e)
+        public async Task<bool> MapClicked(object sender, MapClickedEventArgs e)
         {
             if (pinner != null)
             {
                 pinner.Position = e.Position;
-                map.Pins.Add(pinner);
+                MapPage.CustomMap.Pins.Add(pinner);
 
                 var ans = await App.Current.MainPage.DisplayAlert("Hej", "Vill du lägga till en pin?", "Ja", "Nej");
+                
                 if (ans != true)
                 {
-                    map.Pins.Remove(pinner);
+                    MapPage.CustomMap.Pins.Remove(pinner);
                     pinner = null;
                 }
                 else
                 {
-                    addPoiModalIsVisible = true;
+                    TestMPVM.addPoiModalIsVisible = true;
                     await PopulatePOI(e.Position);
                     ListOfPins.Add(pinner);
                     pinner = null;
+                    return true;
                 }
             }
+            return false;
         }
 
         public void RatingAmount(object sender)
@@ -294,6 +316,20 @@ namespace NikeClientApp.ViewModels
             return countryFromDataString.Last();
         }
 
+        public string GetAddressFromDataString(string dataString)
+        {
+            string[] separator = { "\r\n" };
+            string[] countryFromDataString = dataString.Split(separator, StringSplitOptions.RemoveEmptyEntries);
+            return countryFromDataString[0];
+        }
+        public async Task<string> GetCityFromDataString(double lon, double lat)
+        {
+            //Fetch city from weatherApi ((hack!)the geocoder doesn't provide a city properly)
+            var response = await weatherClient.Get("forecast", $"?longitude={lon}&latitude={lat}");
+            var City = response.Data.City;
+            return City;
+        }
+
         public async Task PopulatePOI(Position position)
         {
             var geoCoder = new Geocoder();
@@ -306,6 +342,9 @@ namespace NikeClientApp.ViewModels
             //Fetch city from weatherApi ((hack!)the geocoder doesn't provide a city properly)
             var response = await weatherClient.Get("forecast", $"?longitude={poiToAdd.Longitude}&latitude={poiToAdd.Latitude}");
             poiToAdd.City = response.Data.City;
+
+
+            addPoiModalIsVisible = true;
         }
 
         public async Task PopulateEntry()
@@ -316,10 +355,44 @@ namespace NikeClientApp.ViewModels
 
         public async Task<PaginationResponse<ObservableCollection<POI>>> GetPOIList(string country, string city)
         {
-            return ListOfPOI = await poiListClient.GetList("poi/list", $"?Country={country}&City={city}");
-
+            return ListOfPOI = await poiListClient.GetList("poi/list", $"?Country={country}&City={city}&amount=50");
         }
 
+        public static event EventHandler<PaginationResponse<ObservableCollection<POI>>> ShowPinsEventHandler;
+
+        protected virtual void OnShowPinsEventHandler(PaginationResponse<ObservableCollection<POI>> ListOfPOI)
+        {
+            ShowPinsEventHandler?.Invoke(this, ListOfPOI);
+        }
+
+        public async void PinStay(PaginationResponse<ObservableCollection<POI>> ListOfPOI)
+        {
+            MapPage.CustomMap.Pins.Clear();
+
+            foreach (var item in ListOfPOI.Data)
+            {
+                var geoCoder = new Geocoder();
+
+                Position Position = new Position(item.Latitude, item.Longitude);
+                var fullgeoIEnumerable = await geoCoder.GetAddressesForPositionAsync(Position);
+                var _fullgeoList = fullgeoIEnumerable.ToList();
+                var _geoString = _fullgeoList[0].ToString();
+                var address = GetAddressFromDataString(_geoString);
+
+                pinner = new Pin
+                {
+                    Position = new Position(item.Latitude, item.Longitude),
+                    Address = address + ", " + item.City,
+                    Label = item.Name,
+                };
+
+                ListOfPins.Add(pinner);
+            }
+
+            pinner = null;
+
+            OnShowPinsEventHandler(ListOfPOI);
+        }
 
         private async Task<ObservableCollection<Entry>> ShowEntriesForPOI()
         {
