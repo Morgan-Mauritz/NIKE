@@ -4,10 +4,11 @@ using System.ComponentModel;
 using System.Runtime.CompilerServices;
 using System.Text;
 using System.Threading.Tasks;
+using Xamarin.Forms.Maps;
 
 namespace NikeClientApp.ViewModels
 {
-    public class BaseViewModel : INotifyPropertyChanged
+    public class BaseViewModel : Map, INotifyPropertyChanged
     {
         public event PropertyChangedEventHandler PropertyChanged;
 
@@ -16,6 +17,10 @@ namespace NikeClientApp.ViewModels
         protected BaseViewModel(INaviService naviService)
         {
             NavigationService = naviService;
+        }
+        public BaseViewModel()
+        {
+
         }
 
         public virtual void Init()
