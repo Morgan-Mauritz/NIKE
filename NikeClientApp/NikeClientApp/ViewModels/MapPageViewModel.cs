@@ -254,7 +254,7 @@ namespace NikeClientApp.ViewModels
 
         private async Task SearchButton_Clicked()
         {
-            map.IsShowingUser = false;
+            MapPage.CustomMap.IsShowingUser = false;
             AvgRating = null;
 
             TitleResult = SearchBarText[0].ToString().ToUpper() + SearchBarText.Substring(1);
@@ -325,7 +325,6 @@ namespace NikeClientApp.ViewModels
                     MPVM.addPoiModalIsVisible = true;
                     await PopulatePOI(e.Position);
                     ListOfPins.Add(pinner);
-                    map.Pins.Add(pinner);
 
                     pinner = null;
                     return true;
@@ -371,13 +370,6 @@ namespace NikeClientApp.ViewModels
             var City = response.Data.City;
             return City;
         }
-        public string GetAddressFromDataString(string dataString)
-        {
-            string[] separator = { "\r\n" };
-            string[] countryFromDataString = dataString.Split(separator, StringSplitOptions.RemoveEmptyEntries);
-            return countryFromDataString[0];
-        }
-
         public async Task PopulatePOI(Position position)
         {
             var geoCoder = new Geocoder();
@@ -557,7 +549,7 @@ namespace NikeClientApp.ViewModels
 
         private async Task CenterOnUser()
         {
-            map.IsShowingUser = true;
+            MapPage.CustomMap.IsShowingUser = true;
             var position = await Geolocation.GetLocationAsync();
 
             var response = await weatherClient.Get("forecast", $"?longitude={position.Longitude}&latitude={position.Latitude}");
