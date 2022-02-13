@@ -476,15 +476,9 @@ namespace NikeClientApp.ViewModels
             var listOfLikesFromUser = ListOfEntries.SelectMany(x => x.LikeDislikeEntries).Where(x => x.UserId == currentUser.Data.Id).ToList();
             if (listOfLikesFromUser.Count != 0)
             {
-                foreach (var itemEntry in ListOfEntries)
+                foreach (var like in listOfLikesFromUser)
                 {
-                    foreach (var itemLike in listOfLikesFromUser)
-                    {
-                        if (itemEntry.Id == itemLike.EntryId)
-                        {
-                            itemEntry.LikeButtonImageSource = @"File:.\Assets\LikeButtonFilled.png";
-                        }
-                    }
+                    ListOfEntries.First(x => x.LikeDislikeEntries.Contains(like)).LikeButtonImageSource = @"File:.\Assets\LikeButtonFilled.png";
                 }
             }
         }
