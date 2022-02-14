@@ -40,17 +40,5 @@ namespace NikeClientApp
         {
             await Navigation.PushAsync(new RegisterPage());
         }
-
-        private async void ToMaps_Clicked(object sender, EventArgs e)
-        {
-           var ans = await DisplayAlert("Varning", "För att kunna lägga till sevärdheter, kommentera och betygsätta, \nmåste du först registrera dig.", "OK","Avbryt");
-            if (ans == true)
-            {
-                await Navigation.PushAsync(new MapPage());
-            }
-           
-
-            
-        }
     }
 }
