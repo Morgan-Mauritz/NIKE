@@ -69,7 +69,8 @@ namespace NikeClientApp.ViewModels
             
             Categories = new List<Category>{
             new Category() {Id = 1, Name = "Hotell"},
-            new Category() {Id = 2, Name = "Biograf"}
+            new Category() {Id = 2, Name = "Biograf"},
+            new Category() {Id = 3, Name = "Strand"}
             };
             
         }
@@ -200,19 +201,28 @@ namespace NikeClientApp.ViewModels
         private ObservableCollection<Entry> _listOfEntries;
         public ObservableCollection<Entry> ListOfEntries { get => _listOfEntries; set { SetProperty(ref _listOfEntries, value); } }
 
-      
+
 
         #endregion;
 
 
         //Methods
         #region Methods
+
+        private Category _selectedCategory;
+
+        public Category SelectedCategory
+        {
+            get { return _selectedCategory; }
+            set { SetProperty(ref _selectedCategory, value); }
+        }
+
         async Task<bool> AddPOI_Clicked()
         {
             if (!string.IsNullOrEmpty(poiToAdd.Name) && _entryRating > 0 && !string.IsNullOrEmpty(entryToAdd.Description))
             {
                 await PopulateEntry();
-                poiToAdd.Category = "";
+                poiToAdd.Category = SelectedCategory.Name;
 
                 try
                 {

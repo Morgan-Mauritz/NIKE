@@ -182,7 +182,7 @@
                 <Label x:Name="LabelPoi"  Text="Lägg till sevärdhet" HorizontalOptions="Center" FontSize="20" HeightRequest="40" Margin="0,10,0,0" TextColor="Black"></Label>
                 <Entry x:Name="EntryPoi" Text="{Binding poiToAdd.Name}"  Placeholder="Namn på sevärdheten" Margin="30,0,30,0"></Entry>
                 <Entry x:Name="EntryCommentPoi" Text="{Binding entryToAdd.Description}" Placeholder="Kommentar" HeightRequest="70" Margin="30,0,30,0"></Entry>
-                <Picker x:Name="PickCategory" ItemsSource="{Binding Categories}"></Picker>
+                <Picker x:Name="PickCategory" Title="Välj kategori" ItemsSource="{Binding Categories}" ItemDisplayBinding="{Binding Name}" SelectedItem="{Binding SelectedCategory, Mode=TwoWay}"></Picker>
                 <StackLayout Orientation="Horizontal" x:Name="rattingBar" HorizontalOptions="Center">
                     <Label Text="★" FontSize="Large" x:Name="star1" StyleId="star1">
                         <Label.GestureRecognizers>
