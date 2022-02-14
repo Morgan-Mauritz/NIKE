@@ -66,6 +66,12 @@ namespace NikeClientApp.ViewModels
         public MapPageViewModel(INaviService naviService) : base(naviService)
         {
             MPVM = this;
+            
+            Categories = new List<Category>{
+            new Category() {Id = 1, Name = "Hotell"},
+            new Category() {Id = 2, Name = "Biograf"}
+            };
+            
         }
         public MapPageViewModel()
         {
@@ -96,6 +102,10 @@ namespace NikeClientApp.ViewModels
 
         //Properties 
         #region Properties
+
+        private List<Category> _categories;
+
+        public List<Category> Categories { get { return _categories; } set { SetProperty(ref _categories, value); } }
 
         public static List<Pin> ListOfPins = new List<Pin>();
         public static Pin pinner { get; set; }
