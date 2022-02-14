@@ -316,13 +316,19 @@ namespace NikeClientApp.ViewModels
 
         private async Task PinIcon_Clicked()
         {
-            pinner = new Pin()
+            if (UserOffLine.LoggedIn)
             {
-                Label = "",
-                Address = "",
-                Type = PinType.Place
-            };
-
+                pinner = new Pin()
+                {
+                    Label = "",
+                    Address = "",
+                    Type = PinType.Place
+                };
+            }
+            else
+            {
+                await App.Current.MainPage.DisplayAlert("Offline","Du måste vara en användare för att kunna lägga en pin","Ok");
+            }
         }
 
         public async Task<bool> MapClicked(object sender, MapClickedEventArgs e)
@@ -355,18 +361,6 @@ namespace NikeClientApp.ViewModels
         public void RatingAmount(object sender)
         {
             EntryRating = int.Parse(sender.ToString());
-        }
-
-        private async void Pin_MarkerClicked(object sender, PinClickedEventArgs e) //när man klickar på pinnen
-        {
-            var ans = await App.Current.MainPage.DisplayAlert("Ta bort pin", "Vill du ta bort den valda pin?", "Ja", "Nej");
-            if (ans == true)
-            {
-                var pin = sender as Pin;
-                //Mapsample.Pins.Remove(ListOfPins.Where(x => x.Position == pin.Position).FirstOrDefault());
-                ListOfPins.Remove(pin);
-                addPoiModalIsVisible = false;
-            }
         }
 
         public string GetCountryFromDataString(string dataString)
@@ -448,44 +442,50 @@ namespace NikeClientApp.ViewModels
 
         private async Task<ObservableCollection<Entry>> ShowEntriesForPOI()
         {
-            var currentUser = await userClient.Get(@"user", $"?ApiKey={UserApi.ApiKey}"); 
-
-            if (SelectedPOI != null)
+            Response<User> currentUser = null;
+            if (UserOffLine.LoggedIn)
             {
-                POIListIsVisible = false;
-                AvgRating = SelectedPOI.AvgRating.ToString();
-                EntryListIsVisible = true;
-                BackArrowIsVisible = true;
-                FoldButtonIsVisible = false;
-                if (SelectedPOI.Entries.FirstOrDefault(x => x.Username == currentUser.Data.Username) != null)
+                currentUser = await userClient.Get(@"user", $"?ApiKey={UserApi.ApiKey}"); 
+                if (SelectedPOI != null)
                 {
-                    EntryButtonIsVisible = false;
-                }
-                else 
-                { 
-                    EntryButtonIsVisible = true; 
-                }
-                currentUser = null; 
-                poiToAdd.Name = SelectedPOI.Name;
-                TitleResult = SelectedPOI.Name;
+                    POIListIsVisible = false;
+                    AvgRating = SelectedPOI.AvgRating.ToString();
+                    EntryListIsVisible = true;
+                    BackArrowIsVisible = true;
+                    FoldButtonIsVisible = false;
+                    if (SelectedPOI.Entries.FirstOrDefault(x => x.Username == currentUser.Data.Username) != null)
+                    {
+                        EntryButtonIsVisible = false;
+                    }
+                    else 
+                    { 
+                        EntryButtonIsVisible = true; 
+                    }
+                    currentUser = null; 
+                    poiToAdd.Name = SelectedPOI.Name;
+                    TitleResult = SelectedPOI.Name;
                
-                EntryPagination = await _entryClient.GetList("entry", $"?amount=6&poi={SelectedPOI.Name.Replace(" ", "+")}");
-                PreviousEntriesVisible = true;
-                NextEntriesVisible = true;
-                if (EntryPagination.PrevPage == null)
-                {
-                    PreviousEntriesVisible = false;
+                    EntryPagination = await _entryClient.GetList("entry", $"?amount=6&poi={SelectedPOI.Name.Replace(" ", "+")}");
+                    PreviousEntriesVisible = true;
+                    NextEntriesVisible = true;
+                    if (EntryPagination.PrevPage == null)
+                    {
+                        PreviousEntriesVisible = false;
+                    }
+                    if (EntryPagination.NextPage == null)
+                    {
+                        NextEntriesVisible = false;
+                    }
+                    ListOfEntries = EntryPagination.Data; 
+                    ShowUserLikes();
+                    return ListOfEntries;
                 }
-                if (EntryPagination.NextPage == null)
-                {
-                    NextEntriesVisible = false;
-                }
-                ListOfEntries = EntryPagination.Data; 
-                ShowUserLikes();
-                return ListOfEntries;
+            }
+            else
+            {
+                await App.Current.MainPage.DisplayAlert("Offline", "Du måste vara en användare för att kunna se inlägg", "Ok");
             }
             return null;
-
         }
 
         private async Task ShowUserLikes()
@@ -535,7 +535,6 @@ namespace NikeClientApp.ViewModels
             addEntryModalIsVisible = true;
             Position position = new Position(SelectedPOI.Latitude, SelectedPOI.Longitude);
             await PopulatePOI(position);
-
         }
         private async Task LikeButton_Clicked(object sender)
         {
@@ -558,7 +557,6 @@ namespace NikeClientApp.ViewModels
 
                 throw new Exception(ex.Message);
             }
-
         }
 
         private async Task CenterOnUser()
