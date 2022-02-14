@@ -20,7 +20,7 @@ namespace NikeClientApp.UWP
 {
     public class CustomMapRenderer : MapRenderer
     {
-        MapControl nativeMap;
+        static MapControl nativeMap;
         List<Pin> ListOfPins_From_MapPageViewModel;
         XamarinMapOverlay mapOverlay;
         bool xamarinOverlayShown = false;
@@ -33,16 +33,19 @@ namespace NikeClientApp.UWP
             formsMap = (BaseViewModel)e.NewElement;
             nativeMap = Control as MapControl;
 
-            ListOfPins_From_MapPageViewModel = MapPageViewModel.ListOfPins;
+            if (formsMap != null & nativeMap != null)
+            {
+                ListOfPins_From_MapPageViewModel = MapPageViewModel.ListOfPins;
 
-            nativeMap.Children.Clear(); //Tar bort UWP svarta vanliga PIN
-            nativeMap.MapElementClick += OnMapElementClick;
+                nativeMap.Children.Clear(); //Tar bort UWP svarta vanliga PIN
+                nativeMap.MapElementClick += OnMapElementClick;
 
-            formsMap.MapClicked += OnMapClicked;
+                formsMap.MapClicked += OnMapClicked;
 
-            MapPageViewModel.ShowPinsEventHandler += MapPageViewModel_ShowPins;
+                MapPageViewModel.ShowPinsEventHandler += MapPageViewModel_ShowPins;
 
-            formsMap = MapPageViewModel.MPVM;
+                formsMap = MapPageViewModel.MPVM;
+            }
         }
 
         //Ser till att alla pins som kommer från DB blir custompins
