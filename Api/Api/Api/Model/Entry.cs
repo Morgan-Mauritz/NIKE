@@ -21,9 +21,12 @@ namespace Api.Model
         public virtual User User { get; set; }
         public virtual POI POI { get; set; }    
         public virtual ICollection<LikeDislikeEntry> LikeDislikeEntries { get; set; }
+
+        public virtual ICollection<Comment> Comments { get; set; }
         public Entry()
         {
             LikeDislikeEntries = new HashSet<LikeDislikeEntry>();
+            Comments = new HashSet<Comment>();
         }
     }
 
@@ -54,6 +57,7 @@ namespace Api.Model
         public long? Rating { get; set; }
         public string POIString { get; set; }
         public List<LikeDislikeEntryDto> LikeDislikeEntries { get; set; } 
+        public List<CommentWithUserDTO> Comments { get; set; }
     }
 
     public class LikeDislikeEntry

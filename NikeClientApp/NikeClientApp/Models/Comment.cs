@@ -24,7 +24,7 @@ namespace NikeClientApp.Models
         public Entry Entry { get; set; }
         public int User { get; set; }
         public string Text { get; set; }
-
+        public string UserName { get; set; }
         public string Endpoint { get => $"comments/{Id}"; }
 
         private bool _commentReadOnly = true;

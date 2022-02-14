@@ -61,7 +61,8 @@ namespace Api.Repository
 
         public async Task<(List<Entry> list, int total)> GetEntries(FilterEntry filter)
         {
-            var query = _context.Entries.Where(x => x.POI.Name.ToLower() == filter.POI.Replace("+", " ").ToLower()).Include(x => x.LikeDislikeEntries);
+            var query = _context.Entries.Where(x => x.POI.Name.ToLower() == filter.POI.Replace("+", " ").ToLower()).Include(x => x.LikeDislikeEntries)
+                .Include(x => x.User).Include(x => x.Comments).ThenInclude(x => x.User);
 
             var total = query.Count();
 

@@ -98,8 +98,8 @@
                             </DataTemplate>
                         </ListView.ItemTemplate>
                     </ListView>
-               
-                    <ListView x:Name="ListViewForEntryOnPOI" ItemsSource="{Binding ListOfEntries}" IsVisible="{Binding EntryListIsVisible}">
+
+                    <ListView x:Name="ListViewForEntryOnPOI" ItemsSource="{Binding ListOfEntries}" IsVisible="{Binding EntryListIsVisible}" SelectedItem="{Binding SelectedEntry, Mode=TwoWay}"  >
                         <ListView.Header>
                             <StackLayout>
                             <Button x:Name="AddEntry" Text="Lägg till en recension" Command="{Binding _EntryButton_Clicked}" BackgroundColor="White" TextColor="Black" IsVisible="{Binding EntryButtonIsVisible}" />
@@ -119,20 +119,47 @@
                                                 <ColumnDefinition Width="1*"/>
                                             </Grid.ColumnDefinitions>
                                             <StackLayout  Grid.Column="0">
-                                                <Label Text="{Binding UserName}" TextColor="White"></Label>
+                                                <Label Text="{Binding Username}" TextColor="White"></Label>
                                                 <Label Text="{Binding Description}" TextColor="White"></Label>
                                                 <Label Text="{Binding Rating}" TextColor="White"></Label>
                                             </StackLayout>
                                             <StackLayout Grid.Column="1">
+
                                                 <ImageButton  Command="{Binding Path=BindingContext.LikeButtonClicked,Source={x:Reference ListViewForEntryOnPOI}}" CommandParameter="{Binding .}" Margin="0, 10, 0, 0" HeightRequest="40" HorizontalOptions="End" Source="{Binding LikeButtonImageSource, Mode=TwoWay}"></ImageButton>
+                                                <Button Command="{Binding Path=BindingContext.CommentButtonClicked, Source={x:Reference ListViewForEntryOnPOI}}" CommandParameter="{Binding .}" HeightRequest="40" HorizontalOptions="End" />
                                             </StackLayout>
                                         </Grid>
                                     </Frame>
                                 </ViewCell>
                             </DataTemplate>
                         </ListView.ItemTemplate>
-                   
                     </ListView>
+
+                    <ListView x:Name="ListViewForCommentsOnEntry" ItemsSource="{Binding ListOfComments}"  IsVisible="{Binding CommentListIsVisible}" >
+                        <ListView.Header>
+                            <Button Text="Skriv en kommentar"></Button>
+                        </ListView.Header>
+                        <ListView.ItemTemplate>
+                            <DataTemplate>
+                                <ViewCell>
+                                    <Frame Margin="0, 2">
+                                        <Grid>
+                                            <Grid.ColumnDefinitions>
+                                                <ColumnDefinition Width="3*"/>
+                                                <ColumnDefinition Width="1*"/>
+                                            </Grid.ColumnDefinitions>
+                                            <StackLayout  Grid.Column="0">
+                                                <Label Text="{Binding UserName}" TextColor="White"></Label>
+                                                <Label Text="{Binding Text}" TextColor="White"></Label>
+                                            </StackLayout>
+                                          
+                                        </Grid>
+                                    </Frame>
+                                </ViewCell>
+                            </DataTemplate>
+                        </ListView.ItemTemplate>
+                    </ListView>
+                    
                 </StackLayout>
             </Frame>
             

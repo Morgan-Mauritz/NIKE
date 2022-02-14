@@ -44,6 +44,10 @@ namespace NikeClientApp.ViewModels
         public ICommand GetNextEntries => new Command(async () => await OnGetNextEntries());
         public ICommand GetPreviousEntries => new Command(async () => await OnGetPreviousEntries());
 
+        public ICommand CommentButtonClicked => new Command(async (object sender) => await OnCommentButtonClicked(sender));
+
+       
+
         HttpService<Models.Entry> _entryClient = new HttpService<Models.Entry>();
         HttpService<Forecast> weatherClient = new HttpService<Forecast>();
         HttpService<POI> poiListClient = new HttpService<POI>();
@@ -143,6 +147,11 @@ namespace NikeClientApp.ViewModels
         private bool _nextEntriesVisible = true;
         public bool NextEntriesVisible { get => _nextEntriesVisible; set { SetProperty(ref _nextEntriesVisible, value); } }
 
+        private bool _commentListIsVisible;
+
+        public bool CommentListIsVisible { get => _commentListIsVisible; set { SetProperty(ref _commentListIsVisible, value); } }
+
+
         POI _selectedPOI;
         public POI SelectedPOI
         {
@@ -193,6 +202,9 @@ namespace NikeClientApp.ViewModels
         public ObservableCollection<WeatherResultDto> ListOfWeather { get => _listOfWeather; set { SetProperty(ref _listOfWeather, value); } }
 
 
+        private ObservableCollection<Comment> _listOfComments;
+        public ObservableCollection<Comment> ListOfComments { get => _listOfComments; set { SetProperty( ref _listOfComments, value); } }
+
         #endregion;
 
 
@@ -221,6 +233,9 @@ namespace NikeClientApp.ViewModels
                     ListOfPins.Last().Label = poiToAdd.Name;
 
                     await _entryClient.Post("entry", entryToAdd);
+                    poiToAdd.Name = string.Empty;
+                    entryToAdd.Description = string.Empty;
+                    entryToAdd.Rating = 0;
                 }
                 catch (Exception ex)
                 {
@@ -379,7 +394,7 @@ namespace NikeClientApp.ViewModels
             poiToAdd.Longitude = position.Longitude;
             poiToAdd.Latitude = position.Latitude;
 
-            //Fetch city from weatherApi ((hack!)the geocoder doesn't provide a city properly)
+            
             var response = await weatherClient.Get("forecast", $"?longitude={poiToAdd.Longitude}&latitude={poiToAdd.Latitude}");
             poiToAdd.City = response.Data.City;
 
@@ -485,12 +500,23 @@ namespace NikeClientApp.ViewModels
 
         private async Task BackArrowClicked()
         {
-            EntryListIsVisible = false;
-            POIListIsVisible = true;
-            BackArrowIsVisible = false;
-            FoldButtonIsVisible = true;
-            TitleResult = SelectedPOI.City;
-            AvgRating = null;
+            if(EntryListIsVisible == false)
+            {
+                CommentListIsVisible = false;
+                EntryListIsVisible = true;
+                TitleResult = SelectedPOI.Name;
+            }
+            else
+            {
+                EntryListIsVisible = false;
+                POIListIsVisible = true;
+                BackArrowIsVisible = false;
+                FoldButtonIsVisible = true;
+                TitleResult = SelectedPOI.City;
+                AvgRating = null;
+
+            }
+          
 
         }
 
@@ -599,6 +625,27 @@ namespace NikeClientApp.ViewModels
             }
 
         }
+
+
+        private async Task OnCommentButtonClicked(object sender)
+        {
+            var selectedEntry = sender as Entry;
+
+            CommentListIsVisible = true;
+            EntryListIsVisible = false;
+            TitleResult = selectedEntry.Description;
+
+
+            ListOfComments = selectedEntry.Comments;
+
+           
+
+
+            
+        }
+
+
+
         #endregion;
     }
 }

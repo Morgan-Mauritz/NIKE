@@ -32,6 +32,8 @@ namespace NikeClientApp.Models
         public string LikeButtonImageSource { get => _likeButtonImageSource; set { SetProperty(ref _likeButtonImageSource, value); } }
         public ObservableCollection<LikeDislikeEntry> LikeDislikeEntries { get; set; }
 
+        public ObservableCollection<Comment> Comments { get; set; }
+
         private int _rating;
         public int Rating 
         {

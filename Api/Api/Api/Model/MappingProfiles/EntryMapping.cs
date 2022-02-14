@@ -14,6 +14,8 @@ namespace Api.Model.MappingProfiles
 
             CreateMap<LikeDislikeEntry, LikeDislikeEntryDto>();
             CreateMap<Comment, CommentDTO>().ForMember(dest => dest.Text, opt => opt.MapFrom(src => src.Comment1));
+            CreateMap<Comment, CommentWithUserDTO>().ForMember(dest => dest.UserName, opt => opt.MapFrom(src => src.User.Username))
+                .ForMember(dest => dest.Text, opt => opt.MapFrom(src => src.Comment1));
 
 
         }
