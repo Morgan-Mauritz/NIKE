@@ -15,6 +15,7 @@ namespace NikeClientApp.Models
     {
         public ICommand Edit => new Command<string>((param) => OnEdit(param));
         public ICommand Save => new Command(async () => await OnSave());
+        public string Endpoint { get => $"entry/{Id}"; }
 
         public HttpService<Entry> HttpService { get; set; }
 

@@ -23,6 +23,7 @@ namespace NikeClientApp.ViewModels
     public class MapPageViewModel : BaseViewModel
     {
         public Command NextPage => new Command(async () => await NavigationService.NavigateTo<MainPageViewModel>());
+        public Command NavToUserPage => new Command(async () => await NavigationService.NavigateTo<UserPageViewModel>());
 
         public ICommand _AddPOI_Clicked => new Command(async () => await AddPOI_Clicked());
         public ICommand _PinIcon_Clicked => new Command(async () => await PinIcon_Clicked());
@@ -275,9 +276,13 @@ namespace NikeClientApp.ViewModels
             Geocoder geoCoder = new Geocoder();
 
             IEnumerable<Position> approximateLocations = await geoCoder.GetPositionsForAddressAsync(SearchBarText);
+            if (approximateLocations.Count() == 0)
+            {
+                await App.Current.MainPage.DisplayAlert("Felmeddelande", "Kunde inte hitta platsen du sökte på", "OK");
+                return;
+            }
 
             Position position = approximateLocations.FirstOrDefault();
-
             string coordinates = $"{position.Latitude}, {position.Longitude}";
 
             var Address = await geoCoder.GetAddressesForPositionAsync(position);

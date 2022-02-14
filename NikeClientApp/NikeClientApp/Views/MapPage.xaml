@@ -2,6 +2,7 @@
 <ContentPage xmlns="http://xamarin.com/schemas/2014/forms"
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml" 
              xmlns:local="clr-namespace:NikeClientApp.ViewModels"
+             xmlns:models="clr-namespace:NikeClientApp.Models"
              x:Class="NikeClientApp.Views.MapPage"
              xmlns:maps="clr-namespace:Xamarin.Forms.Maps;assembly=Xamarin.Forms.Maps">
     <ContentPage.Content>
@@ -15,15 +16,16 @@
             <Frame Margin="530,0,0,0" HorizontalOptions="End">
                 <StackLayout Spacing="50" Margin="0,0,0,0" >
                     <StackLayout Orientation="Horizontal" Style="{StaticResource ContainerBackgroundColor}">
+                        <Button Text="Min Profil"  CornerRadius="15" IsVisible="{Binding Source={x:Static models:UserOffLine.LoggedIn}}" Command="{Binding NavToUserPage}"></Button>
                         <Frame Padding="0.1" CornerRadius="15" BorderColor="Black"  IsClippedToBounds="True">
                             <Entry x:Name="Searchbar" Text="{Binding SearchBarText}" 
                                     Focused="Searchbar_Focused" 
-                                   Opacity="0.4"  Margin="0,0,0,0"  WidthRequest="160" />
+                                   Opacity="0.4"  Margin="0,0,0,0"  WidthRequest="160"/>
                         </Frame>
                         <ImageButton Source="Assets/gg.png" HeightRequest="40" VerticalOptions="EndAndExpand" Command="{Binding _SearchButton_Clicked}" />
                     </StackLayout>
                     <StackLayout>
-                        <ImageButton Source="Assets/knapp.png" Command="{Binding _PinIcon_Clicked}" HeightRequest="50" HorizontalOptions="End" Margin="0,0,0,0" />
+                        <ImageButton Source="Assets/knapp.png" Command="{Binding _PinIcon_Clicked}" IsVisible="{Binding Source={x:Static models:UserOffLine.LoggedIn}}" HeightRequest="50" HorizontalOptions="End" Margin="0,0,0,0" />
                     </StackLayout>
                     <StackLayout VerticalOptions="EndAndExpand">
                         <Button
@@ -67,7 +69,7 @@
                                 <Label x:Name="TitleResult" Text="{Binding TitleResult}" TextColor="White" FontSize="18"  HorizontalOptions="Start" Grid.Column="0" />
                                 <Label x:Name="currentWeather" Text="{Binding CurrentWeather, StringFormat='{0}°C'}" TextColor="White" Grid.Column="1" HorizontalOptions="End">
                                     <Label.GestureRecognizers>
-                                        <TapGestureRecognizer Command="{Binding _SwitchWeatherEntry}" ></TapGestureRecognizer>
+                                        <TapGestureRecognizer Command="{Binding _SwitchWeatherEntry}"></TapGestureRecognizer>
                                     </Label.GestureRecognizers>
                                 </Label>
 
@@ -109,7 +111,7 @@
                     <ListView x:Name="ListViewForEntryOnPOI" ItemsSource="{Binding ListOfEntries}" IsVisible="{Binding EntryListIsVisible}">
                         <ListView.Header>
                             <StackLayout>
-                                <Button x:Name="AddEntry" Text="Lägg till en recension" Command="{Binding _EntryButton_Clicked}" BackgroundColor="White" TextColor="Black" IsVisible="{Binding EntryButtonIsVisible}" />
+                                <Button x:Name="AddEntry" Text="Lägg till en recension" Command="{Binding _EntryButton_Clicked}"  BackgroundColor="White" TextColor="Black" IsVisible="{Binding EntryButtonIsVisible}" />
                                 <StackLayout Orientation="Horizontal" HorizontalOptions="FillAndExpand">
                                     <Button Text="Föregående" HorizontalOptions="FillAndExpand" Command="{Binding GetPreviousEntries}" IsVisible="{Binding PreviousEntriesVisible}" IsEnabled="{Binding PreviousEntriesVisible}"/>
                                     <Button Text="Nästa" HorizontalOptions="FillAndExpand" Command="{Binding GetNextEntries}" IsVisible="{Binding NextEntriesVisible}" IsEnabled="{Binding NextEntriesVisible}"/>
