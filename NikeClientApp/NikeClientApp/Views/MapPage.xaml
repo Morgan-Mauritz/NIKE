@@ -67,10 +67,10 @@
                                 <Label x:Name="TitleResult" Text="{Binding TitleResult}" TextColor="White" FontSize="18"  HorizontalOptions="Start" Grid.Column="0" />
                                 <Label x:Name="currentWeather" Text="{Binding CurrentWeather, StringFormat='{0}°C'}" TextColor="White" Grid.Column="1" HorizontalOptions="End">
                                     <Label.GestureRecognizers>
-                                        <TapGestureRecognizer Command="{Binding _SwitchWeatherEntry}" > </TapGestureRecognizer>
+                                        <TapGestureRecognizer Command="{Binding _SwitchWeatherEntry}" ></TapGestureRecognizer>
                                     </Label.GestureRecognizers>
                                 </Label>
-                            
+
                             </Grid>
                             <Label x:Name="avgRating" Text="{Binding AvgRating}" TextColor="White"  HorizontalOptions="CenterAndExpand"/>
                         </StackLayout>
@@ -86,23 +86,30 @@
                         </ListView.ItemTemplate>
                     </ListView>
 
-                    <ListView ItemsSource="{Binding ListOfWeather}" IsVisible="{Binding WeatherListIsVisible}">
+                    <ListView ItemsSource="{Binding WeatherMinMax}" IsVisible="{Binding WeatherListIsVisible}">
                         <ListView.ItemTemplate>
                             <DataTemplate>
                                 <ViewCell>
-                                    <StackLayout>
-                                        <Label Text="{Binding DateTime}" TextColor="White" FontAttributes="Bold"/>
-                                        <Label Text="{Binding Temperature, StringFormat='{0}°C'}" TextColor="White"/>
+                                    <StackLayout Margin="0,0,0,10">
+                                        <Label Text="{Binding Day}" TextColor="White" FontAttributes="Bold"/>
+                                        <StackLayout Orientation="Horizontal">
+                                            <Label Text="Min temp:" TextColor="White"/>
+                                            <Label Text="{Binding TempMin, StringFormat='{0}°C'}" TextColor="White"/>
+                                        </StackLayout>
+                                        <StackLayout Orientation="Horizontal">
+                                            <Label Text="Max temp:" TextColor="White"/>
+                                            <Label Text="{Binding TempMax, StringFormat='{0}°C'}" TextColor="White"/>
+                                        </StackLayout>
                                     </StackLayout>
                                 </ViewCell>
                             </DataTemplate>
                         </ListView.ItemTemplate>
                     </ListView>
-               
+
                     <ListView x:Name="ListViewForEntryOnPOI" ItemsSource="{Binding ListOfEntries}" IsVisible="{Binding EntryListIsVisible}">
                         <ListView.Header>
                             <StackLayout>
-                            <Button x:Name="AddEntry" Text="Lägg till en recension" Command="{Binding _EntryButton_Clicked}" BackgroundColor="White" TextColor="Black" IsVisible="{Binding EntryButtonIsVisible}" />
+                                <Button x:Name="AddEntry" Text="Lägg till en recension" Command="{Binding _EntryButton_Clicked}" BackgroundColor="White" TextColor="Black" IsVisible="{Binding EntryButtonIsVisible}" />
                                 <StackLayout Orientation="Horizontal" HorizontalOptions="FillAndExpand">
                                     <Button Text="Föregående" HorizontalOptions="FillAndExpand" Command="{Binding GetPreviousEntries}" IsVisible="{Binding PreviousEntriesVisible}" IsEnabled="{Binding PreviousEntriesVisible}"/>
                                     <Button Text="Nästa" HorizontalOptions="FillAndExpand" Command="{Binding GetNextEntries}" IsVisible="{Binding NextEntriesVisible}" IsEnabled="{Binding NextEntriesVisible}"/>
@@ -131,11 +138,11 @@
                                 </ViewCell>
                             </DataTemplate>
                         </ListView.ItemTemplate>
-                   
+
                     </ListView>
                 </StackLayout>
             </Frame>
-            
+
             <StackLayout x:Name="AddEntryModal" IsVisible="{Binding addEntryModalIsVisible}" BackgroundColor="Pink" Opacity="0.7" Margin="900,400,100,70">
                 <Label x:Name="LabelPoiExistingPoi"  Text="Lägg till en kommentar" HorizontalOptions="Center" FontSize="20" HeightRequest="40" Margin="0,10,0,0" TextColor="Black"></Label>
                 <Label x:Name="EntryPoiExistingPoi" Text="{Binding TitleResult}" Margin="30,0,30,0"></Label>
@@ -168,8 +175,8 @@
                     </Label>
                 </StackLayout>
                 <Button x:Name="AddLocForExistingPoi"  Text="Lägg till" BackgroundColor="Gray" Command="{Binding _AddPOI_Clicked}"></Button>
-                
-                
+
+
             </StackLayout>
             <StackLayout x:Name="AddPoiModal" IsVisible="{Binding addPoiModalIsVisible}" Margin="900,400,100,70" BackgroundColor="Pink" Opacity="0.7">
                 <Label x:Name="LabelPoi"  Text="Lägg till sevärdhet" HorizontalOptions="Center" FontSize="20" HeightRequest="40" Margin="0,10,0,0" TextColor="Black"></Label>

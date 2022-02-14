@@ -7,8 +7,10 @@ using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.ComponentModel;
+using System.Globalization;
 using System.IO;
 using System.Linq;
+using System.Runtime.Serialization;
 using System.Threading.Tasks;
 using System.Windows.Input;
 using Xamarin.Essentials;
@@ -188,10 +190,7 @@ namespace NikeClientApp.ViewModels
         private ObservableCollection<Entry> _listOfEntries;
         public ObservableCollection<Entry> ListOfEntries { get => _listOfEntries; set { SetProperty(ref _listOfEntries, value); } }
 
-        private ObservableCollection<WeatherResultDto> _listOfWeather;
-
-        public ObservableCollection<WeatherResultDto> ListOfWeather { get => _listOfWeather; set { SetProperty(ref _listOfWeather, value); } }
-
+      
 
         #endregion;
 
@@ -252,6 +251,15 @@ namespace NikeClientApp.ViewModels
             return false;
         }
 
+        private ObservableCollection<WeatherMinMax> _weatherMinMax;
+
+        public ObservableCollection<WeatherMinMax> WeatherMinMax
+        {
+            get { return _weatherMinMax; }
+            set { SetProperty(ref _weatherMinMax, value); }
+        }
+
+
         private async Task SearchButton_Clicked()
         {
             MapPage.CustomMap.IsShowingUser = false;
@@ -278,10 +286,21 @@ namespace NikeClientApp.ViewModels
             var city = response.Data.City;
 
             
-            ListOfWeather = new ObservableCollection<WeatherResultDto>(response.Data.WeatherList);
 
-            var teslist = ListOfWeather.GroupBy(x => x.DateTime.Day);
-            
+            var grouping = response.Data.WeatherList.GroupBy(x => x.DateTime.DayOfWeek);
+            WeatherMinMax = new ObservableCollection<WeatherMinMax>();
+
+            var culture = new CultureInfo("sv-SE");
+            foreach (var group in grouping)
+            {
+                WeatherMinMax
+                    .Add(new Models.WeatherMinMax 
+                    { 
+                        Day = culture.DateTimeFormat.GetDayName(group.Key)[0].ToString().ToUpper() + culture.DateTimeFormat.GetDayName(group.Key).Substring(1), 
+                        TempMax = group.Max(x => x.Temperature), 
+                        TempMin = group.Min(x => x.Temperature) 
+                    });          
+            }
 
             WeatherListIsVisible = false;
             
