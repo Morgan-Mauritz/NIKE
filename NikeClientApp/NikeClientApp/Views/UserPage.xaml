@@ -73,7 +73,7 @@
                         <ImageButton x:Name="buttonEditEmail"  Source="Assets/roundicon.png" HeightRequest="30" Command="{Binding Edit}" CommandParameter="email"></ImageButton>
                     </StackLayout>
                     <StackLayout Orientation="Horizontal">
-                        <Entry x:Name="editPassword" Text="{Binding User.Password}" IsPassword="True" Placeholder="Lösenord" WidthRequest="300" IsReadOnly="{Binding UserReadOnly.Password}" ></Entry>
+                        <Entry x:Name="editPassword" Text="{Binding User.PasswordText}" IsPassword="True" Placeholder="Lösenord" WidthRequest="300" IsReadOnly="{Binding UserReadOnly.Password}" ></Entry>
                         <ImageButton x:Name="buttonEditPassword"  Source="Assets/roundicon.png" HeightRequest="30" Command="{Binding Edit}" CommandParameter="password"></ImageButton>
                     </StackLayout>
 
