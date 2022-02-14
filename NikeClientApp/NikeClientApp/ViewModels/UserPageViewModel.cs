@@ -62,6 +62,9 @@ namespace NikeClientApp.ViewModels
 
         private async Task OnShow()
         {
+            try
+            {
+
             var user = await userClient.Get("user", "");
 
             var comments = await commentClient.GetList("entry/comments", "");
@@ -77,6 +80,12 @@ namespace NikeClientApp.ViewModels
             if (entries != null)
                 LoadedEntries = new ObservableCollection<Models.Entry>(entries.Data);
             User = user.Data;
+            }
+            catch(Exception)
+            {
+                await App.Current.MainPage.DisplayAlert("Felmeddelande", "Något gick snett vid hämtningen av din data", "OK");
+                await NavigationService.GoBack();
+            }
         }
 
         private EditUser _userReadOnly;
@@ -144,9 +153,9 @@ namespace NikeClientApp.ViewModels
                 await userClient.Update("user", User);
 
             }
-            catch (UnauthorizedAccessException ex)
+            catch (Exception ex)
             {
-                await Application.Current.MainPage.DisplayAlert("felmeddelande", ex.Message, "OK");
+                await Application.Current.MainPage.DisplayAlert("felmeddelande", "Kunde ej uppdatera användaren", "OK");
             }
         }
 
@@ -246,11 +255,13 @@ namespace NikeClientApp.ViewModels
         }
         public async Task OnDelete(string endpoint)
         {
+            try
+            {
 
             if (endpoint == "user")
             {
-                UserApi.ApiKey = null;
                 await userClient.Delete(endpoint);
+                UserApi.ApiKey = null;
                 await NavigationService.NavigateTo<MainPageViewModel>();
             }
             else if (endpoint.Contains("comment"))
@@ -259,17 +270,22 @@ namespace NikeClientApp.ViewModels
                 var comment = Comments.First(x => x.Id == response.Data.Id);
                 Comments.Remove(comment);
             }
+            else if (endpoint.Contains("like"))
+            {
+                var response = await reactionClient.Post(endpoint);
+                var reaction = Reactions.First(x => x.Id == response.Data.Id);
+                Reactions.Remove(reaction);
+            }
             else if (endpoint.Contains("entry"))
             {
                 var response = await entryClient.Delete(endpoint);
                 var entry = Entries.First(x => x.Id == response.Data.Id);
                 Entries.Remove(entry);
             }
-            else if (endpoint.Contains("reaction"))
+            }
+            catch (Exception)
             {
-                var response = await reactionClient.Delete(endpoint);
-                var reaction = Reactions.First(x => x.Id == response.Data.Id);
-                Reactions.Remove(reaction);
+                await App.Current.MainPage.DisplayAlert("Felmeddelande", "Kunde ej radera data.", "OK");
             }
         }
 

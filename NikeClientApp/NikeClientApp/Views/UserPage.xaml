@@ -80,7 +80,7 @@
                     <StackLayout Orientation="Vertical">
                         <Button x:Name="buttonSaveInfo" Text="Spara" CornerRadius="15" Margin="0,20,35,0" Command="{Binding Save}" CommandParameter="user">
                         </Button>
-                        <Button x:Name="buttonRemoveAcc" Text="Radera konto" BackgroundColor="DarkRed" CornerRadius="15" Margin="0,100,35,0" Command="{Binding Delete}" CommandParameter="user"></Button>
+                        <Button x:Name="buttonRemoveAcc" Text="Radera konto" BackgroundColor="DarkRed" CornerRadius="15" Margin="0,100,35,0" Command="{Binding Path=BindingContext.Delete, Source={x:Reference Name=Root}}" CommandParameter="user"></Button>
                     </StackLayout>
 
                 </StackLayout>
@@ -93,7 +93,7 @@
                     <StackLayout Grid.Column="3" Grid.Row="2" Grid.RowSpan="2" >
 
                         <Button Text="Mina inlägg" BackgroundColor="ForestGreen"  Command="{Binding Load}" CommandParameter="entries"></Button>
-                        <ListView ItemsSource="{Binding Entries}" MinimumHeightRequest="0" VerticalOptions="Start" IsVisible="{Binding EntriesLoaded}" BackgroundColor="Black">
+                        <ListView x:Name="EntryListView" ItemsSource="{Binding Entries}" MinimumHeightRequest="0" VerticalOptions="Start" IsVisible="{Binding EntriesLoaded}" BackgroundColor="Black">
                             <ListView.Style>
                                 <Style TargetType="ListView">
                                     <Style.Triggers>
@@ -109,8 +109,8 @@
                                         <StackLayout Orientation="Vertical">
 
                                             <StackLayout Orientation="Horizontal">
-                                                <Label FontAttributes="Bold" Text="Sevärdheten:"></Label>
-                                                <Label Text="{Binding POI}"></Label>
+                                                <Label FontAttributes="Bold" Text="Sevärdhet:"></Label>
+                                                <Label Text="{Binding POIstring}"></Label>
                                             </StackLayout>
 
                                             <StackLayout Orientation="Horizontal">
@@ -125,7 +125,7 @@
                                                 <Entry IsReadOnly="{Binding RatingReadOnly}" Text="{Binding Rating}"></Entry>
                                                 <ImageButton Source="Assets/roundicon.png" Command="{Binding Edit}" CommandParameter="rating" HeightRequest="30"></ImageButton>
                                                 <Button Text="Spara" Command="{Binding Save}"/>
-                                                <Button Text="Radera" BackgroundColor="DarkRed" Command="{Binding Delete}" CommandParameter="{Binding Endpoint}"/>
+                                                <Button Text="Radera" BackgroundColor="DarkRed" Command="{Binding Path=BindingContext.Delete, Source={x:Reference Name=Root}}" CommandParameter="{Binding Endpoint}"/>
 
                                             </StackLayout>
 
@@ -159,8 +159,8 @@
 
                                             </StackLayout>
                                             <StackLayout Orientation="Horizontal">
-                                                <Label FontAttributes="Bold" Text="Sevärdheten:"></Label>
-                                                <Label Text="{Binding Entry.POI}"></Label>
+                                                <Label FontAttributes="Bold" Text="Sevärdhet:"></Label>
+                                                <Label Text="{Binding Entry.POIstring}"></Label>
                                             </StackLayout>
 
 
@@ -212,8 +212,8 @@
                                                     <Label Text="{Binding Entry.Username}"></Label>
                                                 </StackLayout>
                                                 <StackLayout Orientation="Horizontal">
-                                                    <Label FontAttributes="Bold" Text="Sevärdheten:"></Label>
-                                                    <Label Text="{Binding Entry.POI}"></Label>
+                                                    <Label FontAttributes="Bold" Text="Sevärdhet:"></Label>
+                                                    <Label Text="{Binding Entry.POIstring}"></Label>
                                                 </StackLayout>
                                                 <StackLayout Orientation="Horizontal">
                                                     <Label FontAttributes="Bold" Text="Inlägg:"></Label>
