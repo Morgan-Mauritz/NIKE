@@ -45,14 +45,17 @@ namespace NikeClientApp.ViewModels
         public ICommand GetPreviousEntries => new Command(async () => await OnGetPreviousEntries());
 
         public ICommand CommentButtonClicked => new Command(async (object sender) => await OnCommentButtonClicked(sender));
+        public ICommand _OpenEntryComment => new Command(async () => await OpenEntryComment());
+        public ICommand _PostComment => new Command(async () => await PostComment());
 
-       
+
 
         HttpService<Models.Entry> _entryClient = new HttpService<Models.Entry>();
         HttpService<Forecast> weatherClient = new HttpService<Forecast>();
         HttpService<POI> poiListClient = new HttpService<POI>();
         HttpService<LikeDislikeEntry> httpClientLike = new HttpService<LikeDislikeEntry>();
-        HttpService<User> userClient = new HttpService<User>(); 
+        HttpService<User> userClient = new HttpService<User>();
+        HttpService<Comment> commentClient = new HttpService<Comment>();  
 
         public static MapPageViewModel MPVM { get; set; }
 
@@ -151,6 +154,12 @@ namespace NikeClientApp.ViewModels
 
         public bool CommentListIsVisible { get => _commentListIsVisible; set { SetProperty(ref _commentListIsVisible, value); } }
 
+        private string _commentOnEntry = null; 
+        public string CommentOnEntry {  get => _commentOnEntry; set { SetProperty(ref _commentOnEntry, value); } }
+
+        private bool _commentOnEntryModalIsVisible = false; 
+        public bool CommentOnEntryModalIsVisible { get => _commentOnEntryModalIsVisible; set { SetProperty(ref _commentOnEntryModalIsVisible, value); } }
+
 
         POI _selectedPOI;
         public POI SelectedPOI
@@ -233,9 +242,7 @@ namespace NikeClientApp.ViewModels
                     ListOfPins.Last().Label = poiToAdd.Name;
 
                     await _entryClient.Post("entry", entryToAdd);
-                    poiToAdd.Name = string.Empty;
-                    entryToAdd.Description = string.Empty;
-                    entryToAdd.Rating = 0;
+                    await GetPOIList(poiToAdd.Country, poiToAdd.City);                     
                 }
                 catch (Exception ex)
                 {
@@ -629,21 +636,29 @@ namespace NikeClientApp.ViewModels
 
         private async Task OnCommentButtonClicked(object sender)
         {
-            var selectedEntry = sender as Entry;
+            SelectedEntry = sender as Entry;
 
             CommentListIsVisible = true;
             EntryListIsVisible = false;
-            TitleResult = selectedEntry.Description;
-
-
-            ListOfComments = selectedEntry.Comments;
-
-           
-
-
-            
+            TitleResult = SelectedEntry.Description;
+            ListOfComments = SelectedEntry.Comments;
         }
 
+        private async Task OpenEntryComment()
+        {
+            CommentOnEntryModalIsVisible = true; 
+        }
+
+        private async Task PostComment()
+        {
+            var commentToPost = new Comment();
+            commentToPost.Text = CommentOnEntry;
+            commentToPost.EntryId = SelectedEntry.Id;
+            var currentUser = await userClient.Get(@"user", $"?ApiKey={UserApi.ApiKey}");
+            commentToPost.UserId = currentUser.Data.Id; 
+            await commentClient.Post("comments", commentToPost);
+            CommentOnEntryModalIsVisible = false; 
+        }
 
 
         #endregion;

@@ -41,4 +41,11 @@ namespace Api.Model
         public string Text { get; set; }
     }
 
+    public class AddCommentDTO
+    {
+        public int EntryID { get; set; }
+        public int UserID { get; set; }
+        public string Text { get; set; }
+    }
+
 }

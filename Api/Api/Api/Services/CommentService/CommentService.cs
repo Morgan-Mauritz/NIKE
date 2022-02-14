@@ -22,6 +22,19 @@ namespace Api.Services.CommentService
             _mapper = mapper;
         }
 
+        public async Task<CommentWithUserDTO> PostComment(AddCommentDTO comment, string apiKey)
+        {
+            var user = await _userRepository.GetByApiKey(apiKey);
+            if (user == null || user.Id != comment.UserID)
+            {
+                throw new UnauthorizedAccessException("Du har ej tillgång till denna åtgärd");
+            }
+
+            var mappedComment = _mapper.Map<Comment>(comment); 
+            await _commentRepository.PostComment(mappedComment);
+            return _mapper.Map<CommentWithUserDTO>(mappedComment); 
+        }
+
         public async Task<CommentDTO> DeleteComment(long id, string apiKey)
         {
             var user = await _userRepository.GetByApiKey(apiKey);

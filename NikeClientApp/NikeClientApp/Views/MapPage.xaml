@@ -67,11 +67,11 @@
                                 <Label x:Name="TitleResult" Text="{Binding TitleResult}" TextColor="White" FontSize="18"  HorizontalOptions="Start" Grid.Column="0" />
                                 <Label x:Name="currentWeather" Text="{Binding CurrentWeather, StringFormat='{0}°C'}" TextColor="White" Grid.Column="1" HorizontalOptions="End">
                                     <Label.GestureRecognizers>
-                                        <TapGestureRecognizer Command="{Binding _SwitchWeatherEntry}" > </TapGestureRecognizer>
+                                        <TapGestureRecognizer Command="{Binding _SwitchWeatherEntry}" ></TapGestureRecognizer>
                                     </Label.GestureRecognizers>
                                 </Label>
-                            
-                            </Grid>
+
+                            </Grid><!-- TODO: Sätt StarRating -->
                             <Label x:Name="avgRating" Text="{Binding AvgRating}" TextColor="White"  HorizontalOptions="CenterAndExpand"/>
                         </StackLayout>
                     </Frame>
@@ -121,10 +121,9 @@
                                             <StackLayout  Grid.Column="0">
                                                 <Label Text="{Binding Username}" TextColor="White"></Label>
                                                 <Label Text="{Binding Description}" TextColor="White"></Label>
-                                                <Label Text="{Binding Rating}" TextColor="White"></Label>
+                                                <Label Text="{Binding StarRating}" TextColor="White"></Label>
                                             </StackLayout>
                                             <StackLayout Grid.Column="1">
-
                                                 <ImageButton  Command="{Binding Path=BindingContext.LikeButtonClicked,Source={x:Reference ListViewForEntryOnPOI}}" CommandParameter="{Binding .}" Margin="0, 10, 0, 0" HeightRequest="40" HorizontalOptions="End" Source="{Binding LikeButtonImageSource, Mode=TwoWay}"></ImageButton>
                                                 <Button Command="{Binding Path=BindingContext.CommentButtonClicked, Source={x:Reference ListViewForEntryOnPOI}}" CommandParameter="{Binding .}" HeightRequest="40" HorizontalOptions="End" />
                                             </StackLayout>
@@ -137,7 +136,7 @@
 
                     <ListView x:Name="ListViewForCommentsOnEntry" ItemsSource="{Binding ListOfComments}"  IsVisible="{Binding CommentListIsVisible}" >
                         <ListView.Header>
-                            <Button Text="Skriv en kommentar"></Button>
+                            <Button Text="Skriv en kommentar" Command="{Binding _OpenEntryComment}"></Button>
                         </ListView.Header>
                         <ListView.ItemTemplate>
                             <DataTemplate>
@@ -152,17 +151,22 @@
                                                 <Label Text="{Binding UserName}" TextColor="White"></Label>
                                                 <Label Text="{Binding Text}" TextColor="White"></Label>
                                             </StackLayout>
-                                          
+
                                         </Grid>
                                     </Frame>
                                 </ViewCell>
                             </DataTemplate>
                         </ListView.ItemTemplate>
                     </ListView>
-                    
                 </StackLayout>
             </Frame>
-            
+
+            <StackLayout x:Name="CommentOnEntryModal" IsVisible="{Binding CommentOnEntryModalIsVisible}" BackgroundColor="ForestGreen" Opacity="0.7" Margin="900,400,100,70">
+                <Label Text="Lägg till en kommentar" HorizontalOptions="Center" FontSize="20" HeightRequest="40" Margin="0,10,0,0" TextColor="Black"></Label>
+                <Entry x:Name="CommentOnEntry" Text="{Binding CommentOnEntry}" Placeholder="Kommentar" HeightRequest="70" Margin="30,0,30,0"></Entry>
+                <Button Text="Lägg till" BackgroundColor="Gray" Command="{Binding _PostComment}" Unfocused="Button_Unfocused" CommandParameter="{Binding .}"></Button>
+            </StackLayout>
+
             <StackLayout x:Name="AddEntryModal" IsVisible="{Binding addEntryModalIsVisible}" BackgroundColor="Pink" Opacity="0.7" Margin="900,400,100,70">
                 <Label x:Name="LabelPoiExistingPoi"  Text="Lägg till en kommentar" HorizontalOptions="Center" FontSize="20" HeightRequest="40" Margin="0,10,0,0" TextColor="Black"></Label>
                 <Label x:Name="EntryPoiExistingPoi" Text="{Binding TitleResult}" Margin="30,0,30,0"></Label>
@@ -229,7 +233,7 @@
                         </Label.GestureRecognizers>
                     </Label>
                 </StackLayout>
-                <Button x:Name="AddLoc"  Text="Lägg till" BackgroundColor="Gray" Command="{Binding _AddPOI_Clicked}"></Button>
+                <Button x:Name="AddLoc"  Text="Lägg till" BackgroundColor="Gray" Command="{Binding _AddPOI_Clicked}" Unfocused="AddLoc_Unfocused"></Button>
             </StackLayout>
         </Grid>
     </ContentPage.Content>
