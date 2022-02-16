@@ -42,7 +42,7 @@ namespace Api.Model
         public double Longitude { get; set; }
         [Required]
         public double Latitude { get; set; }
-        public long? AvgRating { get; set; }
+        public double? AvgRating { get; set; }
         public string City { get; set; }
         public string Country { get; set; }
 
