@@ -25,7 +25,7 @@
                         <ImageButton Source="Assets/gg.png" HeightRequest="40" VerticalOptions="EndAndExpand" Command="{Binding _SearchButton_Clicked}" />
                     </StackLayout>
                     <StackLayout>
-                        <ImageButton Source="Assets/knapp.png" Command="{Binding _PinIcon_Clicked}" IsVisible="{Binding Source={x:Static models:UserOffLine.LoggedIn}}" HeightRequest="50" HorizontalOptions="End" Margin="0,0,0,0" />
+                        <ImageButton Source="Assets/knapp.png" Command="{Binding _PinIcon_Clicked}" Clicked="ImageButton_Clicked" IsVisible="{Binding Source={x:Static models:UserOffLine.LoggedIn}}" HeightRequest="50" HorizontalOptions="End" Margin="0,0,0,0" />
                     </StackLayout>
                     <StackLayout VerticalOptions="EndAndExpand">
                         <Button
@@ -207,7 +207,7 @@
                         </Label.GestureRecognizers>
                     </Label>
                 </StackLayout>
-                <Button x:Name="AddLocForExistingPoi"  Text="Lägg till" BackgroundColor="Gray" Command="{Binding _AddPOI_Clicked}"></Button>
+                <Button x:Name="AddLocForExistingPoi" Clicked="AddLocForExistingPoi_Clicked" Text="Lägg till" BackgroundColor="Gray" Command="{Binding _AddPOI_Clicked}"></Button>
 
 
             </StackLayout>

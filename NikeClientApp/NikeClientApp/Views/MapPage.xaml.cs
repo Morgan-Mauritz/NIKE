@@ -61,12 +61,21 @@ namespace NikeClientApp.Views
 
         }
 
-        private void Button_Clicked(object sender, EventArgs e)
+        private void ImageButton_Clicked(object sender, EventArgs e)
         {
-            CommentOnEntry.Text = "";
             EntryPoi.Text = "";
             EntryCommentPoi.Text = "";
             ResetStarColor();
+        }
+
+        private void Button_Clicked(object sender, EventArgs e)
+        {
+            CommentOnEntry.Text = "";
+        }
+
+        private void AddLocForExistingPoi_Clicked(object sender, EventArgs e)
+        {
+            EntryCommentExistingPoi.Text = "";
         }
     }
 }
