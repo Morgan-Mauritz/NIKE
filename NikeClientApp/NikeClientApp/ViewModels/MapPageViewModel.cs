@@ -32,6 +32,7 @@ namespace NikeClientApp.ViewModels
         public ICommand _StandardMapView => new Command(async () => await StandardMapView());
         public ICommand _SatelliteMapView => new Command(async () => await SatelliteMapView());
         public ICommand _HybridMapView => new Command(async () => await HybridMapView());
+        public ICommand POISelected => new Command(async (param) => await OnPOISelected(param));
 
         public ICommand _BackArrowClicked => new Command(async () => await BackArrowClicked());
         public ICommand _FoldFrameClicked => new Command(async (object sender) => await FoldFrameClicked((Frame)sender));
@@ -39,7 +40,6 @@ namespace NikeClientApp.ViewModels
         public ICommand _EntryButton_Clicked => new Command(async () => await EntryButton_Clicked());
 
         public ICommand _CenterOnUser => new Command(async () => await CenterOnUser());
-
         public ICommand _SwitchWeatherEntry => new Command(() => SwitchWeatherEntry());
         public ICommand LikeButtonClicked => new Command(async (object sender) => await LikeButton_Clicked(sender));
 
@@ -56,9 +56,9 @@ namespace NikeClientApp.ViewModels
 
         public static event EventHandler<PaginationResponse<ObservableCollection<POI>>> ShowPinsEventHandler;
 
-        protected virtual void OnShowPinsEventHandler(PaginationResponse<ObservableCollection<POI>> ListOfPOI)
+        protected virtual void OnShowPinsEventHandler(PaginationResponse<ObservableCollection<POI>> listOfPOI)
         {
-            ShowPinsEventHandler?.Invoke(this, ListOfPOI);
+            ShowPinsEventHandler?.Invoke(this, listOfPOI);
         }
 
         //Constructor
@@ -66,13 +66,15 @@ namespace NikeClientApp.ViewModels
         public MapPageViewModel(INaviService naviService) : base(naviService)
         {
             MPVM = this;
-            
-            Categories = new List<Category>{
-            new Category() {Id = 1, Name = "Hotell"},
-            new Category() {Id = 2, Name = "Biograf"},
-            new Category() {Id = 3, Name = "Strand"}
-            };
-            
+
+            Categories = new List<Category> { 
+                new Category("Hotell"), 
+                new Category("Strand"), 
+                new Category("Restaurang"), 
+                new Category("Landmärken"), 
+                new Category("Park"),
+                new Category("Övrigt") };
+
         }
         public MapPageViewModel()
         {
@@ -165,6 +167,7 @@ namespace NikeClientApp.ViewModels
                 ShowEntriesForPOI();
             }
         }
+ 
 
         Entry _selectedEntry;
 
@@ -222,6 +225,11 @@ namespace NikeClientApp.ViewModels
             if (!string.IsNullOrEmpty(poiToAdd.Name) && _entryRating > 0 && !string.IsNullOrEmpty(entryToAdd.Description))
             {
                 await PopulateEntry();
+                if (SelectedCategory == null)
+                {
+                    await App.Current.MainPage.DisplayAlert("Felmeddelande", "Du måste välja en kategori", "OK");
+                    return false;
+                }
                 poiToAdd.Category = SelectedCategory.Name;
 
                 try
@@ -331,8 +339,25 @@ namespace NikeClientApp.ViewModels
 
             var test = await GetPOIList(country, city);
 
+            var poiGroup = test.Data.GroupBy(x => x.Category).ToDictionary(x => x.Key, x => x.ToList());
+
+            GroupedPOIList = new ObservableCollection<Category>();
+            foreach (var group in poiGroup)
+            {
+                GroupedPOIList.Add(new Category(group.Key, group.Value));
+            }
+
             PinStay(test);
         }
+
+        private ObservableCollection<Category> _groupedPOIList;
+
+        public ObservableCollection<Category> GroupedPOIList
+        {
+            get { return _groupedPOIList; }
+            set { SetProperty(ref _groupedPOIList, value); }
+        }
+
 
         private async Task PinIcon_Clicked()
         {
@@ -635,6 +660,10 @@ namespace NikeClientApp.ViewModels
                 NextEntriesVisible = false;
             }
 
+        }
+        private async Task OnPOISelected(object param)
+        {
+            SelectedPOI = param as POI;
         }
         #endregion;
     }

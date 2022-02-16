@@ -61,6 +61,6 @@ namespace NikeClientApp.Views
 
         }
 
-       
+
     }
 }
