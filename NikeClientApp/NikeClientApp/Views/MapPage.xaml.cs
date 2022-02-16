@@ -60,7 +60,7 @@ namespace NikeClientApp.Views
             Searchbar.Text = ""; 
 
         }
-
+        
         private void ImageButton_Clicked(object sender, EventArgs e)
         {
             EntryPoi.Text = "";

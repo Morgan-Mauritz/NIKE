@@ -10,7 +10,6 @@ namespace Api.Model
         public long Id { get; set; }
         [Required]
         public string Name { get; set; }
-
         public virtual ICollection<POI> POIs { get; set; }
 
     }
