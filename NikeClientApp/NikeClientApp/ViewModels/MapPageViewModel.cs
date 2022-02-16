@@ -271,17 +271,13 @@ namespace NikeClientApp.ViewModels
 
                 try
                 {
-                    //För att får fram Namn och Adress på pinnen man precis skapade
-                    var geoCoder = new Geocoder();
-
-                    var fullgeoIEnumerable = await geoCoder.GetAddressesForPositionAsync(ListOfPins.Last().Position);
-                    var _fullgeoList = fullgeoIEnumerable.ToList();
-                    var _geoString = _fullgeoList[0].ToString();
-                    var address = GetAddressFromDataString(_geoString);
-                    var city = await GetCityFromDataString(ListOfPins.Last().Position.Longitude,
-                                                     ListOfPins.Last().Position.Latitude);
-
-                    ListOfPins.Last().Address = address + ", " + city;
+                    var placemarks = await Geocoding.GetPlacemarksAsync(ListOfPins.Last().Position.Latitude, ListOfPins.Last().Position.Longitude);
+                    var placemark = placemarks.FirstOrDefault();
+                    var city = placemark.Locality;
+                    var country = placemark.CountryName;
+                    var address = placemark.FeatureName; 
+                    
+                    ListOfPins.Last().Address = address;
                     ListOfPins.Last().Label = poiToAdd.Name;
 
                     await _entryClient.Post("entry", entryToAdd);
@@ -308,7 +304,7 @@ namespace NikeClientApp.ViewModels
                     }
                 }
                 addPoiModalIsVisible = false;
-
+                 
                 return true;
             }
             else
@@ -350,12 +346,12 @@ namespace NikeClientApp.ViewModels
             Position position = approximateLocations.FirstOrDefault();
             string coordinates = $"{position.Latitude}, {position.Longitude}";
 
-            var Address = await geoCoder.GetAddressesForPositionAsync(position);
-            var country = GetCountryFromDataString(Address.FirstOrDefault());
-            var response = await weatherClient.Get("forecast", $"?longitude={position.Longitude}&latitude={position.Latitude}");
-            var city = response.Data.City;
+            var placemarks = await Geocoding.GetPlacemarksAsync(position.Latitude, position.Longitude);
+            var placemark = placemarks.FirstOrDefault();
 
-            TitleResult = city; 
+            var response = await weatherClient.Get("forecast", $"?longitude={position.Longitude}&latitude={position.Latitude}");
+    
+            TitleResult = placemark.Locality; 
 
             var grouping = response.Data.WeatherList.GroupBy(x => x.DateTime.DayOfWeek);
             WeatherMinMax = new ObservableCollection<WeatherMinMax>();
@@ -379,7 +375,7 @@ namespace NikeClientApp.ViewModels
             MapSpan maps = new MapSpan(position, 1.10, 0.10);
             MapPage.CustomMap.MoveToRegion(maps);
 
-            var test = await GetPOIList(country, city);
+            var test = await GetPOIList(placemark.CountryName, placemark.Locality);
 
             var poiGroup = test.Data.GroupBy(x => x.Category).ToDictionary(x => x.Key, x => x.ToList());
 
@@ -467,38 +463,16 @@ namespace NikeClientApp.ViewModels
             EntryRating = int.Parse(sender.ToString());
         }
 
-        public string GetCountryFromDataString(string dataString)
-        {
-            string[] separator = { "\r\n" };
-            string[] countryFromDataString = dataString.Split(separator, StringSplitOptions.RemoveEmptyEntries);
-            return countryFromDataString.Last();
-        }
-
-        public string GetAddressFromDataString(string dataString)
-        {
-            string[] separator = { "\r\n" };
-            string[] countryFromDataString = dataString.Split(separator, StringSplitOptions.RemoveEmptyEntries);
-            return countryFromDataString[0];
-        }
-        public async Task<string> GetCityFromDataString(double lon, double lat)
-        {
-            //Fetch city from weatherApi ((hack!)the geocoder doesn't provide a city properly)
-            var response = await weatherClient.Get("forecast", $"?longitude={lon}&latitude={lat}");
-            var City = response.Data.City;
-            return City;
-        }
+       
         public async Task PopulatePOI(Position position)
         {
-            var geoCoder = new Geocoder();
-            var Address = await geoCoder.GetAddressesForPositionAsync(position);
-
-            poiToAdd.Country = GetCountryFromDataString(Address.First());
+            var placemarks = await Geocoding.GetPlacemarksAsync(position.Latitude, position.Longitude);
+            var placemark = placemarks.FirstOrDefault();
+           
+            poiToAdd.Country = placemark.CountryName; ; 
             poiToAdd.Longitude = position.Longitude;
             poiToAdd.Latitude = position.Latitude;
-
-            
-            var response = await weatherClient.Get("forecast", $"?longitude={poiToAdd.Longitude}&latitude={poiToAdd.Latitude}");
-            poiToAdd.City = response.Data.City;
+            poiToAdd.City = placemark.Locality; 
         }
 
         public async Task PopulateEntry()
@@ -509,27 +483,25 @@ namespace NikeClientApp.ViewModels
 
         public async Task<PaginationResponse<ObservableCollection<POI>>> GetPOIList(string country, string city)
         {
-            return ListOfPOI = await poiListClient.GetList("poi/list", $"?Country={country}&City={city}&amount=50");
+            return await poiListClient.GetList("poi/list", $"?Country={country}&City={city}&amount=50");
         }
 
-        public async void PinStay(PaginationResponse<ObservableCollection<POI>> ListOfPOI)
+        public async Task PinStay(PaginationResponse<ObservableCollection<POI>> ListOfPOI)
         {
             MapPage.CustomMap.Pins.Clear();
 
             foreach (var item in ListOfPOI.Data)
             {
-                var geoCoder = new Geocoder();
-
-                Position Position = new Position(item.Latitude, item.Longitude);
-                var fullgeoIEnumerable = await geoCoder.GetAddressesForPositionAsync(Position);
-                var _fullgeoList = fullgeoIEnumerable.ToList();
-                var _geoString = _fullgeoList[0].ToString();
-                var address = GetAddressFromDataString(_geoString);
+                var placemarks = await Geocoding.GetPlacemarksAsync(item.Latitude, item.Longitude);
+                var placemark = placemarks.FirstOrDefault();
+                var city = placemark.Locality;
+                var country = placemark.CountryName;
+                var address = placemark.FeatureName;
 
                 pinner = new Pin
                 {
                     Position = new Position(item.Latitude, item.Longitude),
-                    Address = address + ", " + item.City,
+                    Address = address,
                     Label = item.Name,
                 };
 
