@@ -40,7 +40,6 @@ namespace Api.Model
         public string PrevPage { get; set; }
         public int Total { get; set; }
 
-
         public PaginationResponse(T? data, int offset, int amount, string nextPage, string prevPage, int total) : base(data)
         {
             Status = Status.Success;
@@ -50,9 +49,5 @@ namespace Api.Model
             PrevPage = prevPage;
             Total = total;
         }
-
-
     }
-
-
 }

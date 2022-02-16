@@ -66,7 +66,7 @@ namespace NikeClientApp.UWP
                 nativeMap.MapElements.Add(mapIcon);
             }
         }
-
+        List<MapIcon> MapIcons { get; set; }
         //Denna triggas när man klickar någonstans på kartan.
         private async void OnMapClicked(object sender, MapClickedEventArgs args)
         {
@@ -77,6 +77,7 @@ namespace NikeClientApp.UWP
                 //Andra kalla om MapClicked i MapPageViewModel
                 if (await MapPageVM.MapClicked(sender, args))
                 {
+                    MapIcons = new List<MapIcon>();
                     nativeMap.Children.Clear();
                     var snPosition = new BasicGeoposition { Latitude = args.Position.Latitude, Longitude = args.Position.Longitude };
                     var snPoint = new Geopoint(snPosition);
@@ -88,11 +89,17 @@ namespace NikeClientApp.UWP
                     mapIcon.NormalizedAnchorPoint = new Windows.Foundation.Point(0.5, 1.0);
 
                     nativeMap.MapElements.Add(mapIcon);
-
+                    MapIcons.Add(mapIcon);
                     //Här sätts lon och lat på senaste Pin skapad.
                     var lastPin = ListOfPins_From_MapPageViewModel.Last();
                     lastPin.Position = args.Position;
                 }
+            }
+            if (MapPageViewModel.deletepin)
+            {
+                nativeMap.MapElements.Remove(MapIcons.Last());
+                MapPageViewModel.deletepin = false;
+                MapIcons.Remove(MapIcons.Last());
             }
         }
 

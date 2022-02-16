@@ -108,6 +108,7 @@
     </AppxManifest>
   </ItemGroup>
   <ItemGroup>
+    <Content Include="Assets\buttonForComments.png" />
     <Content Include="Assets\commentar.png" />
     <Content Include="Assets\backarrow.png" />
     <Content Include="Assets\frontarrow.png" />
