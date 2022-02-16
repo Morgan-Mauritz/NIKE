@@ -357,7 +357,7 @@ namespace NikeClientApp.ViewModels
                 await App.Current.MainPage.DisplayAlert("Offline","Du måste vara en användare för att kunna lägga en pin","Ok");
             }
         }
-
+        public static bool deletepin { get; set; }
         public async Task<bool> MapClicked(object sender, MapClickedEventArgs e)
         {
             if (pinner != null)
@@ -386,14 +386,15 @@ namespace NikeClientApp.ViewModels
             {   
                 if(addPoiModalIsVisible)
                 {
+                    pinner = ListOfPins.Last();
                     MapPage.CustomMap.Pins.Remove(pinner);
                     ListOfPins.Remove(pinner);
                     pinner = null;
-                  
+                    deletepin = true;
                 }
-                addEntryModalIsVisible = false;
-                addPoiModalIsVisible = false;
-                CommentOnEntryModalIsVisible = false;
+                MPVM.addEntryModalIsVisible = false;
+                MPVM.addPoiModalIsVisible = false;
+                MPVM.CommentOnEntryModalIsVisible = false;
 
                 
                 poiToAdd.Name = "";
