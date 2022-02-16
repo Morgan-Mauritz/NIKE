@@ -364,7 +364,7 @@ namespace NikeClientApp.ViewModels
             {
                 pinner.Position = e.Position;
                 MapPage.CustomMap.Pins.Add(pinner);
-
+               
                 var ans = await App.Current.MainPage.DisplayAlert("Hej", "Vill du lägga till en pin?", "Ja", "Nej");
                 
                 if (ans != true)
@@ -381,6 +381,22 @@ namespace NikeClientApp.ViewModels
                     pinner = null;
                     return true;
                 }
+            }
+            if (addEntryModalIsVisible || addPoiModalIsVisible || CommentOnEntryModalIsVisible)
+            {   
+                if(addPoiModalIsVisible)
+                {
+                    MapPage.CustomMap.Pins.Remove(pinner);
+                    ListOfPins.Remove(pinner);
+                    pinner = null;
+                  
+                }
+                addEntryModalIsVisible = false;
+                addPoiModalIsVisible = false;
+                CommentOnEntryModalIsVisible = false;
+
+                
+                poiToAdd.Name = "";
             }
             return false;
         }
@@ -422,9 +438,6 @@ namespace NikeClientApp.ViewModels
             
             var response = await weatherClient.Get("forecast", $"?longitude={poiToAdd.Longitude}&latitude={poiToAdd.Latitude}");
             poiToAdd.City = response.Data.City;
-
-
-            addPoiModalIsVisible = true;
         }
 
         public async Task PopulateEntry()
@@ -545,10 +558,7 @@ namespace NikeClientApp.ViewModels
                 FoldButtonIsVisible = true;
                 TitleResult = SelectedPOI.City;
                 AvgRating = null;
-
             }
-          
-
         }
 
         private async Task FoldFrameClicked(Frame sender)
@@ -592,7 +602,6 @@ namespace NikeClientApp.ViewModels
             }
             catch (Exception ex)
             {
-
                 throw new Exception(ex.Message);
             }
         }

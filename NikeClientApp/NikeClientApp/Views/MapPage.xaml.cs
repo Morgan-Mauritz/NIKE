@@ -61,16 +61,12 @@ namespace NikeClientApp.Views
 
         }
 
-        private void AddLoc_Unfocused(object sender, FocusEventArgs e)
+        private void Button_Clicked(object sender, EventArgs e)
         {
+            CommentOnEntry.Text = "";
             EntryPoi.Text = "";
             EntryCommentPoi.Text = "";
-            ResetStarColor(); 
-        }
-
-        private void Button_Unfocused(object sender, FocusEventArgs e)
-        {
-            CommentOnEntry.Text = ""; 
+            ResetStarColor();
         }
     }
 }
