@@ -200,6 +200,21 @@ namespace NikeClientApp.ViewModels
         public string LikeButtonFilled = @".\Assets\LikeButtonFilled.png";
 
 
+        //Backing fields keeping track of the current selected 
+        string _cityName; 
+        public string CityName { get => _cityName; set { SetProperty(ref _cityName, value); } }
+        string _countryName;
+        public string CountryName { get => _countryName; set { SetProperty(ref _countryName, value); } }
+        string _poiName;
+        public string POIName { get => _poiName; set { SetProperty(ref _poiName, value); } }
+
+        double _longitude;
+        public double Longitude { get => _longitude; set { SetProperty(ref _longitude, value); } }
+        double _latitude;
+        public double Latitude { get => _latitude; set { SetProperty(ref _latitude, value); } }
+        ObservableCollection<Entry> _entries;
+        public ObservableCollection<Entry> Entries { get => _entries; set { SetProperty(ref _entries, value); } }
+
 
 
 
@@ -254,9 +269,9 @@ namespace NikeClientApp.ViewModels
                     try
                     {
                         addEntryModalIsVisible = false;
-                        await GetPOIList(SelectedPOI.Country, SelectedPOI.City);
-                        SelectedPOI = ListOfPOI.Data.FirstOrDefault(x => x.Name == SelectedPOI.Name && x.City == SelectedPOI.City);
-                        ListOfEntries = SelectedPOI.Entries;
+                        await GetPOIList(CountryName, CityName);
+                        SelectedPOI = ListOfPOI.Data.FirstOrDefault(x => x.Name == CountryName && x.City == CityName);
+                        ListOfEntries = Entries;
                     }
                     catch(Exception ex)
                     {
@@ -265,6 +280,7 @@ namespace NikeClientApp.ViewModels
                     }
                 }
                 addPoiModalIsVisible = false;
+
                 return true;
             }
             else
@@ -287,7 +303,6 @@ namespace NikeClientApp.ViewModels
         {
             MapPage.CustomMap.IsShowingUser = false;
             AvgRating = null;
-
             TitleResult = SearchBarText[0].ToString().ToUpper() + SearchBarText.Substring(1);
             POIListIsVisible = true;
             if (_titleResult == "Location")
@@ -312,7 +327,7 @@ namespace NikeClientApp.ViewModels
             var response = await weatherClient.Get("forecast", $"?longitude={position.Longitude}&latitude={position.Latitude}");
             var city = response.Data.City;
 
-            
+            TitleResult = city; 
 
             var grouping = response.Data.WeatherList.GroupBy(x => x.DateTime.DayOfWeek);
             WeatherMinMax = new ObservableCollection<WeatherMinMax>();
@@ -519,6 +534,12 @@ namespace NikeClientApp.ViewModels
                     }
                     ListOfEntries = EntryPagination.Data; 
                     ShowUserLikes();
+                    CityName = SelectedPOI.City;
+                    POIName = SelectedPOI.Name;
+                    Latitude = SelectedPOI.Latitude;
+                    Longitude = SelectedPOI.Longitude;
+                    Entries = SelectedPOI.Entries; 
+                    SelectedPOI = null; 
                     return ListOfEntries;
                 }
             }
@@ -549,7 +570,7 @@ namespace NikeClientApp.ViewModels
             {
                 CommentListIsVisible = false;
                 EntryListIsVisible = true;
-                TitleResult = SelectedPOI.Name;
+                TitleResult = POIName; 
             }
             else
             {
@@ -557,7 +578,7 @@ namespace NikeClientApp.ViewModels
                 POIListIsVisible = true;
                 BackArrowIsVisible = false;
                 FoldButtonIsVisible = true;
-                TitleResult = SelectedPOI.City;
+                TitleResult = CityName;
                 AvgRating = null;
             }
         }
@@ -582,7 +603,7 @@ namespace NikeClientApp.ViewModels
         private async Task EntryButton_Clicked()
         {
             addEntryModalIsVisible = true;
-            Position position = new Position(SelectedPOI.Latitude, SelectedPOI.Longitude);
+            Position position = new Position(Latitude, Longitude);
             await PopulatePOI(position);
         }
         private async Task LikeButton_Clicked(object sender)
@@ -609,12 +630,19 @@ namespace NikeClientApp.ViewModels
 
         private async Task CenterOnUser()
         {
-            MapPage.CustomMap.IsShowingUser = true;
-            var position = await Geolocation.GetLocationAsync();
-
-            var response = await weatherClient.Get("forecast", $"?longitude={position.Longitude}&latitude={position.Latitude}");
-            CurrentWeather = (int)Math.Round(response.Data.WeatherList.FirstOrDefault().Temperature);
-            TitleResult = response.Data.City;
+           //Todo: Vi måste kunna klicka på kartfunktionerna utan exception, dunkar inte just nu
+            try
+            {  
+                MapPage.CustomMap.IsShowingUser = true;
+                var position = await Geolocation.GetLocationAsync();
+                var response = await weatherClient.Get("forecast", $"?longitude={position.Longitude}&latitude={position.Latitude}");
+                CurrentWeather = (int)Math.Round(response.Data.WeatherList.FirstOrDefault().Temperature);
+                TitleResult = response.Data.City;
+            }
+            catch(Exception ex)
+            {
+                App.Current.MainPage.DisplayAlert("Felmeddelande", "Du måste aktivera platsinställningarna för att din aktuella plats ska synas.", "OK");
+            }
         }
 
         private void SwitchWeatherEntry()

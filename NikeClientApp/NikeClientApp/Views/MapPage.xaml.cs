@@ -73,7 +73,7 @@ namespace NikeClientApp.Views
             CommentOnEntry.Text = "";
         }
 
-        private void AddLocForExistingPoi_Clicked(object sender, EventArgs e)
+        private void AddEntry_Clicked(object sender, EventArgs e)
         {
             EntryCommentExistingPoi.Text = "";
         }
