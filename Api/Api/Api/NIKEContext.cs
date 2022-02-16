@@ -85,6 +85,7 @@ namespace Api
 
                 entity.HasOne(x => x.User).WithMany(e => e.Entries).HasForeignKey(o => o.UserId).HasConstraintName("UserID");
                 entity.HasOne(x => x.POI).WithMany(e => e.Entries).HasForeignKey(o => o.POIID).HasConstraintName("POIID");
+              
 
             });
 

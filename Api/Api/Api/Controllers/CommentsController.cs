@@ -19,6 +19,20 @@ namespace Api.Controllers
             _service = service;
         }
 
+        [HttpPost()]
+        public async Task<IActionResult> PostComment([FromBody]AddCommentDTO comment, [FromHeader] string apiKey) 
+        {
+            try
+            {
+                return Ok(new Response<CommentWithUserDTO>(await _service.PostComment(comment, apiKey))); 
+            }
+            catch(UnauthorizedAccessException ex)
+            {
+                return StatusCode((int)HttpStatusCode.Unauthorized, new Response<UnauthorizedAccessException>(Status.Fail, ex.Message));
+            }
+
+        }
+
         [HttpDelete("{id}")]
         [ProducesResponseType(typeof(int), 200)]
         public async Task<IActionResult> DeleteComment(int id, [FromHeader] string apiKey)

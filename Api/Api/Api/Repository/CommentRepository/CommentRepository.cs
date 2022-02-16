@@ -14,6 +14,13 @@ namespace Api.Repository.CommentRepository
             _context = context;
         }
 
+        public async Task<Comment> PostComment(Comment comment)
+        {
+            _context.Comments.Add(comment);
+            await _context.SaveChangesAsync();
+            return comment; 
+        }
+
         public async Task<Comment> DeleteComment(Comment comment)
         {
             _context.Comments.Remove(comment);

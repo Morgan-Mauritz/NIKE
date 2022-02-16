@@ -3,14 +3,16 @@ using System;
 using Api;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 namespace Api.Migrations
 {
     [DbContext(typeof(NIKEContext))]
-    partial class NIKEContextModelSnapshot : ModelSnapshot
+    [Migration("20220214090805_20220214_updateCommentListOnEntries")]
+    partial class _20220214_updateCommentListOnEntries
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -59,7 +61,6 @@ namespace Api.Migrations
             modelBuilder.Entity("Api.Model.Comment", b =>
                 {
                     b.Property<long>("Id")
-                        .ValueGeneratedOnAdd()
                         .HasColumnType("INTEGER")
                         .HasColumnName("ID");
 
@@ -79,10 +80,6 @@ namespace Api.Migrations
                         .HasColumnName("UserID");
 
                     b.HasKey("Id");
-
-                    b.HasIndex("EntryId");
-
-                    b.HasIndex("UserId");
 
                     b.ToTable("Comment");
                 });
@@ -274,19 +271,12 @@ namespace Api.Migrations
                 {
                     b.HasOne("Api.Model.Entry", "Entry")
                         .WithMany("Comments")
-                        .HasForeignKey("EntryId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.HasOne("Api.Model.User", "User")
-                        .WithMany("Comments")
-                        .HasForeignKey("UserId")
+                        .HasForeignKey("Id")
+                        .HasConstraintName("CommentID")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
                     b.Navigation("Entry");
-
-                    b.Navigation("User");
                 });
 
             modelBuilder.Entity("Api.Model.Entry", b =>
@@ -381,8 +371,6 @@ namespace Api.Migrations
 
             modelBuilder.Entity("Api.Model.User", b =>
                 {
-                    b.Navigation("Comments");
-
                     b.Navigation("Entries");
 
                     b.Navigation("LikeDislikeEntries");

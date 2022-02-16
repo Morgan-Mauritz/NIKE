@@ -12,7 +12,7 @@ namespace NikeClientApp.Models
     {
         public ICommand Edit => new Command<string>((param) => OnEdit(param));
         public ICommand Save => new Command(async () => await OnSave());
-
+       
         public HttpService<Comment> HttpService { get; set; }
 
         public Comment()
@@ -22,9 +22,11 @@ namespace NikeClientApp.Models
 
         public int Id { get; set; }
         public Entry Entry { get; set; }
+        public long EntryId { get; set; }
+        public long UserId { get; set; }
         public int User { get; set; }
         public string Text { get; set; }
-
+        public string UserName { get; set; }
         public string Endpoint { get => $"comments/{Id}"; }
 
         private bool _commentReadOnly = true;
@@ -42,8 +44,6 @@ namespace NikeClientApp.Models
         public async Task OnSave()
         {
             await HttpService.Update("comments", this);
-        }
-
-      
+        }      
     }
 }
