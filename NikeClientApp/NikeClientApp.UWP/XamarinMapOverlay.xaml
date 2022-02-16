@@ -22,22 +22,22 @@
             <ColumnDefinition Width="Auto"/>
         </Grid.ColumnDefinitions>
 
-        <Image Source="xamarin.png" Width="100" />
+        <!--<Image Source="xamarin.png" Width="100" />-->
 
         <!--<Button FontWeight="Black" Margin="110,0,0,10" Background="Black" Opacity="0.7" Content="x" Click="BtnDeletePin_Click"/>-->
 
         <StackPanel Grid.Row="1" Grid.Column="1" Orientation="Horizontal" Background="White" Opacity="0.7" Padding="20,0,20,0">
 
-            <Image Source="Assets/newton.jpg" Width="24"  />
+            <!--<Image Source="Assets/newton.jpg" Width="24"  />-->
 
-            <StackPanel Margin="20,10,20,0">
+            <StackPanel Margin="0,0,0,0">
 
                 <TextBlock x:Name="Label" FontWeight="Bold" />
                 <TextBlock x:Name="Address" />
 
             </StackPanel>
 
-            <Button Tapped="OnInfoButtonTapped">
+            <!--<Button Tapped="OnInfoButtonTapped">
                 <Button.Template>
                     <ControlTemplate TargetType="Button">
 
@@ -45,7 +45,7 @@
 
                     </ControlTemplate>
                 </Button.Template>
-            </Button>
+            </Button>-->
 
         </StackPanel>
 

@@ -24,11 +24,14 @@ namespace Api.Model
 
         public virtual ICollection<Entry> Entries { get; set; }
         public virtual ICollection<LikeDislikeEntry> LikeDislikeEntries { get; set; }
+
+        public virtual ICollection<Comment> Comments { get; set; }  
        
         public User()
         {
             Entries = new HashSet<Entry>();
             LikeDislikeEntries = new HashSet<LikeDislikeEntry>();
+            Comments = new HashSet<Comment>();  
         }
     }
 

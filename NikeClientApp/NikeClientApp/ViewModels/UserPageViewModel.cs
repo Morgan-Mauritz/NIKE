@@ -9,6 +9,7 @@ using NikeClientApp.Models;
 using System.Collections.ObjectModel;
 using System.Linq;
 using NikeClientApp.Encryption;
+using System.Text.RegularExpressions;
 
 namespace NikeClientApp.ViewModels
 {
@@ -62,21 +63,30 @@ namespace NikeClientApp.ViewModels
 
         private async Task OnShow()
         {
-            var user = await userClient.Get("user", "");
+            try
+            {
 
-            var comments = await commentClient.GetList("entry/comments", "");
+                var user = await userClient.Get("user", "");
 
-            var reactions = await reactionClient.GetList("entry/reactions", "");
+                var comments = await commentClient.GetList("entry/comments", "");
 
-            var entries = await entryClient.GetList("entry/list", "");
+                var reactions = await reactionClient.GetList("entry/reactions", "");
 
-            if (comments != null)
-                LoadedComments = new ObservableCollection<Comment>(comments.Data);
-            if (reactions != null)
-                LoadedReactions = new ObservableCollection<Reaction>(reactions.Data);
-            if (entries != null)
-                LoadedEntries = new ObservableCollection<Models.Entry>(entries.Data);
-            User = user.Data;
+                var entries = await entryClient.GetList("entry/list", "");
+
+                if (comments != null)
+                    LoadedComments = new ObservableCollection<Comment>(comments.Data);
+                if (reactions != null)
+                    LoadedReactions = new ObservableCollection<Reaction>(reactions.Data);
+                if (entries != null)
+                    LoadedEntries = new ObservableCollection<Models.Entry>(entries.Data);
+                User = user.Data;
+            }
+            catch (Exception)
+            {
+                await App.Current.MainPage.DisplayAlert("Felmeddelande", "Något gick snett vid hämtningen av din data", "OK");
+                await NavigationService.GoBack();
+            }
         }
 
         private EditUser _userReadOnly;
@@ -139,14 +149,44 @@ namespace NikeClientApp.ViewModels
 
             try
             {
+                if (!Regex.IsMatch(User.Firstname, @"^[a-zåäöA-ZÅÄÖ]+$"))
+                {
+                    await App.Current.MainPage.DisplayAlert("Förnamn", "Ange bara bokstäver", "OK");
+                    return;
+                }
+                if (!Regex.IsMatch(User.Lastname, @"^[a-zåäöA-ZÅÄÖ]+$"))
+                {
+                    await App.Current.MainPage.DisplayAlert("Efternamn", "Ange bara bokstäver", "OK");
+                    return;
+                }
+                if (!Regex.IsMatch(User.Email, @"^[a-zåäöA-ZÅÄÖ][\w\.-]*[a-zåäöA-ZÅÄÖ0-9]@[a-zåäöA-ZÅÄÖ0-9][\w\.-]*[a-zåäöA-ZÅÄÖ0-9]\.[a-zåäöA-ZÅÄÖ][a-zåäöA-ZÅÄÖ\.]*[a-zåäöA-ZÅÄÖ]$"))
+                {
+                    await App.Current.MainPage.DisplayAlert("Email", "Ange korrekt e-mail", "OK");
+                    return;
 
-                User.PasswordValidation = Encrypt.EncryptMessage(await Application.Current.MainPage.DisplayPromptAsync("Uppdatera uppgifter", "För att kunna spara nya ändringar måste \ndu skriva in det gamla lösenordet", initialValue: ""));
+                }
+                if (User.Username.Length == 0)
+                {
+                    await App.Current.MainPage.DisplayAlert("Användarnamn", "Skriv in användarnamn", "OK");
+                    return;
+                }
+                if (!string.IsNullOrEmpty(User.PasswordText) && !Regex.IsMatch(User.PasswordText, @"^(?=.*?[A-ZÅÄÖ])(?=.*?[a-zåäö])(?=.*?[0-9]).{8,}$"))
+                {
+                    await App.Current.MainPage.DisplayAlert("Lösenord", "Lösenordet ska vara minst 8 tecken.\nAnge minst en stor och liten bokstav samt en siffra.", "OK");
+                    return;
+                }
+                var passwordConfirmation = Encrypt.EncryptMessage(await Application.Current.MainPage.DisplayPromptAsync("Uppdatera uppgifter", "För att kunna spara nya ändringar måste \ndu skriva in det gamla lösenordet", initialValue: ""));
+                if (string.IsNullOrEmpty(User.PasswordText))
+                {
+                    User.Password = passwordConfirmation;
+                }
+                User.PasswordValidation = passwordConfirmation;
                 await userClient.Update("user", User);
 
             }
-            catch (UnauthorizedAccessException ex)
+            catch (Exception)
             {
-                await Application.Current.MainPage.DisplayAlert("felmeddelande", ex.Message, "OK");
+                await Application.Current.MainPage.DisplayAlert("felmeddelande", "Kunde ej uppdatera användaren", "OK");
             }
         }
 
@@ -246,30 +286,37 @@ namespace NikeClientApp.ViewModels
         }
         public async Task OnDelete(string endpoint)
         {
+            try
+            {
 
-            if (endpoint == "user")
-            {
-                UserApi.ApiKey = null;
-                await userClient.Delete(endpoint);
-                await NavigationService.NavigateTo<MainPageViewModel>();
+                if (endpoint == "user")
+                {
+                    await userClient.Delete(endpoint);
+                    UserApi.ApiKey = null;
+                    await NavigationService.NavigateTo<MainPageViewModel>();
+                }
+                else if (endpoint.Contains("comment"))
+                {
+                    var response = await commentClient.Delete(endpoint);
+                    var comment = Comments.First(x => x.Id == response.Data.Id);
+                    Comments.Remove(comment);
+                }
+                else if (endpoint.Contains("like"))
+                {
+                    var response = await reactionClient.Post(endpoint);
+                    var reaction = Reactions.First(x => x.Id == response.Data.Id);
+                    Reactions.Remove(reaction);
+                }
+                else if (endpoint.Contains("entry"))
+                {
+                    var response = await entryClient.Delete(endpoint);
+                    var entry = Entries.First(x => x.Id == response.Data.Id);
+                    Entries.Remove(entry);
+                }
             }
-            else if (endpoint.Contains("comment"))
+            catch (Exception)
             {
-                var response = await commentClient.Delete(endpoint);
-                var comment = Comments.First(x => x.Id == response.Data.Id);
-                Comments.Remove(comment);
-            }
-            else if (endpoint.Contains("entry"))
-            {
-                var response = await entryClient.Delete(endpoint);
-                var entry = Entries.First(x => x.Id == response.Data.Id);
-                Entries.Remove(entry);
-            }
-            else if (endpoint.Contains("reaction"))
-            {
-                var response = await reactionClient.Delete(endpoint);
-                var reaction = Reactions.First(x => x.Id == response.Data.Id);
-                Reactions.Remove(reaction);
+                await App.Current.MainPage.DisplayAlert("Felmeddelande", "Kunde ej radera data.", "OK");
             }
         }
 

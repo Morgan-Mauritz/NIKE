@@ -23,6 +23,7 @@ namespace NikeClientApp.ViewModels
     public class MapPageViewModel : BaseViewModel
     {
         public Command NextPage => new Command(async () => await NavigationService.NavigateTo<MainPageViewModel>());
+        public Command NavToUserPage => new Command(async () => await NavigationService.NavigateTo<UserPageViewModel>());
 
         public ICommand _AddPOI_Clicked => new Command(async () => await AddPOI_Clicked());
         public ICommand _PinIcon_Clicked => new Command(async () => await PinIcon_Clicked());
@@ -46,11 +47,18 @@ namespace NikeClientApp.ViewModels
         public ICommand GetNextEntries => new Command(async () => await OnGetNextEntries());
         public ICommand GetPreviousEntries => new Command(async () => await OnGetPreviousEntries());
 
+        public ICommand CommentButtonClicked => new Command(async (object sender) => await OnCommentButtonClicked(sender));
+        public ICommand _OpenEntryComment => new Command(async () => await OpenEntryComment());
+        public ICommand _PostComment => new Command(async () => await PostComment());
+
+
+
         HttpService<Models.Entry> _entryClient = new HttpService<Models.Entry>();
         HttpService<Forecast> weatherClient = new HttpService<Forecast>();
         HttpService<POI> poiListClient = new HttpService<POI>();
         HttpService<LikeDislikeEntry> httpClientLike = new HttpService<LikeDislikeEntry>();
-        HttpService<User> userClient = new HttpService<User>(); 
+        HttpService<User> userClient = new HttpService<User>();
+        HttpService<Comment> commentClient = new HttpService<Comment>();  
 
         public static MapPageViewModel MPVM { get; set; }
 
@@ -158,6 +166,17 @@ namespace NikeClientApp.ViewModels
         private bool _nextEntriesVisible = true;
         public bool NextEntriesVisible { get => _nextEntriesVisible; set { SetProperty(ref _nextEntriesVisible, value); } }
 
+        private bool _commentListIsVisible;
+
+        public bool CommentListIsVisible { get => _commentListIsVisible; set { SetProperty(ref _commentListIsVisible, value); } }
+
+        private string _commentOnEntry = null; 
+        public string CommentOnEntry {  get => _commentOnEntry; set { SetProperty(ref _commentOnEntry, value); } }
+
+        private bool _commentOnEntryModalIsVisible = false; 
+        public bool CommentOnEntryModalIsVisible { get => _commentOnEntryModalIsVisible; set { SetProperty(ref _commentOnEntryModalIsVisible, value); } }
+
+
         POI _selectedPOI;
         public POI SelectedPOI
         {
@@ -206,6 +225,9 @@ namespace NikeClientApp.ViewModels
 
 
 
+        private ObservableCollection<Comment> _listOfComments;
+        public ObservableCollection<Comment> ListOfComments { get => _listOfComments; set { SetProperty( ref _listOfComments, value); } }
+
         #endregion;
 
 
@@ -248,6 +270,7 @@ namespace NikeClientApp.ViewModels
                     ListOfPins.Last().Label = poiToAdd.Name;
 
                     await _entryClient.Post("entry", entryToAdd);
+                    await GetPOIList(poiToAdd.Country, poiToAdd.City);                     
                 }
                 catch (Exception ex)
                 {
@@ -303,9 +326,13 @@ namespace NikeClientApp.ViewModels
             Geocoder geoCoder = new Geocoder();
 
             IEnumerable<Position> approximateLocations = await geoCoder.GetPositionsForAddressAsync(SearchBarText);
+            if (approximateLocations.Count() == 0)
+            {
+                await App.Current.MainPage.DisplayAlert("Felmeddelande", "Kunde inte hitta platsen du sökte på", "OK");
+                return;
+            }
 
             Position position = approximateLocations.FirstOrDefault();
-
             string coordinates = $"{position.Latitude}, {position.Longitude}";
 
             var Address = await geoCoder.GetAddressesForPositionAsync(position);
@@ -437,7 +464,7 @@ namespace NikeClientApp.ViewModels
             poiToAdd.Longitude = position.Longitude;
             poiToAdd.Latitude = position.Latitude;
 
-            //Fetch city from weatherApi ((hack!)the geocoder doesn't provide a city properly)
+            
             var response = await weatherClient.Get("forecast", $"?longitude={poiToAdd.Longitude}&latitude={poiToAdd.Latitude}");
             poiToAdd.City = response.Data.City;
 
@@ -549,12 +576,23 @@ namespace NikeClientApp.ViewModels
 
         private async Task BackArrowClicked()
         {
-            EntryListIsVisible = false;
-            POIListIsVisible = true;
-            BackArrowIsVisible = false;
-            FoldButtonIsVisible = true;
-            TitleResult = SelectedPOI.City;
-            AvgRating = null;
+            if(EntryListIsVisible == false)
+            {
+                CommentListIsVisible = false;
+                EntryListIsVisible = true;
+                TitleResult = SelectedPOI.Name;
+            }
+            else
+            {
+                EntryListIsVisible = false;
+                POIListIsVisible = true;
+                BackArrowIsVisible = false;
+                FoldButtonIsVisible = true;
+                TitleResult = SelectedPOI.City;
+                AvgRating = null;
+
+            }
+          
 
         }
 
@@ -665,6 +703,34 @@ namespace NikeClientApp.ViewModels
         {
             SelectedPOI = param as POI;
         }
+
+
+        private async Task OnCommentButtonClicked(object sender)
+        {
+            SelectedEntry = sender as Entry;
+
+            CommentListIsVisible = true;
+            EntryListIsVisible = false;
+            TitleResult = SelectedEntry.Description;
+            ListOfComments = SelectedEntry.Comments;
+        }
+
+        private async Task OpenEntryComment()
+        {
+            CommentOnEntryModalIsVisible = true; 
+        }
+
+        private async Task PostComment()
+        {
+            var commentToPost = new Comment();
+            commentToPost.Text = CommentOnEntry;
+            commentToPost.EntryId = SelectedEntry.Id;
+            var currentUser = await userClient.Get(@"user", $"?ApiKey={UserApi.ApiKey}");
+            commentToPost.UserId = currentUser.Data.Id; 
+            await commentClient.Post("comments", commentToPost);
+            CommentOnEntryModalIsVisible = false; 
+        }
+
         #endregion;
     }
 }

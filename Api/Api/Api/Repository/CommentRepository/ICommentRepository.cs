@@ -5,6 +5,7 @@ namespace Api.Repository.CommentRepository
 {
     public interface ICommentRepository
     {
+        Task<Comment> PostComment(Comment comment);
         Task<Comment> DeleteComment(Comment comment);
         Task<Comment> GetComment(long id);
         Task<Comment> GetComments(BaseFilter filter, long userID);

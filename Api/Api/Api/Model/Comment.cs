@@ -19,6 +19,8 @@ namespace Api.Model
 
         public virtual Entry Entry { get; set; }
 
+        public virtual User User { get; set; }
+
     }
 
     public class CommentDTO 
@@ -32,6 +34,18 @@ namespace Api.Model
         public int Id { get; set; }
         public string Text { get; set; }
     }
+    public class CommentWithUserDTO
+    {
+        public long Id { get; set; }
+        public string UserName { get; set;  }
+        public string Text { get; set; }
+    }
 
+    public class AddCommentDTO
+    {
+        public int EntryID { get; set; }
+        public int UserID { get; set; }
+        public string Text { get; set; }
+    }
 
 }

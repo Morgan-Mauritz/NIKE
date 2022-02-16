@@ -15,6 +15,7 @@ namespace NikeClientApp.Models
     {
         public ICommand Edit => new Command<string>((param) => OnEdit(param));
         public ICommand Save => new Command(async () => await OnSave());
+        public string Endpoint { get => $"entry/{Id}"; }
 
         public HttpService<Entry> HttpService { get; set; }
 
@@ -31,6 +32,8 @@ namespace NikeClientApp.Models
         private string _likeButtonImageSource = @".\Assets\LikeButtonNotFilled.png";
         public string LikeButtonImageSource { get => _likeButtonImageSource; set { SetProperty(ref _likeButtonImageSource, value); } }
         public ObservableCollection<LikeDislikeEntry> LikeDislikeEntries { get; set; }
+
+        public ObservableCollection<Comment> Comments { get; set; }
 
         private int _rating;
         public int Rating 
