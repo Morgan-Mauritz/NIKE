@@ -3,16 +3,15 @@
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml" 
              xmlns:local="clr-namespace:NikeClientApp.ViewModels"
              xmlns:models="clr-namespace:NikeClientApp.Models"
-             x:Class="NikeClientApp.Views.MapPage"
-             xmlns:maps="clr-namespace:Xamarin.Forms.Maps;assembly=Xamarin.Forms.Maps">
+             x:Class="NikeClientApp.Views.MapPage">
     <ContentPage.Content>
         <Grid>
             <local:MapPageViewModel x:Name="customMap"/>
-            <!--<ContentView Content="{Binding map}"></ContentView>-->
+            
             <Frame WidthRequest="40" HorizontalOptions="Start" VerticalOptions="Start" IsVisible="{Binding _FoldInFrameIsVisible}">
                 <ImageButton Source="./Assets/frontarrow.png" Command="{Binding _FoldFrameClicked }" CommandParameter="{x:Reference poiFrame}"></ImageButton>
             </Frame>
-
+            
             <Frame Margin="530,0,0,0" HorizontalOptions="End">
                 <StackLayout Spacing="50" Margin="0,0,0,0" >
                     <StackLayout Orientation="Horizontal" Style="{StaticResource ContainerBackgroundColor}">
@@ -54,7 +53,7 @@
                     </StackLayout>
                 </StackLayout>
             </Frame>
-
+            
             <Frame x:Name="poiFrame" Margin="0,0,600,0" Opacity="0.9" HorizontalOptions="Start" WidthRequest="300" BackgroundColor="SlateGray" IsVisible="False">
                 <StackLayout>
                     <ImageButton Source=".\Assets\x_button.png" Command="{Binding _FoldFrameClicked }" IsVisible="{Binding FoldButtonIsVisible}" CommandParameter="{x:Reference poiFrame}" HeightRequest="40" HorizontalOptions="End"/>
@@ -72,12 +71,11 @@
                                         <TapGestureRecognizer Command="{Binding _SwitchWeatherEntry}" ></TapGestureRecognizer>
                                     </Label.GestureRecognizers>
                                 </Label>
-
-                            </Grid><!-- TODO: Sätt StarRating -->
+                            </Grid>
                             <Label x:Name="avgRating" Text="{Binding StarRating}" TextColor="White"  HorizontalOptions="CenterAndExpand"/>
                         </StackLayout>
                     </Frame>
-
+                    
                     <CollectionView x:Name="poiCV" ItemsSource="{Binding GroupedPOIList}" IsGrouped="true" SelectionMode="Single" IsVisible="{Binding POIListIsVisible}" >
                         <CollectionView.GroupHeaderTemplate>
                             <DataTemplate>
@@ -90,14 +88,13 @@
                                     <StackLayout.GestureRecognizers>
                                         <TapGestureRecognizer Command="{Binding Path=BindingContext.POISelected, Source={x:Reference poiCV}}" CommandParameter="{Binding .}"/>
                                     </StackLayout.GestureRecognizers>
-                                            <Label Text="{Binding Name}" TextColor="White" FontAttributes="Bold" Padding="20,0,0,5"/>
-                                            <Label Text="{Binding AvgRating, StringFormat='Medelbetyg: {0}'}" TextColor="White" Padding="5,0,0,5"/>
+                                    <Label Text="{Binding Name}" TextColor="White" FontAttributes="Bold" Padding="20,0,0,5"/>
+                                    <Label Text="{Binding AvgRating, StringFormat='Medelbetyg: {0}'}" TextColor="White" Padding="5,0,0,5"/>
                                 </StackLayout>
                             </DataTemplate>
                         </CollectionView.ItemTemplate>
                     </CollectionView>
-
-
+                    
                     <ListView ItemsSource="{Binding WeatherMinMax}" IsVisible="{Binding WeatherListIsVisible}">
                         <ListView.ItemTemplate>
                             <DataTemplate>
@@ -218,9 +215,8 @@
                     </Label>
                 </StackLayout>
                 <Button x:Name="AddLocForExistingPoi" Text="Lägg till" BackgroundColor="Gray" Command="{Binding _AddPOI_Clicked}"></Button>
-
-
             </StackLayout>
+            
             <StackLayout x:Name="AddPoiModal" IsVisible="{Binding addPoiModalIsVisible}" Margin="900,400,100,70" BackgroundColor="Pink" Opacity="0.7">
                 <Label x:Name="LabelPoi"  Text="Lägg till sevärdhet" HorizontalOptions="Center" FontSize="20" HeightRequest="40" Margin="0,10,0,0" TextColor="Black"></Label>
                 <Entry x:Name="EntryPoi" Text="{Binding poiToAdd.Name, Mode=TwoWay}"  Placeholder="Namn på sevärdheten" Margin="30,0,30,0"></Entry>
@@ -256,5 +252,6 @@
                 <Button x:Name="AddLoc"  Text="Lägg till" BackgroundColor="Gray" Command="{Binding _AddPOI_Clicked}"></Button>
             </StackLayout>
         </Grid>
+        
     </ContentPage.Content>
 </ContentPage>

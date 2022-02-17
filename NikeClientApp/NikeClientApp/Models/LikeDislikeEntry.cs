@@ -1,12 +1,4 @@
-﻿using NikeClientApp.Services;
-using System;
-using System.Collections.Generic;
-using System.Text;
-using System.Threading.Tasks;
-using System.Windows.Input;
-using Xamarin.Forms;
-
-namespace NikeClientApp.Models
+﻿namespace NikeClientApp.Models
 {
     public class LikeDislikeEntry
     {

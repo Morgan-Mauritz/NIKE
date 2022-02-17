@@ -5,15 +5,11 @@
     <ContentPage.Content>
         <StackLayout Style="{StaticResource ContainerBackgroundColor}">
             <Label Text="Welcome to Xamarin.Forms!"
-                VerticalOptions="CenterAndExpand" 
-                HorizontalOptions="CenterAndExpand" 
+                   VerticalOptions="CenterAndExpand" 
+                   HorizontalOptions="CenterAndExpand" 
                    Style="{StaticResource TextColor}"/>
-
-            <Button Text="Ändra mode" Command="{Binding SetAppThemeCommand}" >
-                
-            </Button>
+            <Button Text="Ändra mode" Command="{Binding SetAppThemeCommand}"></Button>
             <Button Text="ändra" Clicked="Button_Clicked"></Button>
-            
         </StackLayout>
     </ContentPage.Content>
 </ContentPage>

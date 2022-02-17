@@ -1,16 +1,11 @@
-﻿using Newtonsoft.Json;
-using Newtonsoft.Json.Linq;
-using NikeClientApp.Models;
+﻿using NikeClientApp.Models;
 using NikeClientApp.Services;
 using NikeClientApp.Views;
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
-using System.ComponentModel;
 using System.Globalization;
-using System.IO;
 using System.Linq;
-using System.Runtime.Serialization;
 using System.Threading.Tasks;
 using System.Windows.Input;
 using Xamarin.Essentials;
@@ -22,43 +17,38 @@ namespace NikeClientApp.ViewModels
 {
     public class MapPageViewModel : BaseViewModel
     {
+        //Commands
         public Command NextPage => new Command(async () => await NavigationService.NavigateTo<MainPageViewModel>());
         public Command NavToUserPage => new Command(async () => await NavigationService.NavigateTo<UserPageViewModel>());
-
         public ICommand _AddPOI_Clicked => new Command(async () => await AddPOI_Clicked());
         public ICommand _PinIcon_Clicked => new Command(async () => await PinIcon_Clicked());
         public ICommand _RatingAmount => new Command((object sender) => RatingAmount(sender));
         public ICommand _SearchButton_Clicked => new Command(async () => await SearchButton_Clicked());
-
         public ICommand _StandardMapView => new Command(async () => await StandardMapView());
         public ICommand _SatelliteMapView => new Command(async () => await SatelliteMapView());
         public ICommand _HybridMapView => new Command(async () => await HybridMapView());
         public ICommand POISelected => new Command(async (param) => await OnPOISelected(param));
-
         public ICommand _BackArrowClicked => new Command(async () => await BackArrowClicked());
         public ICommand _FoldFrameClicked => new Command(async (object sender) => await FoldFrameClicked((Frame)sender));
-
         public ICommand _EntryButton_Clicked => new Command(async () => await EntryButton_Clicked());
-
         public ICommand _CenterOnUser => new Command(async () => await CenterOnUser());
         public ICommand _SwitchWeatherEntry => new Command(() => SwitchWeatherEntry());
         public ICommand LikeButtonClicked => new Command(async (object sender) => await LikeButton_Clicked(sender));
-
         public ICommand GetNextEntries => new Command(async () => await OnGetNextEntries());
         public ICommand GetPreviousEntries => new Command(async () => await OnGetPreviousEntries());
-
         public ICommand CommentButtonClicked => new Command(async (object sender) => await OnCommentButtonClicked(sender));
         public ICommand _OpenEntryComment => new Command(async () => await OpenEntryComment());
         public ICommand _PostComment => new Command(async () => await PostComment());
 
-
-
+        //Connection to the httpservice
+        #region HttpService
         HttpService<Models.Entry> _entryClient = new HttpService<Models.Entry>();
         HttpService<Forecast> weatherClient = new HttpService<Forecast>();
         HttpService<POI> poiListClient = new HttpService<POI>();
         HttpService<LikeDislikeEntry> httpClientLike = new HttpService<LikeDislikeEntry>();
         HttpService<User> userClient = new HttpService<User>();
-        HttpService<Comment> commentClient = new HttpService<Comment>();  
+        HttpService<Comment> commentClient = new HttpService<Comment>();
+        #endregion
 
         public static MapPageViewModel MPVM { get; set; }
 
@@ -74,42 +64,19 @@ namespace NikeClientApp.ViewModels
         public MapPageViewModel(INaviService naviService) : base(naviService)
         {
             MPVM = this;
-
-            Categories = new List<Category> { 
-                new Category("Hotell"), 
-                new Category("Strand"), 
-                new Category("Restaurang"), 
-                new Category("Landmärken"), 
+            Categories = new List<Category> {
+                new Category("Hotell"),
+                new Category("Strand"),
+                new Category("Restaurang"),
+                new Category("Landmärken"),
                 new Category("Park"),
                 new Category("Övrigt") };
-
         }
         public MapPageViewModel()
         {
 
         }
         #endregion; 
-
-
-        public async override Task InitAsync()
-        {
-            //await CenterOnUser();
-            SwitchWeatherTxt = "Visa väder";
-        }
-
-        public async Task StandardMapView()
-        {
-            MapPage.CustomMap.MapType = MapType.Street;
-        }
-        public async Task SatelliteMapView()
-        {
-            MapPage.CustomMap.MapType = MapType.Satellite;
-        }
-        public async Task HybridMapView()
-        {
-            MapPage.CustomMap.MapType = MapType.Hybrid;
-        }
-
 
         //Properties 
         #region Properties
@@ -170,10 +137,10 @@ namespace NikeClientApp.ViewModels
 
         public bool CommentListIsVisible { get => _commentListIsVisible; set { SetProperty(ref _commentListIsVisible, value); } }
 
-        private string _commentOnEntry = null; 
-        public string CommentOnEntry {  get => _commentOnEntry; set { SetProperty(ref _commentOnEntry, value); } }
+        private string _commentOnEntry = null;
+        public string CommentOnEntry { get => _commentOnEntry; set { SetProperty(ref _commentOnEntry, value); } }
 
-        private bool _commentOnEntryModalIsVisible = false; 
+        private bool _commentOnEntryModalIsVisible = false;
         public bool CommentOnEntryModalIsVisible { get => _commentOnEntryModalIsVisible; set { SetProperty(ref _commentOnEntryModalIsVisible, value); } }
 
 
@@ -186,7 +153,7 @@ namespace NikeClientApp.ViewModels
                 ShowEntriesForPOI();
             }
         }
- 
+
 
         Entry _selectedEntry;
 
@@ -212,16 +179,15 @@ namespace NikeClientApp.ViewModels
 
         public string SwitchWeatherTxt { get => _SwitchWeatherTxt; set { SetProperty(ref _SwitchWeatherTxt, value); } }
         public string LikeButtonFilled = @".\Assets\LikeButtonFilled.png";
-
+        public PaginationResponse<ObservableCollection<Models.Entry>> EntryPagination { get; set; }
 
         //Backing fields keeping track of the current selected 
-        string _cityName; 
+        string _cityName;
         public string CityName { get => _cityName; set { SetProperty(ref _cityName, value); } }
         string _countryName;
         public string CountryName { get => _countryName; set { SetProperty(ref _countryName, value); } }
         string _poiName;
         public string POIName { get => _poiName; set { SetProperty(ref _poiName, value); } }
-
         double _longitude;
         public double Longitude { get => _longitude; set { SetProperty(ref _longitude, value); } }
         double _latitude;
@@ -230,31 +196,51 @@ namespace NikeClientApp.ViewModels
         public ObservableCollection<Entry> Entries { get => _entries; set { SetProperty(ref _entries, value); } }
 
 
-
-
         private PaginationResponse<ObservableCollection<POI>> _listOfPOI;
         public PaginationResponse<ObservableCollection<POI>> ListOfPOI { get => _listOfPOI; set { SetProperty(ref _listOfPOI, value); } }
 
         private ObservableCollection<Entry> _listOfEntries;
         public ObservableCollection<Entry> ListOfEntries { get => _listOfEntries; set { SetProperty(ref _listOfEntries, value); } }
 
-
-
         private ObservableCollection<Comment> _listOfComments;
-        public ObservableCollection<Comment> ListOfComments { get => _listOfComments; set { SetProperty( ref _listOfComments, value); } }
+        public ObservableCollection<Comment> ListOfComments { get => _listOfComments; set { SetProperty(ref _listOfComments, value); } }
 
+        private Category _selectedCategory;
+        public Category SelectedCategory
+        {
+            get { return _selectedCategory; }
+            set { SetProperty(ref _selectedCategory, value); }
+        }
+        private ObservableCollection<Category> _groupedPOIList;
+        public ObservableCollection<Category> GroupedPOIList
+        {
+            get { return _groupedPOIList; }
+            set { SetProperty(ref _groupedPOIList, value); }
+        }
         #endregion;
 
 
         //Methods
         #region Methods
-
-        private Category _selectedCategory;
-
-        public Category SelectedCategory
+        public async override Task InitAsync()
         {
-            get { return _selectedCategory; }
-            set { SetProperty(ref _selectedCategory, value); }
+            //await CenterOnUser();
+            SwitchWeatherTxt = "Visa väder";
+        }
+
+        public async Task StandardMapView()
+        {
+            MapPage.CustomMap.MapType = MapType.Street;
+        }
+
+        public async Task SatelliteMapView()
+        {
+            MapPage.CustomMap.MapType = MapType.Satellite;
+        }
+
+        public async Task HybridMapView()
+        {
+            MapPage.CustomMap.MapType = MapType.Hybrid;
         }
 
         async Task<bool> AddPOI_Clicked()
@@ -268,20 +254,19 @@ namespace NikeClientApp.ViewModels
                     return false;
                 }
                 poiToAdd.Category = SelectedCategory.Name;
-
                 try
                 {
                     var placemarks = await Geocoding.GetPlacemarksAsync(ListOfPins.Last().Position.Latitude, ListOfPins.Last().Position.Longitude);
                     var placemark = placemarks.FirstOrDefault();
                     var city = placemark.Locality;
                     var country = placemark.CountryName;
-                    var address = placemark.FeatureName; 
-                    
+                    var address = placemark.FeatureName;
+
                     ListOfPins.Last().Address = address;
                     ListOfPins.Last().Label = poiToAdd.Name;
 
                     await _entryClient.Post("entry", entryToAdd);
-                    await GetPOIList(poiToAdd.Country, poiToAdd.City);                     
+                    await GetPOIList(poiToAdd.Country, poiToAdd.City);
                 }
                 catch (Exception ex)
                 {
@@ -297,14 +282,13 @@ namespace NikeClientApp.ViewModels
                         SelectedPOI = ListOfPOI.Data.FirstOrDefault(x => x.Name == CountryName && x.City == CityName);
                         ListOfEntries = Entries;
                     }
-                    catch(Exception ex)
+                    catch (Exception ex)
                     {
                         await App.Current.MainPage.DisplayAlert("Du har redan lagt en kommentar på den här sevärdheten!", "", "OK");
-                        
+
                     }
                 }
                 addPoiModalIsVisible = false;
-                 
                 return true;
             }
             else
@@ -315,14 +299,11 @@ namespace NikeClientApp.ViewModels
         }
 
         private ObservableCollection<WeatherMinMax> _weatherMinMax;
-
         public ObservableCollection<WeatherMinMax> WeatherMinMax
         {
             get { return _weatherMinMax; }
             set { SetProperty(ref _weatherMinMax, value); }
         }
-
-
         private async Task SearchButton_Clicked()
         {
             MapPage.CustomMap.IsShowingUser = false;
@@ -350,8 +331,8 @@ namespace NikeClientApp.ViewModels
             var placemark = placemarks.FirstOrDefault();
 
             var response = await weatherClient.Get("forecast", $"?longitude={position.Longitude}&latitude={position.Latitude}");
-    
-            TitleResult = placemark.Locality; 
+
+            TitleResult = placemark.Locality;
 
             var grouping = response.Data.WeatherList.GroupBy(x => x.DateTime.DayOfWeek);
             WeatherMinMax = new ObservableCollection<WeatherMinMax>();
@@ -360,16 +341,15 @@ namespace NikeClientApp.ViewModels
             foreach (var group in grouping)
             {
                 WeatherMinMax
-                    .Add(new Models.WeatherMinMax 
-                    { 
-                        Day = culture.DateTimeFormat.GetDayName(group.Key)[0].ToString().ToUpper() + culture.DateTimeFormat.GetDayName(group.Key).Substring(1), 
-                        TempMax = group.Max(x => x.Temperature), 
-                        TempMin = group.Min(x => x.Temperature) 
-                    });          
+                    .Add(new Models.WeatherMinMax
+                    {
+                        Day = culture.DateTimeFormat.GetDayName(group.Key)[0].ToString().ToUpper() + culture.DateTimeFormat.GetDayName(group.Key).Substring(1),
+                        TempMax = group.Max(x => x.Temperature),
+                        TempMin = group.Min(x => x.Temperature)
+                    });
             }
 
             WeatherListIsVisible = false;
-            
 
             CurrentWeather = (int)Math.Round(response.Data.WeatherList.FirstOrDefault().Temperature);
             MapSpan maps = new MapSpan(position, 1.10, 0.10);
@@ -388,15 +368,6 @@ namespace NikeClientApp.ViewModels
             PinStay(test);
         }
 
-        private ObservableCollection<Category> _groupedPOIList;
-
-        public ObservableCollection<Category> GroupedPOIList
-        {
-            get { return _groupedPOIList; }
-            set { SetProperty(ref _groupedPOIList, value); }
-        }
-
-
         private async Task PinIcon_Clicked()
         {
             if (UserOffLine.LoggedIn)
@@ -410,7 +381,7 @@ namespace NikeClientApp.ViewModels
             }
             else
             {
-                await App.Current.MainPage.DisplayAlert("Offline","Du måste vara en användare för att kunna lägga en pin","Ok");
+                await App.Current.MainPage.DisplayAlert("Offline", "Du måste vara en användare för att kunna lägga en pin", "Ok");
             }
         }
         public static bool deletepin { get; set; }
@@ -420,9 +391,9 @@ namespace NikeClientApp.ViewModels
             {
                 pinner.Position = e.Position;
                 MapPage.CustomMap.Pins.Add(pinner);
-               
+
                 var ans = await App.Current.MainPage.DisplayAlert("Hej", "Vill du lägga till en pin?", "Ja", "Nej");
-                
+
                 if (ans != true)
                 {
                     MapPage.CustomMap.Pins.Remove(pinner);
@@ -439,8 +410,8 @@ namespace NikeClientApp.ViewModels
                 }
             }
             if (addEntryModalIsVisible || addPoiModalIsVisible || CommentOnEntryModalIsVisible)
-            {   
-                if(addPoiModalIsVisible)
+            {
+                if (addPoiModalIsVisible)
                 {
                     pinner = ListOfPins.Last();
                     MapPage.CustomMap.Pins.Remove(pinner);
@@ -452,7 +423,6 @@ namespace NikeClientApp.ViewModels
                 MPVM.addPoiModalIsVisible = false;
                 MPVM.CommentOnEntryModalIsVisible = false;
 
-                
                 poiToAdd.Name = "";
             }
             return false;
@@ -463,16 +433,15 @@ namespace NikeClientApp.ViewModels
             EntryRating = int.Parse(sender.ToString());
         }
 
-       
         public async Task PopulatePOI(Position position)
         {
             var placemarks = await Geocoding.GetPlacemarksAsync(position.Latitude, position.Longitude);
             var placemark = placemarks.FirstOrDefault();
-           
-            poiToAdd.Country = placemark.CountryName; ; 
+
+            poiToAdd.Country = placemark.CountryName; ;
             poiToAdd.Longitude = position.Longitude;
             poiToAdd.Latitude = position.Latitude;
-            poiToAdd.City = placemark.Locality; 
+            poiToAdd.City = placemark.Locality;
         }
 
         public async Task PopulateEntry()
@@ -504,12 +473,9 @@ namespace NikeClientApp.ViewModels
                     Address = address,
                     Label = item.Name,
                 };
-
                 ListOfPins.Add(pinner);
             }
-
             pinner = null;
-
             OnShowPinsEventHandler(ListOfPOI);
         }
 
@@ -518,7 +484,7 @@ namespace NikeClientApp.ViewModels
             Response<User> currentUser = null;
             if (UserOffLine.LoggedIn)
             {
-                currentUser = await userClient.Get(@"user", $"?ApiKey={UserApi.ApiKey}"); 
+                currentUser = await userClient.Get(@"user", $"?ApiKey={UserApi.ApiKey}");
                 if (SelectedPOI != null)
                 {
                     POIListIsVisible = false;
@@ -530,14 +496,14 @@ namespace NikeClientApp.ViewModels
                     {
                         EntryButtonIsVisible = false;
                     }
-                    else 
-                    { 
-                        EntryButtonIsVisible = true; 
+                    else
+                    {
+                        EntryButtonIsVisible = true;
                     }
-                    currentUser = null; 
+                    currentUser = null;
                     poiToAdd.Name = SelectedPOI.Name;
                     TitleResult = SelectedPOI.Name;
-               
+
                     EntryPagination = await _entryClient.GetList("entry", $"?amount=6&poi={SelectedPOI.Name.Replace(" ", "+")}");
                     PreviousEntriesVisible = true;
                     NextEntriesVisible = true;
@@ -549,14 +515,14 @@ namespace NikeClientApp.ViewModels
                     {
                         NextEntriesVisible = false;
                     }
-                    ListOfEntries = EntryPagination.Data; 
+                    ListOfEntries = EntryPagination.Data;
                     ShowUserLikes();
                     CityName = SelectedPOI.City;
                     POIName = SelectedPOI.Name;
                     Latitude = SelectedPOI.Latitude;
                     Longitude = SelectedPOI.Longitude;
-                    Entries = SelectedPOI.Entries; 
-                    SelectedPOI = null; 
+                    Entries = SelectedPOI.Entries;
+                    SelectedPOI = null;
                     return ListOfEntries;
                 }
             }
@@ -569,7 +535,6 @@ namespace NikeClientApp.ViewModels
 
         private async Task ShowUserLikes()
         {
-
             var currentUser = await userClient.Get(@"user", $"?ApiKey={UserApi.ApiKey}");
             var listOfLikesFromUser = ListOfEntries.SelectMany(x => x.LikeDislikeEntries).Where(x => x.UserId == currentUser.Data.Id).ToList();
             if (listOfLikesFromUser.Count != 0)
@@ -583,11 +548,11 @@ namespace NikeClientApp.ViewModels
 
         private async Task BackArrowClicked()
         {
-            if(EntryListIsVisible == false)
+            if (EntryListIsVisible == false)
             {
                 CommentListIsVisible = false;
                 EntryListIsVisible = true;
-                TitleResult = POIName; 
+                TitleResult = POIName;
             }
             else
             {
@@ -647,18 +612,22 @@ namespace NikeClientApp.ViewModels
 
         private async Task CenterOnUser()
         {
-           //Todo: Vi måste kunna klicka på kartfunktionerna utan exception, dunkar inte just nu
-            try
-            {  
-                MapPage.CustomMap.IsShowingUser = true;
-                var position = await Geolocation.GetLocationAsync();
-                var response = await weatherClient.Get("forecast", $"?longitude={position.Longitude}&latitude={position.Latitude}");
-                CurrentWeather = (int)Math.Round(response.Data.WeatherList.FirstOrDefault().Temperature);
-                TitleResult = response.Data.City;
-            }
-            catch(Exception ex)
+            MapPage.CustomMap.IsShowingUser = true;
+            var position = await Geolocation.GetLocationAsync();
+            var response = await weatherClient.Get("forecast", $"?longitude={position.Longitude}&latitude={position.Latitude}");
+            CurrentWeather = (int)Math.Round(response.Data.WeatherList.FirstOrDefault().Temperature);
+           
+            var placemarks = await Geocoding.GetPlacemarksAsync(position.Latitude, position.Longitude);
+            var placemark = placemarks.FirstOrDefault();
+            TitleResult = placemark.Locality; 
+            var test = await GetPOIList(placemark.CountryName, placemark.Locality);
+
+            var poiGroup = test.Data.GroupBy(x => x.Category).ToDictionary(x => x.Key, x => x.ToList());
+
+            GroupedPOIList = new ObservableCollection<Category>();
+            foreach (var group in poiGroup)
             {
-                App.Current.MainPage.DisplayAlert("Felmeddelande", "Du måste aktivera platsinställningarna för att din aktuella plats ska synas.", "OK");
+                GroupedPOIList.Add(new Category(group.Key, group.Value));
             }
         }
 
@@ -676,7 +645,7 @@ namespace NikeClientApp.ViewModels
                 SwitchWeatherTxt = "Visa väder";
             }
         }
-        public PaginationResponse<ObservableCollection<Models.Entry>> EntryPagination { get; set; }
+        
 
         private async Task OnGetPreviousEntries()
         {
@@ -707,13 +676,11 @@ namespace NikeClientApp.ViewModels
             {
                 NextEntriesVisible = false;
             }
-
         }
         private async Task OnPOISelected(object param)
         {
             SelectedPOI = param as POI;
         }
-
 
         private async Task OnCommentButtonClicked(object sender)
         {
@@ -727,7 +694,7 @@ namespace NikeClientApp.ViewModels
 
         private async Task OpenEntryComment()
         {
-            CommentOnEntryModalIsVisible = true; 
+            CommentOnEntryModalIsVisible = true;
         }
 
         private async Task PostComment()
@@ -736,11 +703,10 @@ namespace NikeClientApp.ViewModels
             commentToPost.Text = CommentOnEntry;
             commentToPost.EntryId = SelectedEntry.Id;
             var currentUser = await userClient.Get(@"user", $"?ApiKey={UserApi.ApiKey}");
-            commentToPost.UserId = currentUser.Data.Id; 
+            commentToPost.UserId = currentUser.Data.Id;
             await commentClient.Post("comments", commentToPost);
-            CommentOnEntryModalIsVisible = false; 
+            CommentOnEntryModalIsVisible = false;
         }
-
         #endregion;
     }
 }

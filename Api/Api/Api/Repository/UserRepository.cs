@@ -53,7 +53,6 @@ namespace Api.Repository
         {
             throw new NotImplementedException();
         }
-
         public void Remove(User entity)
         {
             throw new NotImplementedException();

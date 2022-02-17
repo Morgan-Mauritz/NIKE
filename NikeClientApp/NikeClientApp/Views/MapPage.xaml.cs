@@ -1,12 +1,6 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-
 using Xamarin.Forms;
 using Xamarin.Forms.Xaml;
-using Xamarin.Forms.Maps;
 using NikeClientApp.ViewModels;
 
 namespace NikeClientApp.Views
@@ -58,7 +52,6 @@ namespace NikeClientApp.Views
         private void Searchbar_Focused(object sender, FocusEventArgs e)
         {
             Searchbar.Text = ""; 
-
         }
         
         private void ImageButton_Clicked(object sender, EventArgs e)

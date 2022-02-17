@@ -1,5 +1,4 @@
-﻿using Api.Helpers;
-using AutoMapper;
+﻿using AutoMapper;
 
 namespace Api.Model.MappingProfiles
 {

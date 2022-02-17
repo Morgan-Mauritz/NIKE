@@ -23,7 +23,7 @@ namespace Api.Model
 
     }
 
-    public class CommentDTO 
+    public class CommentDTO
     {
         public long Id { get; set; }
         public EntryDto Entry { get; set; }
@@ -37,7 +37,7 @@ namespace Api.Model
     public class CommentWithUserDTO
     {
         public long Id { get; set; }
-        public string UserName { get; set;  }
+        public string UserName { get; set; }
         public string Text { get; set; }
     }
 
@@ -47,5 +47,4 @@ namespace Api.Model
         public int UserID { get; set; }
         public string Text { get; set; }
     }
-
 }

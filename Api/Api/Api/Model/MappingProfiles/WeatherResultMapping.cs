@@ -3,7 +3,6 @@ using System;
 using System.Linq;
 using static Api.Model.Forecast;
 
-
 namespace Api.Model.MappingProfiles
 {
     public class WeatherResultMapping : Profile

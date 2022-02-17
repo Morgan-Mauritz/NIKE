@@ -1,10 +1,7 @@
 ﻿using NikeClientApp.Encryption;
 using NikeClientApp.Models;
 using NikeClientApp.Services;
-using System;
-using System.Collections.Generic;
 using System.Net.Http;
-using System.Text;
 using System.Text.RegularExpressions;
 using System.Threading.Tasks;
 using Xamarin.Forms;
@@ -22,7 +19,6 @@ namespace NikeClientApp.ViewModels
             get { return _user; }
             set { SetProperty(ref _user, value); }
         }
-
 
         public Command LogIn => new Command(async () => await OnLogIn());
         public Command RegisterPage => new Command(async () => await NavigationService.NavigateTo<RegisterPageViewModel>());
@@ -71,6 +67,5 @@ namespace NikeClientApp.ViewModels
             userClient = new HttpService<User>();
             User = new User();
         }
-
     }
 }

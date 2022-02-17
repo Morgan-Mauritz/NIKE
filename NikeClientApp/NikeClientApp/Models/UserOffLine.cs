@@ -1,8 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
-
-namespace NikeClientApp.Models
+﻿namespace NikeClientApp.Models
 {
     public static class UserOffLine
     {

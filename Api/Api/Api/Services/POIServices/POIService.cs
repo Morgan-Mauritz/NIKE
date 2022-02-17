@@ -27,7 +27,6 @@ namespace Api.Services.POIServices
             var (poiList, total) = await _POIRepository.GetFiltered(filterPOI);
             return (_mapper.Map<List<POIDto>>(poiList), total);
         }
-
         public async Task<POIDto> SetPOI(POIDto pOIDto, string apiKey)
         {
 

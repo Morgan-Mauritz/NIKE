@@ -18,6 +18,5 @@ namespace Api.Repository
         Task<(List<Entry>  entries, int total)> GetUserEntries(long userID, BaseFilter filter);
         Task<(List<LikeDislikeEntry>  likes, int total)> GetUserLikes(long userID, BaseFilter filter);
         Task<(List<Entry> list, int total)> GetEntries(FilterEntry filter);
-
     }
 }

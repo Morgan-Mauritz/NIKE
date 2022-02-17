@@ -1,5 +1,4 @@
-﻿using Api.Helpers;
-using Api.Model;
+﻿using Api.Model;
 using Api.Repository;
 using AutoMapper;
 using System;

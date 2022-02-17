@@ -27,8 +27,9 @@ namespace NikeClientApp.ViewModels
         private HttpService<Comment> commentClient;
         private HttpService<Models.Entry> entryClient;
 
+        //Properties
+        #region Properties
         private User _user;
-
         public User User
         {
             get { return _user; }
@@ -36,7 +37,6 @@ namespace NikeClientApp.ViewModels
         }
 
         private ObservableCollection<Models.Entry> _entries;
-
         public ObservableCollection<Models.Entry> Entries
         {
             get { return _entries; }
@@ -44,7 +44,6 @@ namespace NikeClientApp.ViewModels
         }
 
         private ObservableCollection<Comment> _comments;
-
         public ObservableCollection<Comment> Comments
         {
             get { return _comments; }
@@ -52,20 +51,42 @@ namespace NikeClientApp.ViewModels
         }
 
         private ObservableCollection<Reaction> _reactions;
-
         public ObservableCollection<Reaction> Reactions
         {
             get { return _reactions; }
             set { SetProperty(ref _reactions, value); }
         }
+        private EditUser _userReadOnly;
+        public EditUser UserReadOnly
+        {
+            get { return _userReadOnly; }
+            set { SetProperty(ref _userReadOnly, value); }
+        }
 
-
+        private bool _commentReadOnly;
+        public bool CommentReadOnly
+        {
+            get { return _commentReadOnly; }
+            set { SetProperty(ref _commentReadOnly, value); }
+        }
+        private bool _entryReadOnly = true;
+        public bool EntryReadOnly
+        {
+            get { return _entryReadOnly; }
+            set { SetProperty(ref _entryReadOnly, value); }
+        }
+        private bool _ratingReadOnly = true;
+        public bool RatingReadOnly
+        {
+            get { return _ratingReadOnly; }
+            set { SetProperty(ref _ratingReadOnly, value); }
+        }
+        #endregion
 
         private async Task OnShow()
         {
             try
             {
-
                 var user = await userClient.Get("user", "");
 
                 var comments = await commentClient.GetList("entry/comments", "");
@@ -89,38 +110,6 @@ namespace NikeClientApp.ViewModels
             }
         }
 
-        private EditUser _userReadOnly;
-
-        public EditUser UserReadOnly
-        {
-            get { return _userReadOnly; }
-            set { SetProperty(ref _userReadOnly, value); }
-        }
-
-        private bool _commentReadOnly;
-
-        public bool CommentReadOnly
-        {
-            get { return _commentReadOnly; }
-            set { SetProperty(ref _commentReadOnly, value); }
-        }
-        private bool _entryReadOnly = true;
-
-        public bool EntryReadOnly
-        {
-            get { return _entryReadOnly; }
-            set { SetProperty(ref _entryReadOnly, value); }
-        }
-
-        private bool _ratingReadOnly = true;
-
-        public bool RatingReadOnly
-        {
-            get { return _ratingReadOnly; }
-            set { SetProperty(ref _ratingReadOnly, value); }
-        }
-
-
         private void OnEdit(string param)
         {
             switch (param)
@@ -143,10 +132,8 @@ namespace NikeClientApp.ViewModels
             }
         }
 
-
         public async Task OnSave(string endpoint)
         {
-
             try
             {
                 if (!Regex.IsMatch(User.Firstname, @"^[a-zåäöA-ZÅÄÖ]+$"))
@@ -182,7 +169,6 @@ namespace NikeClientApp.ViewModels
                 }
                 User.PasswordValidation = passwordConfirmation;
                 await userClient.Update("user", User);
-
             }
             catch (Exception)
             {
@@ -284,11 +270,11 @@ namespace NikeClientApp.ViewModels
                     break;
             }
         }
+
         public async Task OnDelete(string endpoint)
         {
             try
             {
-
                 if (endpoint == "user")
                 {
                     await userClient.Delete(endpoint);
@@ -320,7 +306,6 @@ namespace NikeClientApp.ViewModels
             }
         }
 
-
         public UserPageViewModel(INaviService naviService) : base(naviService)
         {
             userClient = new HttpService<User>();
@@ -331,14 +316,11 @@ namespace NikeClientApp.ViewModels
             Comments = new ObservableCollection<Comment>();
             Entries = new ObservableCollection<Models.Entry>();
             Reactions = new ObservableCollection<Reaction>();
-
         }
 
         public async override Task InitAsync()
         {
             await OnShow();
         }
-
-
     }
 }

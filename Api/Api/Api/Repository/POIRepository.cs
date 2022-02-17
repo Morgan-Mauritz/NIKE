@@ -23,7 +23,6 @@ namespace Api.Repository
                 && (POI.Latitude >= latitude - 0.01 && POI.Latitude <= latitude + 0.01) && POI.Name.ToLower() == name.ToLower());
             return thingToLookat;
         }
-
         public async Task<(List<POI> poiList, int total)> GetFiltered(FilterPOI filterPOI)
         {
 
@@ -46,7 +45,6 @@ namespace Api.Repository
 
             return (await query.Skip(filterPOI.Offset).Take(filterPOI.Amount).ToListAsync(), total);
         }
-
         public async Task<POI> Set(POIDto pOIDto)
         {
             var city = await _context.Cities.FirstOrDefaultAsync(c => c.Name == pOIDto.City);

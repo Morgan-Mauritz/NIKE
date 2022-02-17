@@ -19,7 +19,6 @@ namespace Api.Services.ForecastServices
             query = "?appid=abe847e305174899f79c5f3544d18d28&lang=SV";
             _mapper = mapper;
         }
-
         public async Task<ForecastDto> GetForecast(double longitude, double latitude)
         {
             try

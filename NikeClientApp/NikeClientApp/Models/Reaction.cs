@@ -1,8 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
-
-namespace NikeClientApp.Models
+﻿namespace NikeClientApp.Models
 {
     public class Reaction
     {
@@ -11,6 +7,5 @@ namespace NikeClientApp.Models
         public string User { get; set; }
         public int Like { get; set; }
         public string Endpoint { get => $"entry/like/{Entry.Id}"; }
-
     }
 }

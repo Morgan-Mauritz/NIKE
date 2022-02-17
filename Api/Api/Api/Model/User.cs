@@ -60,7 +60,6 @@ namespace Api.Model
         public string Username { get; set; }
         [Required]
         public string ApiKey { get; set; }
-
     }
 
    public class AddUserDto
@@ -105,7 +104,6 @@ namespace Api.Model
 
         [MinLength(2, ErrorMessage = "{0} Must be at least 2 characters")]
         public string Username { get; set; }
-
         public byte[] PasswordValidation { get; set; }
     }
 }

@@ -1,13 +1,10 @@
 ﻿using NikeClientApp.Models;
 using NikeClientApp.UWP;
 using NikeClientApp.ViewModels;
-using NikeClientApp.Views;
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using Windows.Devices.Geolocation;
 using Windows.Storage.Streams;
 using Windows.UI.Xaml.Controls.Maps;

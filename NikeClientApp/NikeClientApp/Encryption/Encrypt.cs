@@ -8,8 +8,6 @@ namespace NikeClientApp.Encryption
 {
     class Encrypt
     {
-
-
         private const string password = "nyckel";
 
         public static byte[] EncryptMessage(string plainMessage)
@@ -50,6 +48,5 @@ namespace NikeClientApp.Encryption
             decStream.Close();
             return Encoding.UTF8.GetString(plainBytes);
         }
-
     }
 }

@@ -4,27 +4,23 @@
              x:Class="NikeClientApp.Views.RegisterPage"
              BackgroundImageSource="Assets/halvkarta.png">
 
-
-
     <StackLayout VerticalOptions="Center" HorizontalOptions="Center">
-       
-                <Frame BackgroundColor="DarkSlateGray" HeightRequest="650" WidthRequest="400" CornerRadius="20">  
 
-                    <StackLayout HorizontalOptions="Center" Padding="50" Spacing="50">
+        <Frame BackgroundColor="DarkSlateGray" HeightRequest="650" WidthRequest="400" CornerRadius="20">
 
-                    <Label Text="NikeMap" HorizontalOptions="Center" Margin="35,-50,0,0" FontFamily="Elephant" FontSize="50" TextColor="#FFD9EC16" WidthRequest="917" HeightRequest="75" Grid.Row="1" />
-                    <Label Text="Registrera dig" HorizontalOptions="Center" Margin="80,-50,0,0" FontFamily="Elephant" FontSize="20" TextColor="#FFD9EC16" WidthRequest="917" HeightRequest="30" />
-                     <Entry x:Name="TBFirstname" HorizontalOptions="Center" Margin="-10"  FontSize="20" Background="White"  Placeholder="Förnamn" PlaceholderColor="LightGray" WidthRequest="300" HeightRequest="40" TextColor="Black" />
-                     <Entry x:Name="TBLastname" HorizontalOptions="Center"  Margin="-10" FontSize="20"  Background="White"  Placeholder="Efternamn" PlaceholderColor="LightGray" WidthRequest="300" HeightRequest="40" TextColor="Black" Grid.Row="3"/>
-                     <Entry x:Name="TBEmail" HorizontalOptions="Center"  Margin="-10" FontSize="20"  Background="White"  Placeholder="Email" PlaceholderColor="LightGray" WidthRequest="300" HeightRequest="40" TextColor="Black" Grid.Row="3"/>
-                     <Entry x:Name="TBUsername" HorizontalOptions="Center" Margin="-10" FontSize="20"  Background="White"   Placeholder="Användarnamn" PlaceholderColor="LightGray"  WidthRequest="300" HeightRequest="40" TextColor="Black" Grid.Row="3"/>
-                     <Entry x:Name="TBPassword" IsPassword="True" HorizontalOptions="Center" Margin="-10" FontSize="20" Background="White"  Placeholder="Lösenord" PlaceholderColor="LightGray"  WidthRequest="300" HeightRequest="40" TextColor="Black" Grid.Row="3"/>
-                     <Entry x:Name="TBRepatPassword" IsPassword="True" HorizontalOptions="Center" Margin="-10"  FontSize="20"  Background="White"  Placeholder="Upprepa Lösenord" PlaceholderColor="LightGray" WidthRequest="300" HeightRequest="40" TextColor="Black" Grid.Row="3"/>
+            <StackLayout HorizontalOptions="Center" Padding="50" Spacing="50">
+                <Label Text="NikeMap" HorizontalOptions="Center" Margin="35,-50,0,0" FontFamily="Elephant" FontSize="50" TextColor="#FFD9EC16" WidthRequest="917" HeightRequest="75" Grid.Row="1" />
+                <Label Text="Registrera dig" HorizontalOptions="Center" Margin="80,-50,0,0" FontFamily="Elephant" FontSize="20" TextColor="#FFD9EC16" WidthRequest="917" HeightRequest="30" />
+                <Entry x:Name="TBFirstname" HorizontalOptions="Center" Margin="-10"  FontSize="20" Background="White"  Placeholder="Förnamn" PlaceholderColor="LightGray" WidthRequest="300" HeightRequest="40" TextColor="Black" />
+                <Entry x:Name="TBLastname" HorizontalOptions="Center"  Margin="-10" FontSize="20"  Background="White"  Placeholder="Efternamn" PlaceholderColor="LightGray" WidthRequest="300" HeightRequest="40" TextColor="Black" Grid.Row="3"/>
+                <Entry x:Name="TBEmail" HorizontalOptions="Center"  Margin="-10" FontSize="20"  Background="White"  Placeholder="Email" PlaceholderColor="LightGray" WidthRequest="300" HeightRequest="40" TextColor="Black" Grid.Row="3"/>
+                <Entry x:Name="TBUsername" HorizontalOptions="Center" Margin="-10" FontSize="20"  Background="White"   Placeholder="Användarnamn" PlaceholderColor="LightGray"  WidthRequest="300" HeightRequest="40" TextColor="Black" Grid.Row="3"/>
+                <Entry x:Name="TBPassword" IsPassword="True" HorizontalOptions="Center" Margin="-10" FontSize="20" Background="White"  Placeholder="Lösenord" PlaceholderColor="LightGray"  WidthRequest="300" HeightRequest="40" TextColor="Black" Grid.Row="3"/>
+                <Entry x:Name="TBRepatPassword" IsPassword="True" HorizontalOptions="Center" Margin="-10"  FontSize="20"  Background="White"  Placeholder="Upprepa Lösenord" PlaceholderColor="LightGray" WidthRequest="300" HeightRequest="40" TextColor="Black" Grid.Row="3"/>
+                <Button x:Name="BTRegister" HorizontalOptions="Center"  Margin="20,0" Text="Registrera" CornerRadius="10"  Background="Green" HeightRequest="50" WidthRequest="130" TextColor="White" Grid.Row="4" Clicked="BTRegister_Clicked" />
+            </StackLayout>
+        </Frame>
 
-                        <Button x:Name="BTRegister" HorizontalOptions="Center"  Margin="20,0" Text="Registrera" CornerRadius="10"  Background="Green" HeightRequest="50" WidthRequest="130" TextColor="White" Grid.Row="4" Clicked="BTRegister_Clicked" />
-                    </StackLayout>
-                </Frame>
+    </StackLayout>
 
-        </StackLayout>
-   
 </ContentPage>

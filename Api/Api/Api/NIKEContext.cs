@@ -29,9 +29,6 @@ namespace Api
         public virtual DbSet<LikeDislikeEntry> LikeDislikeEntry { get; set; }
 
         public virtual DbSet<Category> Categories { get; set; }
-
-        
-
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
             modelBuilder.Entity<City>(entity =>

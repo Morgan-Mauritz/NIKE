@@ -1,13 +1,8 @@
-﻿using Newtonsoft.Json;
-using NikeClientApp.Services;
-using System;
-using System.Collections.Generic;
+﻿using NikeClientApp.Services;
 using System.Collections.ObjectModel;
-using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Input;
 using Xamarin.Forms;
-
 
 namespace NikeClientApp.Models
 {
@@ -36,21 +31,23 @@ namespace NikeClientApp.Models
         public ObservableCollection<Comment> Comments { get; set; }
 
         private int _rating;
-        public int Rating 
+        public int Rating
         {
-           get => _rating;
-           set 
+            get => _rating;
+            set
             {
                 if (value > 5) _rating = 5;
                 else if (value < 1) _rating = 1;
                 else _rating = value;
 
                 OnPropertyChanged("StarRating");
-            } 
+            }
         }
         public string Username { get; set; }
 
-        public string StarRating { get 
+        public string StarRating
+        {
+            get
             {
                 string stars = "";
                 for (int i = 0; i < Rating; i++)
@@ -58,7 +55,7 @@ namespace NikeClientApp.Models
                     stars += "★";
                 }
                 return stars;
-            } 
+            }
         }
 
         private bool _entryReadOnly = true;
@@ -81,7 +78,6 @@ namespace NikeClientApp.Models
         {
             EntryReadOnly = !EntryReadOnly;
             RatingReadOnly = !RatingReadOnly;
-
         }
 
         public async Task OnSave()

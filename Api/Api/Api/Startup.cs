@@ -14,14 +14,10 @@ using Api.Services.UserServices;
 using AutoMapper;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
-using Microsoft.AspNetCore.HttpsPolicy;
-using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
-using Microsoft.Extensions.Logging;
-using Microsoft.Extensions.Options;
 using Microsoft.OpenApi.Models;
 using Newtonsoft.Json;
 
@@ -95,7 +91,6 @@ namespace Api
             services.AddScoped<ICommentService, CommentService>();
 
         }
-
         public void RegisterRepositorys(IServiceCollection services)
         {
             services.AddScoped<IRepository<User>, UserRepository>();

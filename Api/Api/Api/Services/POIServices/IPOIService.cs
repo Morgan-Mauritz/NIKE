@@ -8,7 +8,6 @@ namespace Api.Services.POIServices
     {
         Task<POIDto> GetPOI(double Longitude, double Latitude, string name);
         Task<(List<POIDto> poiList, int total)> GetPOIList(FilterPOI filterPOI);
-
         Task<POIDto> SetPOI(POIDto poiDto, string apiKey); 
     }
 }

@@ -4,7 +4,6 @@ using Api.Repository;
 using AutoMapper;
 using System.Threading.Tasks;
 using System;
-using Api.Helpers;
 using System.Collections.Generic;
 
 namespace Api.Services.EntryServices
@@ -76,7 +75,6 @@ namespace Api.Services.EntryServices
 
             return _mapper.Map<EntryDto>(updatedEntry);
         }
-
         public async Task<EntryDto> RemoveEntry(long id, string apiKey)
         {
 
@@ -112,8 +110,6 @@ namespace Api.Services.EntryServices
             }
 
             var like = await _entryRepository.GetLike(user.Id, entryId);
-
-
 
             if (like == null)
             {
@@ -153,7 +149,6 @@ namespace Api.Services.EntryServices
 
             return (_mapper.Map<List<LikeDislikeEntryDto>>(result.likes), result.total);
         }
-
         public async Task<(List<EntryDto> entries, int total)> GetUserEntries(string apiKey, BaseFilter filter)
         {
             var user = await _userRepository.GetByApiKey(apiKey);

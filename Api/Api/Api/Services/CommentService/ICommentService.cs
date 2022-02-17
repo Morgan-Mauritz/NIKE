@@ -11,6 +11,5 @@ namespace Api.Services.CommentService
         Task<CommentDTO> UpdateComment(EditComment comment, string apiKey);
         Task<CommentDTO> GetComment(long Id, string apiKey);
         Task<List<CommentDTO>> ListComments(BaseFilter filter, string apiKey);
-
     }
 }
